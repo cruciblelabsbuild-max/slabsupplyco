@@ -23,20 +23,19 @@ npm ci
 npm run build
 ```
 
-The site uses the `DB` D1 binding declared in `.openai/hosting.json`. After the first build, apply the local migrations in order:
+## Vercel deployment
 
-```bash
-node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_gigantic_shatterstar.sql
-node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0001_quiet_komodo.sql
-```
+Vercel uses the Next.js framework preset, `npm run build`, and the default `.next` output directory. Local production preview: `npm start`.
 
-Start the built preview:
+The API routes access Cloudflare D1 through its server-side REST API. Configure these environment variables in Vercel before using the signup, trade-in, note, and analytics endpoints:
 
-```bash
-npm start -- --port 4317
-```
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_D1_DATABASE_ID`
+- `CLOUDFLARE_D1_API_TOKEN` (a token with D1 read/write access)
 
-No environment variables are required for the current version. The hosted Sites deployment provisions the D1 database and applies committed migrations.
+Use the existing database with the committed migrations applied, or provision a D1 database and apply `drizzle/0000_gigantic_shatterstar.sql` followed by `drizzle/0001_quiet_komodo.sql`. Vercel does not provision the original Sites database binding or apply migrations automatically. These credentials stay on the server; do not prefix them with `NEXT_PUBLIC_`.
+
+The public pages build without database credentials. Database-backed submissions return an error until the credentials and database are configured; they never report a successful save without storage.
 
 ## Data model
 
