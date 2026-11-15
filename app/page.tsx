@@ -323,6 +323,7 @@ export default function Home() {
           <div className="hero-points" aria-label="Core benefits">
             <span><Check size={16} /> Exclusive monthly grail drops</span>
             <span><Check size={16} /> Below-retail member pricing</span>
+            <span><Check size={16} /> Up to 100% trade-in credit</span>
           </div>
         </div>
 
@@ -504,7 +505,7 @@ export default function Home() {
             <ul>
               <li><Check /> Access to member-priced graded cards</li>
               <li><Check /> Up to 100% in trade-in credit</li>
-              <li><Check /> Members-only grail drops</li>
+              <li><Check /> Monthly members-only grail drops</li>
             </ul>
             <a className="button submit-button" href="#join">Join the founding list <ArrowRight size={17} /></a>
           </div>
@@ -519,7 +520,6 @@ export default function Home() {
             <p>Membership, pricing, and trade-ins—clear from the start.</p>
             <div className="faq-controls" aria-label="Browse questions">
               <button type="button" onClick={() => moveFaq(-1)} aria-label="Previous question"><ArrowLeft /></button>
-              <span>{String(faqIndex + 1).padStart(2, "0")} / {String(faqs.length).padStart(2, "0")}</span>
               <button type="button" onClick={() => moveFaq(1)} aria-label="Next question"><ArrowRight /></button>
             </div>
             <button className="text-button faq-note-link" type="button" onClick={openNote}>Ask us something else <ArrowRight size={15} /></button>
@@ -528,7 +528,7 @@ export default function Home() {
             <div className="carousel-shadow carousel-shadow-one" aria-hidden="true" />
             <div className="carousel-shadow carousel-shadow-two" aria-hidden="true" />
             <article className="question-card" key={faqIndex} aria-live="polite">
-              <div className="question-card-top"><span>SLAB SUPPLY CO. · COLLECTOR’S GUIDE</span><b>{String(faqIndex + 1).padStart(2, "0")}</b></div>
+              <div className="question-card-top"><span>SLAB SUPPLY CO. · COLLECTOR’S GUIDE</span></div>
               <div className="question-card-body">
                 <span>{faqs[faqIndex].label}</span>
                 <h3>{faqs[faqIndex].q}</h3>
