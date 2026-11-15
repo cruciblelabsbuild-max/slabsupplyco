@@ -14,6 +14,7 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Manrope", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+body,body h1,body h2,body h3,body p,body span,body a,body button,body li { font-variant-ligatures: none; font-feature-settings: "liga" 0,"clig" 0,"dlig" 0; }
 a { color: inherit; text-decoration: none; }
 button, input, select, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
