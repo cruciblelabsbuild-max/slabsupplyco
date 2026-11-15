@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     if (Number(recent[0]?.count || 0) >= 5) return json({ message: "Too many recent submissions. Please try again tomorrow." }, 429);
 
     await db.insert(tradeInInterests).values({ firstName, email, grader, estimatedValue, timeframe, cardDetails, ipHash, consent });
-    return json({ message: "We saved your interest. We’ll reach out when trade-in reviews open." }, 201);
+    return json({ message: "Your trade-in request is saved for review." }, 201);
   } catch (error) {
     console.error("trade-in submission failed", error);
     return json({ message: "We couldn’t save your submission just now. Please try again." }, 500);

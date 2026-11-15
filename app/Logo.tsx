@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-export default function Logo() {
+export default function Logo({ href = "/#top" }: { href?: string }) {
   return (
-    <Link className="brand" href="/#top" aria-label="Slab Supply Co. home">
+    <Link className="brand" href={href} aria-label="Slab Supply Co. home">
       <svg className="brand-mark" viewBox="0 0 58 56" aria-hidden="true">
         <g className="brand-mark-back" transform="rotate(-9 20 29)">
           <rect x="5" y="8" width="32" height="43" rx="6" />

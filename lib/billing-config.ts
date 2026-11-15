@@ -21,3 +21,9 @@ export function siteOrigin(env: Record<string, string | undefined> = process.env
 export function validAnnualPrice(price: { active: boolean; currency: string; unit_amount: number | null; type: string; recurring: { interval: string; interval_count: number; usage_type: string } | null }) {
   return price.active && price.currency === "usd" && price.unit_amount === 9900 && price.type === "recurring" && price.recurring?.interval === "year" && price.recurring.interval_count === 1 && price.recurring.usage_type === "licensed";
 }
+
+// Explicit deployment origins only; never trust an arbitrary request Host.
+export function checkoutOrigin(value: string | null, env: Record<string, string | undefined> = process.env) {
+  const allowed = new Set([siteOrigin(env), "https://www.slabsupply.co", "https://slabsupply.co", "https://slabsupplyco.vercel.app"]);
+  return value && allowed.has(value) ? value : null;
+}

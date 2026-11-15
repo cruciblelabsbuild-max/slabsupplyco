@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { billingConfig, safePortalUrl, siteOrigin, validAnnualPrice } from "../lib/billing-config";
+import { billingConfig, checkoutOrigin, safePortalUrl, siteOrigin, validAnnualPrice } from "../lib/billing-config";
 import { checkoutStatus } from "../lib/checkout-status";
 import { POST } from "../app/api/checkout/route";
 
@@ -92,4 +92,10 @@ test("a live or mismatched price is rejected before a checkout session is create
     await assert.rejects(() => createTestCheckout(stripe, "price_id", "https://slabsupplyco.vercel.app", "key", { id: "user_example", email: "collector@example.com" }));
     assert.equal(called, false);
   }
+});
+
+test("checkout accepts the custom domains and rejects unrelated origins", () => {
+  const env = { APP_URL: "https://slabsupplyco.vercel.app" };
+  for (const origin of ["https://www.slabsupply.co", "https://slabsupply.co", "https://slabsupplyco.vercel.app"]) assert.equal(checkoutOrigin(origin, env), origin);
+  for (const origin of [null, "https://evil.test", "https://www.slabsupply.co.evil.test", "http://www.slabsupply.co"]) assert.equal(checkoutOrigin(origin, env), null);
 });

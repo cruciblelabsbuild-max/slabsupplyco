@@ -97,3 +97,13 @@ A synthetic `+clerk_test@example.com` user was created only in the new developme
 The home page signup card retains its established design and starts real Clerk registration. It prefills first name and email through Clerk's redirect API. Collecting interests and email-update consent are saved as private account preferences after verified sign-in; they are not used as proof of membership. The account-preferences endpoint verifies the session and request origin. The home form no longer posts to the legacy waitlist endpoint.
 
 Stripe test membership is configured at $99 USD per year. The test billing portal supports invoices, payment method updates, and cancellation at period end. Production Vercel environment variables store the server-only test key and billing settings; no Stripe secrets are committed.
+
+## Member experience readiness
+
+Signed-in visitors enter `/account`; the public homepage design is retained. Club navigation links directly to deals, trade-in guidelines, releases, and settings. Enrollment completion links back to the club. Checkout accepts only the explicit custom and deployment origins, and returns to the same approved origin.
+
+Internal release work (do not expose as product promises):
+- Supply verified inventory and exact slab data before enabling card sales. Sample catalog records are not listed in member deals.
+- Supply actual release dates, inventory, and purchase rules before publishing releases. No fictional release detail is exposed.
+- Connect durable D1 submission storage and operational review before exposing trade-in or help forms. These forms are gated on configured credentials.
+- Complete Stripe test payment/renewal/cancellation verification and production entitlement/webhook work before switching to live billing. Checkout remains test mode.

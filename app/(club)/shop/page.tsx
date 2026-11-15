@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
-import Catalog from "../../../components/club/Catalog";
-export const metadata: Metadata = { title: "The member shelf · Slab Supply Co." };
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+export const metadata = { title: "Member deals · Slab Supply Co." };
 export default function ShopPage() {
-  return <><section className="club-page-intro section-shell"><p className="eyebrow">The member shelf</p><h1>Good cards.<br /><em>Better economics.</em></h1><p>Vintage icons, modern favorites, and a few unexpected finds. This is the kind of shelf we’re building for the club.</p></section><section className="section-shell club-section-bottom"><div className="club-notice"><span className="status-dot" /><p><strong>A look at what’s to come.</strong> These cards and prices are reference examples, not live inventory. No card purchases are open yet.</p></div><Catalog /><p className="club-footnote">Reference snapshot: November 15, 2026. Prices, availability, and exact copies will be confirmed when each drop opens. Membership does not reserve a card.</p></section></>;
+return <><section className="club-page-intro section-shell"><p className="eyebrow">Member deals</p><h1>Good cards.<br/><em>Better prices.</em></h1><p>The club’s selection, all in one place.</p></section><section className="section-shell club-section-bottom"><div className="club-curated-empty"><p className="eyebrow">The member selection</p><h2>Nothing on the shelf today.</h2><p>No cards are available to purchase right now.</p><Link className="button" href="/trade-ins">Visit the trade-in desk <ArrowRight size={16}/></Link><Link className="club-text-link" href="/account">Back to your club</Link></div></section></>;
 }
