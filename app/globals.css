@@ -1166,3 +1166,4 @@ body h1,body h2,body h3,body h4,body h1 em,body h2 em,body h3 em,body h4 em { fo
 .join-card form>h2 { font-size:32px; }
 /* Header metrics stay stable even before webfonts finish loading. */
 .club-header,.club-member-nav,.announcement { font-family:Arial,Helvetica,sans-serif; }
+body blockquote,body blockquote em { font-family:Georgia,"Times New Roman",serif!important; }
