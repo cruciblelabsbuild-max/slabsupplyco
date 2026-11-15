@@ -1,3 +1,4 @@
+import { requireMember } from "../../../../lib/member-session";
 import Link from "next/link";
 import { ArrowRight, Check, Clock3 } from "lucide-react";
 import { checkoutStatus } from "../../../../lib/checkout-status";
@@ -5,13 +6,14 @@ import { getStripe } from "../../../../lib/stripe";
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Checkout status · Slab Supply Co.", robots: { index: false, follow: false } };
 export default async function WelcomePage({ searchParams }: { searchParams: Promise<{ session_id?: string }> }) {
+  const member = await requireMember();
   const { session_id } = await searchParams;
   let paid = false;
   let pending = false;
   if (session_id && /^cs_test_[A-Za-z0-9_]{10,240}$/.test(session_id)) {
     try {
       const session = await getStripe().checkout.sessions.retrieve(session_id, { expand: ["subscription"] });
-      const result = checkoutStatus(session);
+      const result = session.metadata?.clerk_user_id === member.id ? checkoutStatus(session) : { paid: false, pending: false };
       paid = result.paid;
       pending = result.pending;
     } catch { /* An invalid or unavailable session must never claim payment succeeded. */ }

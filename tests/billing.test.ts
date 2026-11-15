@@ -50,6 +50,8 @@ test("checkout endpoint fails closed, rejects cross-site requests and requires r
   const saved = { ...process.env };
   try {
     delete process.env.STRIPE_SECRET_KEY;
+    delete process.env.CLERK_SECRET_KEY;
+    delete process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
     let response = await POST(new Request("https://slabsupplyco.vercel.app/api/checkout", { method: "POST" }));
     assert.equal(response.status, 503);
     Object.assign(process.env, testConfig, { APP_URL: "https://slabsupplyco.vercel.app" });
@@ -57,6 +59,8 @@ test("checkout endpoint fails closed, rejects cross-site requests and requires r
     assert.equal(response.status, 403);
     response = await POST(new Request("https://slabsupplyco.vercel.app/api/checkout", { method: "POST", headers: { origin: "https://slabsupplyco.vercel.app", "content-type": "application/json" }, body: JSON.stringify({ acceptRenewal: false }) }));
     assert.equal(response.status, 400);
+    response = await POST(new Request("https://slabsupplyco.vercel.app/api/checkout", { method: "POST", headers: { origin: "https://slabsupplyco.vercel.app", "content-type": "application/json" }, body: JSON.stringify({ acceptRenewal: true }) }));
+    assert.equal(response.status, 401);
   } finally {
     for (const key of Object.keys(process.env)) if (!(key in saved)) delete process.env[key];
     Object.assign(process.env, saved);
@@ -70,7 +74,7 @@ test("server creates a fixed annual test subscription with idempotent retries", 
     prices: { retrieve: async (id: string) => { assert.equal(id, "price_server_config"); return { ...annualPrice, livemode: false }; } },
     checkout: { sessions: { create: async (...args: unknown[]) => { calls.push(args); return { url: "https://checkout.stripe.com/c/pay/cs_test_example", livemode: false }; } } },
   } as unknown as import("stripe").default;
-  const url = await createTestCheckout(stripe, "price_server_config", "https://slabsupplyco.vercel.app", "retry-key");
+  const url = await createTestCheckout(stripe, "price_server_config", "https://slabsupplyco.vercel.app", "retry-key", { id: "user_example", email: "collector@example.com" });
   assert.equal(new URL(url).hostname, "checkout.stripe.com");
   const [params, options] = calls[0] as [{ mode: string; line_items: unknown[]; success_url: string; cancel_url: string; metadata: { phase: string } }, { idempotencyKey: string }];
   assert.equal(params.mode, "subscription");
@@ -78,14 +82,14 @@ test("server creates a fixed annual test subscription with idempotent retries", 
   assert.equal(params.metadata.phase, "test");
   assert.ok(params.success_url.endsWith("/membership/welcome?session_id={CHECKOUT_SESSION_ID}"));
   assert.ok(params.cancel_url.endsWith("/join?canceled=1"));
-  assert.equal(options.idempotencyKey, "founding-retry-key");
+  assert.equal(options.idempotencyKey, "founding-user_example-retry-key");
 });
 test("a live or mismatched price is rejected before a checkout session is created", async () => {
   const { createTestCheckout } = await import("../lib/test-checkout");
   for (const price of [{ ...annualPrice, livemode: true }, { ...annualPrice, livemode: false, unit_amount: 19900 }]) {
     let called = false;
     const stripe = { prices: { retrieve: async () => price }, checkout: { sessions: { create: async () => { called = true; } } } } as unknown as import("stripe").default;
-    await assert.rejects(() => createTestCheckout(stripe, "price_id", "https://slabsupplyco.vercel.app", "key"));
+    await assert.rejects(() => createTestCheckout(stripe, "price_id", "https://slabsupplyco.vercel.app", "key", { id: "user_example", email: "collector@example.com" }));
     assert.equal(called, false);
   }
 });

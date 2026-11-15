@@ -907,3 +907,67 @@ footer { padding: 28px 0 20px; background: var(--paper); } .footer-top { display
 @media (prefers-reduced-motion: reduce) {
   .club-product-art img { transition: none; }
 }
+
+/* Visible session identity and the private collector area. */
+.session-sign-in,.session-account-link { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 750; white-space: nowrap; }
+.session-avatar { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--mint); color: var(--forest); font-size: 12px; font-weight: 800; flex-shrink: 0; }
+.session-loading { font-size: 10px; color: var(--muted); }
+.mobile-session,.mobile-account-actions,.member-mobile-bar { display: none; }
+.club-auth-layout { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 90px; padding-block: 75px 90px; min-height: 70vh; }
+.club-auth-layout h1 { margin: 22px 0; font: 600 clamp(46px,5vw,68px)/1 "Fraunces",serif; letter-spacing: -.05em; }
+.club-auth-layout h1 em { color: var(--coral); }
+.club-auth-layout section>p:not(.eyebrow) { margin-bottom: 25px; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.club-auth-form { display: flex; justify-content: center; min-width: 0; }
+.club-auth-form .cl-rootBox,.club-auth-form .cl-cardBox { width: 100%; max-width: 400px; }
+.account-identity { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 23px; padding: 12px 15px; border: 1px solid var(--line); background: var(--white); font-size: 10px; }
+.account-identity strong { padding-left: 10px; border-left: 1px solid var(--line); color: var(--forest); }
+.membership-status-panel { display: flex; align-items: center; justify-content: space-between; gap: 45px; padding: 35px; border: 1px solid var(--line); background: var(--mint); }
+.membership-status-panel h2 { margin-block: 15px; font: 700 32px/1.1 Georgia,serif; letter-spacing: -.03em; }
+.membership-status-panel p:not(.eyebrow) { max-width: 630px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+.membership-status-panel>.button { flex-shrink: 0; }
+.member-area-links { display: grid; grid-template-columns: repeat(3,1fr); gap: 23px; margin-top: 30px; }
+.member-area-links>a { padding: 28px; border: 1px solid var(--line); background: var(--white); }
+.member-area-links>a>svg:first-child { color: var(--coral); }
+.member-area-links h2 { margin: 25px 0 15px; font: 700 25px/1.1 Georgia,serif; letter-spacing: -.03em; }
+.member-area-links p { color: var(--muted); font-size: 12px; line-height: 1.8; margin-bottom: 20px; }
+@media(max-width:820px) {
+  .club-header-actions { gap: 14px; }
+  .mobile-session { display: flex; gap: 12px; align-items: center; padding: 14px 12px 18px; border-bottom: 1px solid var(--line); }
+  .mobile-session strong { font-size: 16px; }
+  .mobile-session p { color: var(--muted); font-size: 10px; margin-top: 5px; }
+  .mobile-account-actions { display: grid; gap: 5px; padding: 14px 0 3px; }
+  .club-header .mobile-account-actions>a { display: flex; align-items: center; justify-content: space-between; border: 0; }
+  .mobile-account-actions button { display: flex; align-items: center; gap: 9px; padding: 15px; background: transparent; border: 0; color: var(--muted); font-size: 12px; cursor: pointer; }
+  .member-mobile-bar { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 11px 18px; border-block: 1px solid var(--line); background: var(--mint); font-size: 10px; }
+  .member-mobile-bar>span,.member-mobile-bar>a { display: inline-flex; align-items: center; gap: 7px; }
+  .member-mobile-bar .status-dot { margin: 0; background: var(--forest); }
+  .club-auth-layout { gap: 35px; padding-block: 50px; }
+  .membership-status-panel { flex-direction: column; align-items: flex-start; gap: 25px; }
+  .member-area-links { gap: 15px; }
+  .member-area-links>a { padding: 22px; }
+}
+@media(max-width:560px) {
+  .club-header-actions { gap: 11px; }
+  .session-sign-in { font-size: 10px; gap: 4px; }
+  .session-sign-in>svg { display: none; }
+  .session-account-link { font-size: 10px; gap: 7px; }
+  .session-avatar { width: 30px; height: 30px; }
+  .club-header { gap: 10px; }
+  .club-header .brand-wordmark { font-size: 10px; }
+  .club-header .brand-mark { width: 27px; }
+  .club-header-actions>.button { padding-inline: 10px; font-size: 8px; }
+  .club-auth-layout { grid-template-columns: 1fr; gap: 30px; padding-block: 40px 55px; }
+  .club-auth-layout h1 { font-size: 46px; }
+  .club-auth-layout .club-notice { margin-bottom: 5px; }
+  .membership-status-panel { padding: 25px 20px; }
+  .membership-status-panel h2 { font-size: 27px; }
+  .member-area-links { grid-template-columns: 1fr; gap: 14px; }
+  .member-area-links h2 { margin-top: 20px; }
+  .account-identity { width: 100%; font-size: 9px; gap: 8px; }
+  .account-identity span { overflow-wrap: anywhere; }
+}
+.session-desktop-out { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--line); background: transparent; border-radius: 50%; cursor: pointer; }
+.member-intro>.club-text-link { margin-left: 15px; }
+@media(max-width:820px) { .session-desktop-out { display: none; } }
+@media(max-width:560px) { .member-intro>.club-text-link { margin-left: 0; } }
+@media(max-width:820px) { .club-header .nav-links { max-height: calc(100dvh - 110px); overflow-y: auto; overscroll-behavior: contain; } }

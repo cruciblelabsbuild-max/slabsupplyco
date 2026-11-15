@@ -1,9 +1,9 @@
 import Link from "next/link";
-import Logo from "../Logo";
+import { ClubHeader } from "../../components/club/ClubShell";
 
 export default function TermsPage() {
   return <main className="legal-page">
-    <div className="legal-header"><header className="site-header"><Logo /><Link className="text-button" href="/">Back to home</Link></header></div>
+    <ClubHeader />
     <article className="legal-content">
       <p className="eyebrow">Early-access document</p><h1>Terms of use</h1><p className="updated">Working draft · November 14, 2026</p>
       <p className="draft-notice"><b>Before public launch:</b> this draft should be replaced or approved by counsel and completed with the operating entity, governing law, dispute terms, contact details, and final membership and trade-in policies.</p>

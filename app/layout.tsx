@@ -1,3 +1,5 @@
+import IdentityProvider from "../components/club/IdentityProvider";
+import { authConfigured } from "../lib/auth-config";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -14,5 +16,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
+  return <html lang="en" data-scroll-behavior="smooth"><body><IdentityProvider enabled={authConfigured()}>{children}</IdentityProvider></body></html>;
 }

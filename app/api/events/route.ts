@@ -2,7 +2,7 @@ import { getDb } from "../../../db";
 import { analyticsEvents } from "../../../db/schema";
 import { asText, json } from "../../../lib/form-utils";
 
-const allowedEvents = new Set(["page_view", "waitlist_started", "waitlist_submitted", "tradein_started", "tradein_submitted", "faq_opened", "share_copied", "shelf_interest", "note_started", "note_submitted"]);
+const allowedEvents = new Set(["page_view", "account_signup_started", "waitlist_started", "waitlist_submitted", "tradein_started", "tradein_submitted", "faq_opened", "share_copied", "shelf_interest", "note_started", "note_submitted"]);
 
 export async function POST(request: Request) {
   try {

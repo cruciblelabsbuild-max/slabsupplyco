@@ -5,14 +5,14 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
-  Copy,
   Gem,
-  Menu,
   Sparkles,
   X,
 } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
+import { useStartSignup } from "../components/club/IdentityProvider";
+import { ClubHeader, MobileAccountBar } from "../components/club/ClubShell";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
@@ -44,8 +44,8 @@ const faqs = [
   },
   {
     label: "Founding access",
-    q: "What happens after I join the founding list?",
-    a: "You get first notice of monthly drops, membership enrollment, and the trade-in desk. Full membership terms are shown before checkout.",
+    q: "What happens after I join the club?",
+    a: "You get your collector account, with membership status and billing in one place. The annual membership costs $99; card purchases are separate.",
   },
   {
     label: "Trade-in process",
@@ -81,7 +81,6 @@ function track(event: string, metadata: Record<string, unknown> = {}) {
 }
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [tradeOpen, setTradeOpen] = useState(false);
   const [noteOpen, setNoteOpen] = useState(false);
   const [waitState, setWaitState] = useState<SubmitState>("idle");
@@ -90,10 +89,7 @@ export default function Home() {
   const [waitMessage, setWaitMessage] = useState("");
   const [tradeMessage, setTradeMessage] = useState("");
   const [noteMessage, setNoteMessage] = useState("");
-  const [referralUrl, setReferralUrl] = useState("");
-  const [copied, setCopied] = useState(false);
-  const [referrer, setReferrer] = useState("");
-  const waitStartedAt = useMemo(() => Date.now(), []);
+  const startSignup = useStartSignup();
   const waitStartedTracked = useRef(false);
   const shelfRef = useRef<HTMLDivElement>(null);
   const [shelfIndex, setShelfIndex] = useState(0);
@@ -104,7 +100,6 @@ export default function Home() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setReferrer((params.get("ref") || "").slice(0, 16));
     track("page_view", {
       ref: Boolean(params.get("ref")),
       utm_source: params.get("utm_source"),
@@ -136,42 +131,15 @@ export default function Home() {
     return () => media.removeEventListener("change", updatePageSize);
   }, []);
 
-  async function submitWaitlist(event: FormEvent<HTMLFormElement>) {
+  async function submitJoin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setWaitState("submitting");
-    setWaitMessage("");
-    const form = event.currentTarget;
-    const data = new FormData(form);
-    const params = new URLSearchParams(window.location.search);
-    const payload = {
-      firstName: data.get("firstName"),
-      email: data.get("email"),
-      interest: data.get("interest"),
-      collectingFocus: data.get("collectingFocus"),
-      company: data.get("company"),
-      consent: data.get("consent") === "on",
-      startedAt: waitStartedAt,
-      referredBy: referrer,
-      utmSource: params.get("utm_source"),
-      utmMedium: params.get("utm_medium"),
-      utmCampaign: params.get("utm_campaign"),
-    };
-
+    if (waitState === "submitting") return;
+    setWaitState("submitting"); setWaitMessage("");
+    const data = new FormData(event.currentTarget);
     try {
-      const response = await fetch("/api/waitlist", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json() as { message?: string; referralUrl?: string };
-      if (!response.ok) throw new Error(result.message || "We couldn’t save your spot. Please try again.");
-      setWaitState("success");
-      setWaitMessage(result.message || "You’re on the early-access list.");
-      setReferralUrl(result.referralUrl || "");
-      track("waitlist_submitted", { interest: payload.interest });
-    } catch (error) {
-      setWaitState("error");
-      setWaitMessage(error instanceof Error ? error.message : "Something went wrong. Please try again.");
+      await startSignup({ firstName: String(data.get("firstName") || ""), emailAddress: String(data.get("email") || ""), interest: String(data.get("interest") || ""), collectingFocus: String(data.get("collectingFocus") || ""), consent: data.get("consent") === "on" });
+    } catch {
+      setWaitState("error"); setWaitMessage("Sign-up could not open. Please try again.");
     }
   }
 
@@ -251,26 +219,6 @@ export default function Home() {
     }
   }
 
-  async function copyReferral() {
-    if (!referralUrl) return;
-    await navigator.clipboard.writeText(referralUrl);
-    setCopied(true);
-    track("share_copied");
-    window.setTimeout(() => setCopied(false), 1800);
-  }
-
-  async function shareReferral() {
-    if (navigator.share && referralUrl) {
-      await navigator.share({
-        title: "Slab Supply Co. early access",
-        text: "I joined the early-access list for a graded-card buying club built around member pricing and transparent trade-ins.",
-        url: referralUrl,
-      });
-    } else {
-      await copyReferral();
-    }
-  }
-
   function expressShelfInterest(label: string) {
     track("shelf_interest", { label });
     const input = document.querySelector<HTMLInputElement>('input[name="collectingFocus"]');
@@ -297,23 +245,7 @@ export default function Home() {
 
   return (
     <main id="top">
-      <div className="announcement">
-        <span>Founding members pick the first grail drop</span>
-      </div>
-
-      <header className="site-header">
-        <Logo />
-        <nav className={menuOpen ? "nav-links open" : "nav-links"} aria-label="Primary navigation">
-          <a href="/shop" onClick={() => setMenuOpen(false)}>Member shelf</a>
-          <a href="/drops" onClick={() => setMenuOpen(false)}>Grail drops</a>
-          <a href="/trade-ins" onClick={() => setMenuOpen(false)}>Trade-ins</a>
-          <a href="/membership" onClick={() => setMenuOpen(false)}>Membership</a>
-        </nav>
-        <a className="button button-small desktop-cta" href="/join">Join the club <ArrowRight size={15} /></a>
-        <button className="menu-button" type="button" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? <X /> : <Menu />}
-        </button>
-      </header>
+      <ClubHeader />
 
       <section className="hero section-shell">
         <div className="hero-copy">
@@ -342,28 +274,9 @@ export default function Home() {
         </div>
 
         <div className="join-card" id="join">
-          {waitState === "success" ? (
-            <div className="success-panel" role="status">
-              <span className="success-icon"><Check /></span>
-              <p className="eyebrow">You’re in</p>
-              <h2>Welcome to the first edition.</h2>
-              <p>{waitMessage}</p>
-              {referralUrl && (
-                <div className="share-box">
-                  <p><b>Know another collector?</b><br />Share your personal early-access link.</p>
-                  <div className="share-actions">
-                    <button type="button" onClick={copyReferral}><Copy size={15} /> {copied ? "Copied" : "Copy link"}</button>
-                    <button type="button" onClick={shareReferral}>Share <ArrowRight size={15} /></button>
-                  </div>
-                </div>
-              )}
-              <button className="text-button" type="button" onClick={openTrade}>I also have cards to trade <ArrowRight size={15} /></button>
-            </div>
-          ) : (
-            <form onSubmit={submitWaitlist} onFocus={() => { if (!waitStartedTracked.current) { waitStartedTracked.current = true; track("waitlist_started"); } }}>
-              <p className="eyebrow">Founding list</p>
+            <form onSubmit={submitJoin} onFocus={() => { if (!waitStartedTracked.current) { waitStartedTracked.current = true; track("account_signup_started"); } }}>
+              <p className="eyebrow">Founding membership</p>
               <h2>Join the club.</h2>
-              <p>Join the free founding list for member drops and the trade-in desk.</p>
               <div className="field-row">
                 <label><span>First name</span><input name="firstName" autoComplete="given-name" maxLength={60} placeholder="Avery" required /></label>
                 <label><span>Email</span><input name="email" type="email" autoComplete="email" maxLength={160} placeholder="avery@example.com" required /></label>
@@ -376,14 +289,13 @@ export default function Home() {
               </fieldset>
               <label className="full-field"><span>What do you collect? <i>Optional</i></span><input name="collectingFocus" maxLength={160} placeholder="Vintage, modern, a favorite era…" /></label>
               <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
-              <label className="consent"><input type="checkbox" name="consent" required /><span>I agree to receive early-access updates. I can unsubscribe anytime.</span></label>
+              <label className="consent"><input type="checkbox" name="consent" /><span>I agree to receive club updates. I can unsubscribe anytime.</span></label>
               <button className="button submit-button" disabled={waitState === "submitting"} type="submit">
-                {waitState === "submitting" ? "Saving your spot…" : <>Join the founding list—free <ArrowRight size={17} /></>}
+                {waitState === "submitting" ? "Opening sign-up…" : <>Join the club <ArrowRight size={17} /></>}
               </button>
               {waitMessage && <p className="form-message error" role="alert">{waitMessage}</p>}
               <p className="form-footnote">Founding membership is $99 per year.</p>
             </form>
-          )}
         </div>
       </section>
 
@@ -450,7 +362,7 @@ export default function Home() {
           </div>
           <div className="promise-model">
             <span>The model</span>
-            <blockquote>Your membership helps us make money differently—so we can sell cards differently.</blockquote>
+            <blockquote>Fair prices. Strong trade-ins. More room for the cards you love.</blockquote>
             <p>Instead of maximizing the margin on every slab, membership lets us operate on leaner card margins and return more value through member pricing and fair trade offers.</p>
             <a className="text-button promise-link" href="/promise">Read our promise <ArrowRight size={15} /></a>
           </div>
@@ -572,11 +484,11 @@ export default function Home() {
       </section>
 
       <footer>
-        <div className="section-shell footer-top"><Logo /><p>An independent buying club for graded-card collectors.</p><div className="footer-links"><a href="/membership">Membership</a><a href="/help">Help</a><a href="/account">My membership</a><a href="/promise">Our promise</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
+        <div className="section-shell footer-top"><Logo /><p>An independent buying club for graded-card collectors.</p><div className="footer-links"><a href="/membership">Membership</a><a href="/help">Help</a><a href="/account">My account</a><a href="/promise">Our promise</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
         <div className="section-shell footer-bottom"><p>© 2026 Slab Supply Co. All rights reserved.</p><p>Not affiliated with or endorsed by Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company. All trademarks belong to their respective owners.</p></div>
       </footer>
 
-      <div className="mobile-bar"><a className="button" href="/join">Join the club <ArrowRight size={16} /></a></div>
+      <MobileAccountBar />
 
       {tradeOpen && (
         <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setTradeOpen(false); }}>
@@ -592,7 +504,7 @@ export default function Home() {
                 <label className="full-field"><span>What cards are you considering?</span><textarea name="cardDetails" rows={4} maxLength={1200} placeholder="Card, set/year, grade, and slab condition. A rough list is perfect." required /></label>
                 <label className="full-field"><span>When would you consider trading?</span><select name="timeframe" required defaultValue=""><option value="" disabled>Select one</option><option>As soon as the desk opens</option><option>Within 1–3 months</option><option>Later this year</option><option>Just exploring</option></select></label>
                 <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
-                <label className="consent"><input type="checkbox" name="consent" required /><span>I agree to receive trade-in updates about this submission.</span></label>
+                <label className="consent"><input type="checkbox" name="consent" /><span>I agree to receive trade-in updates about this submission.</span></label>
                 <button className="button submit-button" disabled={tradeState === "submitting"} type="submit">{tradeState === "submitting" ? "Saving…" : <>Register interest <ArrowRight size={17} /></>}</button>
                 {tradeMessage && <p className="form-message error" role="alert">{tradeMessage}</p>}
                 <p className="form-footnote">Please don’t include certification numbers or other sensitive details yet.</p>
@@ -614,7 +526,7 @@ export default function Home() {
                 <div className="field-row"><label><span>First name</span><input name="firstName" autoComplete="given-name" maxLength={60} required /></label><label><span>Email</span><input name="email" type="email" autoComplete="email" maxLength={160} required /></label></div>
                 <label className="full-field"><span>Your note</span><textarea name="message" rows={6} maxLength={1600} placeholder="Tell us what you’re looking for…" required /></label>
                 <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
-                <label className="consent"><input type="checkbox" name="consent" required /><span>I agree to receive a reply about this note.</span></label>
+                <label className="consent"><input type="checkbox" name="consent" /><span>I agree to receive a reply about this note.</span></label>
                 <button className="button submit-button" disabled={noteState === "submitting"} type="submit">{noteState === "submitting" ? "Sending…" : <>Send note <ArrowRight size={17} /></>}</button>
                 {noteMessage && <p className="form-message error" role="alert">{noteMessage}</p>}
               </form>

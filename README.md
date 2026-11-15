@@ -64,14 +64,34 @@ The site includes `/membership`, `/join`, `/account`, `/membership/welcome`, `/m
    - `STRIPE_ANNUAL_PRICE_ID`: the annual test Price ID.
    - `STRIPE_CUSTOMER_PORTAL_URL`: activated `https://billing.stripe.com/p/login/test_...` login link, not a temporary portal session URL.
    - `APP_URL`: canonical origin, e.g. `https://slabsupplyco.vercel.app` (or `http://localhost:4317` locally). Set this to the exact preview origin if testing a preview deployment.
-5. Redeploy. `/join` shows test checkout only when all required test settings are present. Otherwise it offers the free founding list. Complete a Stripe test checkout, review the confirmed return page, and exercise renewal/cancellation through the test portal. Use Stripe's documented test card details, never real payment data.
+5. Redeploy. `/join` shows test checkout only when all required test settings are present. Otherwise it offers immediate free account registration. Complete a Stripe test checkout, review the confirmed return page, and exercise renewal/cancellation through the test portal. Use Stripe's documented test card details, never real payment data.
 
-Stripe is the source of truth for this test subscription flow. Payment details are entered on Stripe, not this website. The return page retrieves the actual Stripe session and active subscription before confirming a test payment. It does not reveal customer details or grant access. Request retries reuse an idempotency key, the price is fixed server-side, and the API rejects cross-origin checkout requests. Billing is authenticated using Stripe's emailed portal login link; there is no custom website login or member entitlement database in this phase.
+Stripe is the source of truth for this test subscription flow. Payment details are entered on Stripe, not this website. The return page retrieves the actual Stripe session and active subscription before confirming a test payment. It does not reveal customer details or grant access. Request retries reuse an idempotency key, the price is fixed server-side, and the API rejects cross-origin checkout requests. Clerk authenticates website accounts. Checkout requires a signed-in account with a verified email and stores its immutable Clerk user ID on the Stripe session and subscription. The protected member area checks Stripe for an active test subscription owned by that ID. Stripe’s emailed portal login remains the billing-management flow.
 
-**Not a live billing implementation:** there are no webhook-driven entitlements, inventory reservations, fulfillment, or private member accounts yet. Before live enrollment, add authenticated member identity, verified/idempotent webhook processing for renewals/cancellations/failed payments, member access rules, real inventory and order handling, final business/legal/refund/shipping policies, and complete end-to-end testing. Live billing deliberately cannot be enabled through an environment flag in this version.
+**Not a live billing implementation:** there are no webhook-driven entitlements, inventory reservations, fulfillment, or private member accounts yet. Before live enrollment, add verified/idempotent webhook processing for renewals/cancellations/failed payments, member access rules, real inventory and order handling, final business/legal/refund/shipping policies, and complete end-to-end testing. Live billing deliberately cannot be enabled through an environment flag in this version.
 
 ### Verification
 
 `npm test` covers test/live key gating, portal URL validation, fixed annual price checks, canonical return origins, payment-status verification, checkout request safeguards, session parameters, and idempotent retry keys. `npm run build` checks TypeScript and builds all routes. Stripe-hosted payment and portal completion require your connected sandbox account and cannot be verified with placeholder credentials.
 
-The founding-list, trade-in, contact, and analytics forms still require the D1 credentials documented above. They report errors if persistence is unavailable; they do not simulate saved submissions.
+The legacy founding-list endpoint, trade-in, contact, and analytics routes require the D1 credentials documented above. They report errors if persistence is unavailable; they do not simulate saved submissions.
+
+
+## Website sign-in and member area
+
+Clerk development authentication is provisioned locally. `.env.local` and `.clerk/` are ignored and must never be committed. Claim the development application with `npx clerk auth login` from this checkout to manage it in your Clerk account.
+
+For Vercel, configure `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` for the same Clerk application, then redeploy. The public key is used in browser code; the secret key stays server-side. The code fixes the sign-in/sign-up routes to `/sign-in` and `/sign-up`, returning to `/account`. Without configured keys the site remains in an explicit guest state, sign-in shows a setup message, and protected pages redirect to sign-in.
+
+- `/account`, `/account/billing`, and `/account/profile` verify the Clerk session on the server.
+- The mobile header shows Sign in for guests, and a named account button and signed-in strip for authenticated users. Its menu adds account, billing, settings, and sign-out controls.
+- The home page sticky mobile action changes from Join the club to My account after sign-in.
+- Account creation is free and separate from the $99 annual test subscription.
+- Membership status is verified server-side from a matching Stripe subscription, using `clerk_user_id` metadata. Neither local storage, a URL parameter, nor a client-supplied email grants membership.
+- Stripe search can be eventually consistent after checkout. The verified checkout confirmation is immediate; account membership can take time to appear. No live entitlements are granted by the test flow.
+- Before a real launch, claim/configure the Clerk application for your production domain, set final authentication policies, and complete the Stripe webhook/entitlement work described above.
+
+A synthetic `+clerk_test@example.com` user was created only in the new development application to verify sign-in, the protected area, and sign-out. It contains no customer information.
+
+
+The home page signup card retains its established design and starts real Clerk registration. It prefills first name and email through Clerk's redirect API. Collecting interests and email-update consent are saved as private account preferences after verified sign-in; they are not used as proof of membership. The account-preferences endpoint verifies the session and request origin. The home form no longer posts to the legacy waitlist endpoint.

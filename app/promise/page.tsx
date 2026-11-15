@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import Logo from "../Logo";
+import { ClubHeader } from "../../components/club/ClubShell";
 
 export const metadata: Metadata = {
   title: "The Slab Supply Co. Promise",
@@ -32,12 +32,7 @@ const principles = [
 
 export default function PromisePage() {
   return <main className="promise-page">
-    <div className="promise-page-nav">
-      <header className="site-header">
-        <Logo />
-        <a className="text-button" href="/"><ArrowLeft size={15} /> Back to the club</a>
-      </header>
-    </div>
+    <ClubHeader />
 
     <section className="promise-page-hero">
       <div className="section-shell promise-page-hero-inner">
@@ -70,14 +65,14 @@ export default function PromisePage() {
         <p>We started Slab Supply Co. because we love collecting—and because too much of the hobby has started to feel like a contest.</p>
         <p>We’ve watched inflated prices, manufactured hype, and scalpers turn a simple purchase into a negotiation. That isn’t the hobby we want to build around.</p>
         <p>We believe that when collectors come together, everyone should get a better deal. So we’re building the club we’d want to join ourselves.</p>
-        <p>Membership lets us make money differently: through the strength of the club, not by squeezing the most possible margin out of every slab.</p>
+        <p>Annual membership lets us keep card margins lean and put more value back into your collection.</p>
         <p>That means great prices on cards worth collecting, fair offers on cards you’re ready to trade, and a community where the excitement comes from the collection—not the markup.</p>
         <p><strong>We’re here to make collecting more rewarding—for all of us.</strong></p>
         <span className="promise-signature">— The Slab Supply Co. team</span>
       </div>
       <aside className="promise-thesis">
         <span>The model</span>
-        <blockquote>Your membership helps us make money differently—so we can sell cards differently.</blockquote>
+        <blockquote>Fair prices. Strong trade-ins. More room for the cards you love.</blockquote>
         <p>We’re not promising every card will always be the cheapest. We’re building a business where the way Slab Supply Co. makes money is aligned with helping members get more from the hobby.</p>
       </aside>
     </section>
