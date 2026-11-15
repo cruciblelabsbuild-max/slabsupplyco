@@ -9,7 +9,6 @@ import {
   Copy,
   Gem,
   Menu,
-  ShieldCheck,
   Sparkles,
   X,
 } from "lucide-react";
@@ -429,8 +428,8 @@ export default function Home() {
         <div className="section-shell grail-layout">
           <div className="grail-copy">
             <p className="eyebrow">Monthly grail drops</p>
-            <h2>The card you watch for.<br /><em>Before everyone else.</em></h2>
-            <p>Once a month, members get first access to a tightly curated drop of standout slabs—vintage icons, scarce promos, and modern chase cards—all at member pricing.</p>
+            <h2>The card you watch for.<br /><em>At member pricing.</em></h2>
+            <p>Once a month, members get first access to a tightly curated drop of standout slabs—vintage icons, scarce promos, and modern chase cards.</p>
             <a className="button button-light" href="#join">Get drop access <ArrowRight size={16} /></a>
           </div>
           <div className="grail-visual" aria-label="A selection of graded cards from a monthly grail drop">
@@ -443,18 +442,35 @@ export default function Home() {
       </section>
 
       <section className="section-shell trade-process" id="trade-ins">
-        <div className="section-heading split-heading">
-          <div><p className="eyebrow">The trade-in desk</p><h2>Trade in.<br /><em>Move up.</em></h2></div>
-          <p>Send us the slabs you’re ready to move. We’ll review them, make a credit offer, and turn the right cards into your next pickup.</p>
+        <div className="trade-story">
+          <div className="trade-copy">
+            <p className="eyebrow">The trade-in desk</p>
+            <h2>Trade what you have.<br /><em>Collect what you want.</em></h2>
+            <p>Send us the graded cards you’re ready to move. Approved trades become store credit for the member shelf.</p>
+            <button className="button" type="button" onClick={openTrade}>Submit your trades <ArrowRight size={16} /></button>
+          </div>
+          <div className="trade-flow" aria-label="Submit a graded card, receive store credit, and collect your next card">
+            <div className="trade-flow-orbit" aria-hidden="true" />
+            <div className="flow-item">
+              <div className="flow-slab" aria-hidden="true"><small>SLAB SUPPLY CO.</small><span>09</span></div>
+              <strong>Submit</strong>
+            </div>
+            <ArrowRight className="flow-arrow" aria-hidden="true" />
+            <div className="flow-item">
+              <div className="flow-credit" aria-hidden="true"><small>UP TO</small><b>100%</b><span>CREDIT</span></div>
+              <strong>Credit</strong>
+            </div>
+            <ArrowRight className="flow-arrow" aria-hidden="true" />
+            <div className="flow-item">
+              <div className="flow-slab flow-slab-next" aria-hidden="true"><small>MEMBER SHELF</small><span>✦</span></div>
+              <strong>Get your credit</strong>
+            </div>
+            <p className="flow-note">Use it on the member shelf, or cash out eligible credit to your bank in minutes.</p>
+          </div>
         </div>
-        <div className="steps-grid">
-          <article><span>01</span><h3>Submit your slabs</h3><p>Share the card, grade, and condition.</p></article>
-          <article><span>02</span><h3>Approve your offer</h3><p>Review the store-credit quote before you ship.</p></article>
-          <article><span>03</span><h3>Get your credit</h3><p>After inspection, your credit is ready for the member shelf.</p></article>
-        </div>
-        <div className="eligibility-box">
-          <div className="eligibility-copy"><ShieldCheck /><div><p className="eyebrow">What we’re buying</p><h3>Professionally graded. Intact slabs.</h3><p>PSA, CGC, BGS, and select others.</p></div></div>
-          <button className="button button-outline" type="button" onClick={openTrade}>Submit your trades <ArrowRight size={16} /></button>
+        <div className="trade-eligibility">
+          <span>Eligible graders</span>
+          <p>Professionally graded cards from PSA, CGC, BGS, and select others.</p>
         </div>
       </section>
 
@@ -466,18 +482,15 @@ export default function Home() {
             <p className="section-lede">Founding membership is <b>$99 per year</b>—one simple price for member drops, below-retail pricing, and access to the trade-in desk.</p>
           </div>
           <div className="price-card">
-            <span className="status-pill coral">founding annual price</span>
+            <div className="price-card-top"><span className="status-pill coral">founding annual price</span><div className="membership-emblem" aria-hidden="true"><i /><b>✦</b></div></div>
             <div className="price"><sup>$</sup><strong>99</strong><span>/ year</span></div>
             <p>For collectors who want better buying economics and a flexible path to trade approved slabs.</p>
-            <hr />
             <ul>
               <li><Check /> Access to member-priced graded cards</li>
-              <li><Check /> Eligibility to request trade-in quotes</li>
-              <li><Check /> Clear reference values and quote terms</li>
-              <li><Check /> Early input into drops and selection</li>
+              <li><Check /> Up to 100% in trade-in credit</li>
+              <li><Check /> Members-only grail drops</li>
             </ul>
             <a className="button submit-button" href="#join">Join the founding list <ArrowRight size={17} /></a>
-            <small>Founding list members receive first access to membership.</small>
           </div>
         </div>
       </section>
