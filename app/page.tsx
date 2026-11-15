@@ -18,32 +18,39 @@ type SubmitState = "idle" | "submitting" | "success" | "error";
 
 const faqs = [
   {
+    label: "Independent by design",
     q: "Is Slab Supply Co. affiliated with Pokémon, Nintendo, or The Pokémon Company?",
-    a: "No. Slab Supply Co. is an independent graded-card buying club and is not affiliated with, endorsed by, or sponsored by Nintendo, The Pokémon Company, Game Freak, or Creatures. Final trademark and domain clearance should be completed before commercial launch.",
+    a: "No. Slab Supply Co. is an independent graded-card buying club. It is not affiliated with, endorsed by, or sponsored by Nintendo, The Pokémon Company, Game Freak, or Creatures.",
   },
   {
+    label: "Member pricing",
     q: "Does ‘below retail’ mean every card will always be the cheapest online?",
-    a: "The member price is set below the verified fair retail value established when a card is listed. That is different from promising the lowest price anywhere: card markets move, condition differs, and temporary marketplace listings can be lower.",
+    a: "Member prices sit below the fair retail value established when each card is listed. That is different from a lowest-price-anywhere claim: markets move, condition varies, and temporary marketplace listings can be lower.",
   },
   {
+    label: "Trade-in value",
     q: "What does ‘up to 100% of fair retail value’ mean?",
-    a: "Select, approved cards may receive a store-credit quote equal to the fair retail value we verify at the time of review. Other cards may receive a lower quote or no quote based on demand, liquidity, grade, slab condition, and current inventory needs.",
+    a: "Select approved cards receive a store-credit quote worth up to the fair retail value established at review. Every quote reflects demand, liquidity, grade, slab condition, and current inventory needs.",
   },
   {
+    label: "Fair retail value",
     q: "How will fair retail value be determined?",
-    a: "We plan to use recent verified sold transactions from multiple reputable marketplaces, then account for grading company, grade, card and slab condition, sales velocity, and unusual outliers. Unsold asking prices alone will not establish value.",
+    a: "Fair retail value starts with recent verified sales across reputable marketplaces. We account for grading company, grade, card and slab condition, sales velocity, and outliers. Unsold asking prices do not establish value.",
   },
   {
+    label: "Eligible cards",
     q: "Which cards and grading companies will be eligible?",
-    a: "For early access, we are evaluating authenticated trading cards graded by recognized services such as PSA, CGC, and BGS. Exact eligibility will be confirmed before quotes open. Raw cards, altered cards, counterfeit items, and damaged or tampered slabs will not be eligible.",
+    a: "We review authenticated trading cards graded by PSA, CGC, BGS, and select recognized services. Raw cards, altered cards, counterfeit items, and damaged or tampered slabs are not eligible.",
   },
   {
+    label: "Founding access",
     q: "What happens after I join the founding list?",
-    a: "You’ll get first notice of monthly drops, membership access, and the trade-in desk. If you decide to become a paid member, you’ll review the full terms before checkout.",
+    a: "You get first notice of monthly drops, membership enrollment, and the trade-in desk. Full membership terms are shown before checkout.",
   },
   {
+    label: "Trade-in process",
     q: "What happens after I submit a trade-in interest form?",
-    a: "It puts your collection in line for the trade-in desk. It is not a quote, acceptance, or commitment to buy. We’ll reach out when reviews open.",
+    a: "Your submission goes to the trade-in desk for review. When a card fits our buying needs, you receive a quote to approve before shipping.",
   },
 ];
 
@@ -92,7 +99,6 @@ export default function Home() {
   const [shelfIndex, setShelfIndex] = useState(0);
   const [shelfPageSize, setShelfPageSize] = useState(1);
   const [faqIndex, setFaqIndex] = useState(0);
-  const [faqRevealed, setFaqRevealed] = useState(false);
   const [tradeStartedAt, setTradeStartedAt] = useState(Date.now());
   const [noteStartedAt, setNoteStartedAt] = useState(Date.now());
 
@@ -108,20 +114,13 @@ export default function Home() {
   }, []);
 
   function moveFaq(direction: -1 | 1) {
-    setFaqRevealed(false);
     setFaqIndex((current) => (current + direction + faqs.length) % faqs.length);
     track("faq_navigated", { direction: direction > 0 ? "next" : "previous" });
   }
 
   function chooseFaq(index: number) {
-    setFaqRevealed(false);
     setFaqIndex(index);
     track("faq_navigated", { position: index + 1 });
-  }
-
-  function revealFaq() {
-    if (!faqRevealed) track("faq_opened", { question: faqs[faqIndex].q });
-    setFaqRevealed(true);
   }
 
   useEffect(() => {
@@ -436,7 +435,7 @@ export default function Home() {
               <div className="credit-coin"><strong>UP TO</strong><b>100%</b><span>CREDIT</span></div>
             </div>
             <h3>Trade toward<br />what’s next</h3>
-            <p>Turn approved slabs into meaningful store credit—up to their full value—then put it toward the next card.</p>
+            <p>Turn approved slabs into meaningful store credit for your next card—or take instant cash.</p>
             <button className="text-button" type="button" onClick={openTrade}>Submit your trades <ArrowRight size={15} /></button>
           </article>
         </div>
@@ -464,7 +463,7 @@ export default function Home() {
           <div className="trade-copy">
             <p className="eyebrow">The trade-in desk</p>
             <h2>Trade what you have.<br /><em>Collect what you want.</em></h2>
-            <p>Send us the graded cards you’re ready to move. Approved trades become store credit or cash.</p>
+            <p>Send us the graded cards that are ready for a new home. Approved trades become store credit or cash.</p>
             <button className="button" type="button" onClick={openTrade}>Submit your trades <ArrowRight size={16} /></button>
           </div>
           <div className="trade-flow" aria-label="Submit a graded card and choose store credit or cash">
@@ -495,7 +494,7 @@ export default function Home() {
         <div className="section-shell membership-layout">
           <div className="membership-copy">
             <p className="eyebrow">Founding membership</p>
-            <h2>A simple annual<br /><em>membership.</em></h2>
+            <h2>Collect more.<br /><em>Spend less.</em></h2>
             <p className="section-lede">Founding membership is <b>$99 per year</b>—one simple price for member drops, below-retail pricing, and access to the trade-in desk.</p>
           </div>
           <div className="price-card">
@@ -516,8 +515,8 @@ export default function Home() {
         <div className="section-shell faq-pack-layout">
           <div className="faq-intro">
             <p className="eyebrow">The collector’s guide</p>
-            <h2>Pull a question.<br /><em>Reveal the answer.</em></h2>
-            <p>Everything worth knowing, one card at a time.</p>
+            <h2>Know exactly<br /><em>how it works.</em></h2>
+            <p>Membership, pricing, and trade-ins—clear from the start.</p>
             <div className="faq-controls" aria-label="Browse questions">
               <button type="button" onClick={() => moveFaq(-1)} aria-label="Previous question"><ArrowLeft /></button>
               <span>{String(faqIndex + 1).padStart(2, "0")} / {String(faqs.length).padStart(2, "0")}</span>
@@ -525,20 +524,15 @@ export default function Home() {
             </div>
             <button className="text-button faq-note-link" type="button" onClick={openNote}>Ask us something else <ArrowRight size={15} /></button>
           </div>
-          <div className={`faq-pack ${faqRevealed ? "is-open" : ""}`}>
-            <div className="pack-shadow pack-shadow-one" aria-hidden="true" />
-            <div className="pack-shadow pack-shadow-two" aria-hidden="true" />
-            <article className="question-card" aria-live="polite">
-              <div className="question-card-top"><span>SLAB SUPPLY CO.</span><b>{String(faqIndex + 1).padStart(2, "0")}</b></div>
-              <button className="pack-tear" type="button" onClick={revealFaq} aria-expanded={faqRevealed}>
-                <span>{faqRevealed ? "Answer revealed" : "Rip to reveal"}</span><Sparkles size={14} />
-              </button>
-              <div className="question-copy">
-                <span>Collector question</span>
+          <div className="faq-carousel">
+            <div className="carousel-shadow carousel-shadow-one" aria-hidden="true" />
+            <div className="carousel-shadow carousel-shadow-two" aria-hidden="true" />
+            <article className="question-card" key={faqIndex} aria-live="polite">
+              <div className="question-card-top"><span>SLAB SUPPLY CO. · COLLECTOR’S GUIDE</span><b>{String(faqIndex + 1).padStart(2, "0")}</b></div>
+              <div className="question-card-body">
+                <span>{faqs[faqIndex].label}</span>
                 <h3>{faqs[faqIndex].q}</h3>
-              </div>
-              <div className="answer-window">
-                {faqRevealed ? <p>{faqs[faqIndex].a}</p> : <p className="answer-prompt">Open the pack to see what’s inside.</p>}
+                <p>{faqs[faqIndex].a}</p>
               </div>
               <div className="question-card-mark" aria-hidden="true">✦</div>
             </article>
