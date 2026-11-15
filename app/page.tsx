@@ -309,7 +309,7 @@ export default function Home() {
           <a href="#trade-ins" onClick={() => setMenuOpen(false)}>Trade-ins</a>
           <a href="#membership" onClick={() => setMenuOpen(false)}>Membership</a>
         </nav>
-        <a className="button button-small desktop-cta" href="#join">Join early access <ArrowRight size={15} /></a>
+        <a className="button button-small desktop-cta" href="#join">Become a founding member <ArrowRight size={15} /></a>
         <button className="menu-button" type="button" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <X /> : <Menu />}
         </button>
@@ -378,10 +378,10 @@ export default function Home() {
               <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
               <label className="consent"><input type="checkbox" name="consent" required /><span>I agree to receive early-access updates. I can unsubscribe anytime.</span></label>
               <button className="button submit-button" disabled={waitState === "submitting"} type="submit">
-                {waitState === "submitting" ? "Saving your spot…" : <>Join early access <ArrowRight size={17} /></>}
+                {waitState === "submitting" ? "Saving your spot…" : <>Become a founding member <ArrowRight size={17} /></>}
               </button>
               {waitMessage && <p className="form-message error" role="alert">{waitMessage}</p>}
-              <p className="form-footnote">Free to join. First access goes to the founding list.</p>
+              <p className="form-footnote">Founding membership is $99 per year.</p>
             </form>
           )}
         </div>
@@ -441,11 +441,27 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="promise-section" id="promise">
+        <div className="section-shell promise-layout">
+          <div className="promise-intro">
+            <p className="eyebrow">The Slab Supply Co. Promise</p>
+            <h2>A better way<br /><em>to collect.</em></h2>
+            <p className="promise-lede">We love this hobby. We just think it could be a little fairer.</p>
+          </div>
+          <div className="promise-model">
+            <span>The model</span>
+            <blockquote>Your membership helps us make money differently—so we can sell cards differently.</blockquote>
+            <p>Instead of maximizing the margin on every slab, membership lets us operate on leaner card margins and return more value through member pricing and fair trade offers.</p>
+            <a className="text-button promise-link" href="/promise">Read our promise <ArrowRight size={15} /></a>
+          </div>
+        </div>
+      </section>
+
       <section className="grail-section" id="grail-drops">
         <div className="section-shell grail-layout">
           <div className="grail-copy">
             <p className="eyebrow">Monthly grail drops</p>
-            <h2>The card you watch for.<br /><em>At member pricing.</em></h2>
+            <h2>The cards you watch for.<br /><em>At member pricing.</em></h2>
             <p>Once a month, members get first access to a tightly curated drop of standout slabs—vintage icons, scarce promos, and modern chase cards.</p>
             <a className="button button-light" href="#join">Get drop access <ArrowRight size={16} /></a>
           </div>
@@ -510,23 +526,7 @@ export default function Home() {
               <span>The Slab Supply Co. Promise</span>
               <p>Your annual membership supports leaner card margins, transparent pricing, and more value returned to collectors.</p>
             </div>
-            <a className="button submit-button" href="#join">Join the founding list <ArrowRight size={17} /></a>
-          </div>
-        </div>
-      </section>
-
-      <section className="promise-section" id="promise">
-        <div className="section-shell promise-layout">
-          <div className="promise-intro">
-            <p className="eyebrow">The Slab Supply Co. Promise</p>
-            <h2>A better way<br /><em>to collect.</em></h2>
-            <p className="promise-lede">We love this hobby. We just think it could be a little fairer.</p>
-          </div>
-          <div className="promise-model">
-            <span>The model</span>
-            <blockquote>Your membership helps us make money differently—so we can sell cards differently.</blockquote>
-            <p>Instead of maximizing the margin on every slab, membership lets us operate on leaner card margins and return more value through member pricing and fair trade offers.</p>
-            <a className="text-button promise-link" href="/promise">Read our promise <ArrowRight size={15} /></a>
+            <a className="button submit-button" href="#join">Become a founding member <ArrowRight size={17} /></a>
           </div>
         </div>
       </section>
@@ -567,7 +567,7 @@ export default function Home() {
         <div className="section-shell final-content">
           <p className="eyebrow">The collection should keep moving</p><h2>Be there for<br /><em>the first drop.</em></h2>
           <p>Get first access to member drops, below-retail pricing, and the Slab Supply Co. trade-in desk.</p>
-          <div className="final-actions"><a className="button button-light" href="#join">Join early access <ArrowRight size={17} /></a><button className="button button-ghost" type="button" onClick={openTrade}>I have cards to trade</button></div>
+          <div className="final-actions"><a className="button button-light" href="#join">Become a founding member <ArrowRight size={17} /></a><button className="button button-ghost" type="button" onClick={openTrade}>I have cards to trade</button></div>
         </div>
       </section>
 
@@ -576,7 +576,7 @@ export default function Home() {
         <div className="section-shell footer-bottom"><p>© 2026 Slab Supply Co. All rights reserved.</p><p>Not affiliated with or endorsed by Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company. All trademarks belong to their respective owners.</p></div>
       </footer>
 
-      <div className="mobile-bar"><a className="button" href="#join">Join early access <ArrowRight size={16} /></a></div>
+      <div className="mobile-bar"><a className="button" href="#join">Become a founding member <ArrowRight size={16} /></a></div>
 
       {tradeOpen && (
         <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setTradeOpen(false); }}>

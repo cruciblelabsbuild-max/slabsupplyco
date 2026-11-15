@@ -87,8 +87,8 @@ export default function PromisePage() {
       <div className="section-shell">
         <p className="eyebrow">The promise, simply</p>
         <h2>More collecting.<br /><em>Less markup.</em></h2>
-        <p>Join the founding list and help shape a club built around collectors.</p>
-        <a className="button button-light" href="/#join">Join early access <ArrowRight size={16} /></a>
+        <p>Become a founding member and help shape a club built around collectors.</p>
+        <a className="button button-light" href="/#join">Become a founding member <ArrowRight size={16} /></a>
       </div>
     </section>
   </main>;
