@@ -509,18 +509,18 @@ export default function Home() {
       <section className="membership-section" id="membership">
         <div className="section-shell membership-layout">
           <div className="membership-copy">
-            <p className="eyebrow">Founding membership</p>
-            <h2>One membership.<br /><em>Better economics.</em></h2>
-            <p className="section-lede">Founding membership is <b>$99 per year</b>—one simple price for member drops, below-retail pricing, and access to the trade-in desk.</p>
+            <p className="eyebrow">Slab Supply · Founding membership</p>
+            <h2>One membership.<br /><em>More from every card.</em></h2>
+            <p className="section-lede">One annual membership designed to put more value back into your collection.</p>
           </div>
           <div className="price-card">
             <div className="price-card-top"><span className="status-pill coral">founding annual price</span><div className="membership-emblem" aria-hidden="true"><i /><b>✦</b></div></div>
             <div className="price"><sup>$</sup><strong>99</strong><span>/ year</span></div>
-            <p>For collectors who want better buying economics and a flexible path to trade approved slabs.</p>
+            <p>Member pricing, premium trade-in value, and exclusive drops—built around your collection.</p>
             <ul>
-              <li><Check /> Access to member-priced graded cards</li>
-              <li><Check /> Up to 100% in trade-in credit</li>
-              <li><Check /> Monthly members-only grail drops</li>
+              <li><Check /> Everyday member pricing below retail</li>
+              <li><Check /> Premium trade-in credit—up to 100% of fair market value on eligible graded cards</li>
+              <li><Check /> Exclusive monthly member drops and grail opportunities</li>
             </ul>
             <div className="membership-promise">
               <span>The Slab Supply Co. Promise</span>
