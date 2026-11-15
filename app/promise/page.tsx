@@ -48,6 +48,22 @@ export default function PromisePage() {
       </div>
     </section>
 
+    <section className="promise-page-principles">
+      <div className="section-shell">
+        <div className="promise-principles-heading">
+          <p className="eyebrow">Our principles</p>
+          <h2>What we believe.<br /><em>How we’ll operate.</em></h2>
+        </div>
+        <div className="promise-principles-grid">
+          {principles.map((principle) => <article key={principle.number}>
+            <span>{principle.number}</span>
+            <h3>{principle.title}</h3>
+            <p>{principle.body}</p>
+          </article>)}
+        </div>
+      </div>
+    </section>
+
     <section className="promise-letter section-shell">
       <div className="promise-letter-copy">
         <span className="promise-letter-kicker">A note from the Slab Supply Co. team</span>
@@ -64,22 +80,6 @@ export default function PromisePage() {
         <blockquote>Your membership helps us make money differently—so we can sell cards differently.</blockquote>
         <p>We’re not promising every card will always be the cheapest. We’re building a business where the way Slab Supply Co. makes money is aligned with helping members get more from the hobby.</p>
       </aside>
-    </section>
-
-    <section className="promise-page-principles">
-      <div className="section-shell">
-        <div className="promise-principles-heading">
-          <p className="eyebrow">Our principles</p>
-          <h2>What we believe.<br /><em>How we’ll operate.</em></h2>
-        </div>
-        <div className="promise-principles-grid">
-          {principles.map((principle) => <article key={principle.number}>
-            <span>{principle.number}</span>
-            <h3>{principle.title}</h3>
-            <p>{principle.body}</p>
-          </article>)}
-        </div>
-      </div>
     </section>
 
     <section className="promise-page-close">
