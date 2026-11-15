@@ -178,8 +178,8 @@ footer { padding: 58px 0 28px; background: var(--paper); } .footer-top { display
 @media (max-width:560px) { .shelf-card,.shelf-card:last-child { min-width: calc(100vw - 52px); flex-basis: calc(100vw - 52px); } .shelf-art { height: auto; } }
 
 /* Refined brand and membership storytelling */
-.brand-wordmark { position: static; color: var(--forest-deep); font-size: 14px; font-weight: 850; letter-spacing: .16em; line-height: 1; }
-.brand-wordmark>span { display: none; }
+.brand-wordmark { position: static; display: inline-flex; align-items: center; color: var(--forest-deep); line-height: 1; }
+.brand-wordmark>span { display: inline-flex; }
 .section-heading h2,.grail-copy h2,.membership-copy h2,.faq-heading h2,.final-content h2 { font-size: clamp(43px,5vw,67px); }
 .benefit-grid { gap: 18px; }
 .benefit-card { min-height: 610px; display: flex; flex-direction: column; padding: 42px; overflow: hidden; }
@@ -234,6 +234,8 @@ footer { padding: 58px 0 28px; background: var(--paper); } .footer-top { display
 @media (max-width:560px) {
   .announcement span:last-child { display: inline; }
   .brand-wordmark { font-size: 12px; letter-spacing: .13em; }
+  .brand-name { font-size: 12px; letter-spacing: .09em; }
+  .brand-company { margin-left: 7px; padding-left: 7px; font-size: 7px; }
   .benefit-card { min-height: 570px; padding: 30px 24px; }
   .benefit-card h3 { margin-top: 28px; font-size: 31px; }
   .benefit-graphic { height: 190px; }
