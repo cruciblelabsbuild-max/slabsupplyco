@@ -20,8 +20,8 @@ type SubmitState = "idle" | "submitting" | "success" | "error";
 
 const faqs = [
   {
-    q: "Is Slab Supply affiliated with Pokémon, Nintendo, or The Pokémon Company?",
-    a: "No. Slab Supply is an independent graded-card buying club and is not affiliated with, endorsed by, or sponsored by Nintendo, The Pokémon Company, Game Freak, or Creatures. Final trademark and domain clearance should be completed before commercial launch.",
+    q: "Is Slab Supply Co. affiliated with Pokémon, Nintendo, or The Pokémon Company?",
+    a: "No. Slab Supply Co. is an independent graded-card buying club and is not affiliated with, endorsed by, or sponsored by Nintendo, The Pokémon Company, Game Freak, or Creatures. Final trademark and domain clearance should be completed before commercial launch.",
   },
   {
     q: "Does ‘below retail’ mean every card will always be the cheapest online?",
@@ -246,7 +246,7 @@ export default function Home() {
   async function shareReferral() {
     if (navigator.share && referralUrl) {
       await navigator.share({
-        title: "Slab Supply early access",
+        title: "Slab Supply Co. early access",
         text: "I joined the early-access list for a graded-card buying club built around member pricing and transparent trade-ins.",
         url: referralUrl,
       });
@@ -308,18 +308,17 @@ export default function Home() {
             <span><Check size={16} /> Exclusive monthly grail drops</span>
             <span><Check size={16} /> Below-retail member pricing</span>
           </div>
-          <p className="fine-print">Founding membership · $99/year · Free to join the list</p>
         </div>
 
         <div className="hero-visual" aria-label="Curated graded card display">
           <div className="orbit orbit-one" />
           <div className="orbit orbit-two" />
           <div className="slab slab-back">
-            <div className="slab-label"><span>ARCHIVE</span><b>SPECIMEN 02</b><small>SLAB SUPPLY</small></div>
+            <div className="slab-label"><span>ARCHIVE</span><b>SPECIMEN 02</b><small>SLAB SUPPLY CO.</small></div>
             <div className="card-art art-two"><span>02</span></div>
           </div>
           <div className="slab slab-front">
-            <div className="slab-label"><span>ARCHIVE</span><b>SPECIMEN 01</b><small>SLAB SUPPLY</small></div>
+            <div className="slab-label"><span>ARCHIVE</span><b>SPECIMEN 01</b><small>SLAB SUPPLY CO.</small></div>
             <div className="card-art art-one"><span className="art-star">✦</span><b>FIRST EDITION</b><small>MEMBER SHELF</small></div>
             <div className="slab-bottom"><span>Member example</span><b>$148</b><small>verified retail: $172</small></div>
           </div>
@@ -380,7 +379,7 @@ export default function Home() {
         <div className="section-shell">
           <div className="shelf-heading">
             <div><p className="eyebrow">On the member shelf</p><h2>Cards worth collecting.<br /><em>Prices worth joining for.</em></h2></div>
-            <div className="shelf-heading-side"><p>Vintage icons, modern illustration rares, cult favorites, and art-forward promos—curated for the member shelf.</p><div className="shelf-controls" aria-label="Browse member shelf"><button type="button" onClick={() => scrollShelf(-1)} aria-label="Previous cards" disabled={shelfIndex === 0}><ArrowLeft /></button><span className="desktop-range">{String(shelfIndex + 1).padStart(2,"0")}–{String(Math.min(shelfIndex + 3,shelfCards.length)).padStart(2,"0")} / {String(shelfCards.length).padStart(2,"0")}</span><span className="mobile-range">{String(shelfIndex + 1).padStart(2,"0")} / {String(shelfCards.length).padStart(2,"0")}</span><button type="button" onClick={() => scrollShelf(1)} aria-label="Next cards" disabled={shelfIndex >= shelfCards.length - shelfPageSize}><ArrowRight /></button></div></div>
+            <div className="shelf-heading-side"><p>Vintage icons, modern illustration rares, cult favorites, and art-forward promos—curated for the member shelf.</p><div className="shelf-controls" aria-label="Browse member shelf"><button type="button" onClick={() => scrollShelf(-1)} aria-label="Previous cards" disabled={shelfIndex === 0}><ArrowLeft /></button><button type="button" onClick={() => scrollShelf(1)} aria-label="Next cards" disabled={shelfIndex >= shelfCards.length - shelfPageSize}><ArrowRight /></button></div></div>
           </div>
           <div className="shelf-grid" ref={shelfRef} onScroll={syncShelfIndex}>
             {shelfCards.map((card) => <article className="shelf-card" key={card.name}>
@@ -407,7 +406,7 @@ export default function Home() {
               <div className="graphic-slab graphic-slab-front"><span>✦</span></div>
               <div className="price-ticket"><small>RETAIL</small><s>$172</s><b>$148</b><span>MEMBER</span></div>
             </div>
-            <h3>Member pricing below retail</h3>
+            <h3>Member pricing<br />below retail</h3>
             <p>Shop a tightly curated shelf of graded cards at pricing built for the club—not the open-market markup.</p>
             <a className="text-button" href="#sample-shelf">Shop now <ArrowRight size={15} /></a>
           </article>
@@ -419,7 +418,7 @@ export default function Home() {
               <ArrowRight />
               <div className="credit-coin"><strong>UP TO</strong><b>100%</b><span>CREDIT</span></div>
             </div>
-            <h3>Trade toward what’s next</h3>
+            <h3>Trade toward<br />what’s next</h3>
             <p>Turn approved slabs into meaningful store credit—up to their full value—then put it toward the next card.</p>
             <button className="text-button" type="button" onClick={openTrade}>Submit your trades <ArrowRight size={15} /></button>
           </article>
@@ -445,20 +444,16 @@ export default function Home() {
 
       <section className="section-shell trade-process" id="trade-ins">
         <div className="section-heading split-heading">
-          <div><p className="eyebrow">The trade-in desk</p><h2>From your slab<br /><em>to your next find.</em></h2></div>
-          <p>Designed to make strong cards useful inventory for the club—while giving collectors a clear, low-pressure path to store credit.</p>
+          <div><p className="eyebrow">The trade-in desk</p><h2>Trade in.<br /><em>Move up.</em></h2></div>
+          <p>Send us the slabs you’re ready to move. We’ll review them, make a credit offer, and turn the right cards into your next pickup.</p>
         </div>
         <div className="steps-grid">
-          <article><span>01</span><h3>Share the details</h3><p>Tell us the card, set, year, grading service, grade, and anything notable about the slab.</p></article>
-          <article><span>02</span><h3>Receive a quote</h3><p>If it fits current needs, we’ll send a time-bound store-credit quote before asking you to ship.</p></article>
-          <article><span>03</span><h3>Ship after approval</h3><p>Approved trades receive clear packing and tracked-shipping instructions.</p></article>
-          <article><span>04</span><h3>Inspection, then credit</h3><p>Credit is issued only after authenticity, grade, and slab condition match the submission.</p></article>
+          <article><span>01</span><h3>Submit your slabs</h3><p>Share the card, grade, and condition.</p></article>
+          <article><span>02</span><h3>Approve your offer</h3><p>Review the store-credit quote before you ship.</p></article>
+          <article><span>03</span><h3>Get your credit</h3><p>After inspection, your credit is ready for the member shelf.</p></article>
         </div>
         <div className="eligibility-box">
-          <div><ShieldCheck /><h3>Trade-in eligibility</h3></div>
-          <p>We review professionally graded, authenticated cards from recognized graders, with intact slabs and a market value we can verify. PSA, CGC, and BGS lead the desk; other graders are reviewed case by case.</p>
-          <div className="eligibility-tags"><span>PSA</span><span>CGC</span><span>BGS</span><span>Others reviewed case by case</span></div>
-          <p className="fine-print">Not eligible: raw cards, counterfeit or altered items, mislabeled slabs, and slabs with undisclosed damage or evidence of tampering.</p>
+          <div className="eligibility-copy"><ShieldCheck /><div><p className="eyebrow">What we’re buying</p><h3>Professionally graded. Intact slabs.</h3><p>PSA, CGC, BGS, and select others.</p></div></div>
           <button className="button button-outline" type="button" onClick={openTrade}>Submit your trades <ArrowRight size={16} /></button>
         </div>
       </section>
@@ -469,7 +464,6 @@ export default function Home() {
             <p className="eyebrow">Founding membership</p>
             <h2>A simple annual<br /><em>membership.</em></h2>
             <p className="section-lede">Founding membership is <b>$99 per year</b>—one simple price for member drops, below-retail pricing, and access to the trade-in desk.</p>
-            <p className="fine-print">Founding membership renews annually. Full membership and cancellation terms will be shown before checkout.</p>
           </div>
           <div className="price-card">
             <span className="status-pill coral">founding annual price</span>
@@ -505,14 +499,14 @@ export default function Home() {
         <div className="final-orbit" />
         <div className="section-shell final-content">
           <p className="eyebrow">The collection should keep moving</p><h2>Be there for<br /><em>the first drop.</em></h2>
-          <p>Get first access to member drops, below-retail pricing, and the Slab Supply trade-in desk.</p>
+          <p>Get first access to member drops, below-retail pricing, and the Slab Supply Co. trade-in desk.</p>
           <div className="final-actions"><a className="button button-light" href="#join">Join early access <ArrowRight size={17} /></a><button className="button button-ghost" type="button" onClick={openTrade}>I have cards to trade</button></div>
         </div>
       </section>
 
       <footer>
         <div className="section-shell footer-top"><Logo /><p>An independent buying club for graded-card collectors.</p><div className="footer-links"><a href="#how">How it works</a><a href="#trade-ins">Trade-ins</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
-        <div className="section-shell footer-bottom"><p>© 2026 Slab Supply. All rights reserved.</p><p>Not affiliated with or endorsed by Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company. All trademarks belong to their respective owners.</p></div>
+        <div className="section-shell footer-bottom"><p>© 2026 Slab Supply Co. All rights reserved.</p><p>Not affiliated with or endorsed by Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company. All trademarks belong to their respective owners.</p></div>
       </footer>
 
       <div className="mobile-bar"><a className="button" href="#join">Join early access <ArrowRight size={16} /></a></div>

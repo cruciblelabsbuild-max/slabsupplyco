@@ -1,6 +1,6 @@
-# Slab Supply early-access site
+# Slab Supply Co. early-access site
 
-Production-ready market-validation landing page for Slab Supply, an independent graded-card buying club.
+Production-ready market-validation landing page for Slab Supply Co., an independent graded-card buying club.
 
 ## What is included
 
@@ -45,8 +45,8 @@ No environment variables are required for the current version. The hosted Sites 
 - `analytics_events`: page view and conversion funnel events
 - `site_notes`: collector questions, requests, consent, and follow-up status
 
-Do not place certification numbers, payment details, or sensitive identity data in the forms. Before a public commercial launch, connect an email provider for confirmations and operational notifications, replace the legal placeholders, and complete trademark/domain clearance for the Slab Supply name.
+Do not place certification numbers, payment details, or sensitive identity data in the forms. Before a public commercial launch, connect an email provider for confirmations and operational notifications, replace the legal placeholders, and complete trademark/domain clearance for the Slab Supply Co. name.
 
 ## Brand and card imagery
 
-Slab Supply is independent and not affiliated with Nintendo, The Pokémon Company, Game Freak, Creatures, PSA, CGC, BGS, or any marketplace. Product imagery is used to identify reference examples; confirm commercial image-usage rights or replace with licensed photography before a broad public launch.
+Slab Supply Co. is independent and not affiliated with Nintendo, The Pokémon Company, Game Freak, Creatures, PSA, CGC, BGS, or any marketplace. Product imagery is used to identify reference examples; confirm commercial image-usage rights or replace with licensed photography before a broad public launch.

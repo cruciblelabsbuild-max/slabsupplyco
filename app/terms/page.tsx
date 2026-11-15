@@ -12,7 +12,7 @@ export default function TermsPage() {
       <h2>Trade-in interest</h2><p>A trade-in interest submission is not a quote, appraisal, acceptance, or agreement to buy. If a quote is later issued, separate written terms will govern eligibility, shipping, inspection, authenticity, value, store credit, expiration, rejection, and returns.</p>
       <h2>Market references</h2><p>Card markets change. Reference values may use recent completed sales, grade, grading company, card and slab condition, liquidity, and demand. They are not investment advice, appraisals, or guarantees of resale value.</p>
       <h2>Acceptable use</h2><p>Do not submit false information, attempt to interfere with the site, evade spam controls, misrepresent ownership or authenticity, or use the site in violation of law.</p>
-      <h2>Intellectual property and affiliation</h2><p>Slab Supply is independent. It is not affiliated with or endorsed by Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company. Third-party names and marks belong to their respective owners and are used only to identify collectible products or services.</p>
+      <h2>Intellectual property and affiliation</h2><p>Slab Supply Co. is independent. It is not affiliated with or endorsed by Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company. Third-party names and marks belong to their respective owners and are used only to identify collectible products or services.</p>
       <h2>Changes and contact</h2><p>These terms may change as the service develops. A verified legal contact must be added before launch: <b>[legal contact to be added]</b>.</p>
     </article>
   </main>;

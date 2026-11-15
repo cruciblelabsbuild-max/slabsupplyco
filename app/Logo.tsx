@@ -1,6 +1,6 @@
 export default function Logo() {
   return (
-    <a className="brand" href="/#top" aria-label="Slab Supply home">
+    <a className="brand" href="/#top" aria-label="Slab Supply Co. home">
       <svg className="brand-mark" viewBox="0 0 58 56" aria-hidden="true">
         <g className="brand-mark-back" transform="rotate(-9 20 29)">
           <rect x="5" y="8" width="32" height="43" rx="6" />
@@ -17,7 +17,7 @@ export default function Logo() {
           <path className="brand-star" d="m37.2 25.2 1.2 3.2 3.2 1.2-3.2 1.2-1.2 3.2-1.2-3.2-3.2-1.2 3.2-1.2 1.2-3.2Z" />
         </g>
       </svg>
-      <span className="brand-wordmark">SLAB SUPPLY</span>
+      <span className="brand-wordmark">SLAB SUPPLY CO.</span>
     </a>
   );
 }
