@@ -5,7 +5,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
-  ChevronDown,
   Copy,
   Gem,
   Menu,
@@ -92,6 +91,8 @@ export default function Home() {
   const shelfRef = useRef<HTMLDivElement>(null);
   const [shelfIndex, setShelfIndex] = useState(0);
   const [shelfPageSize, setShelfPageSize] = useState(1);
+  const [faqIndex, setFaqIndex] = useState(0);
+  const [faqRevealed, setFaqRevealed] = useState(false);
   const [tradeStartedAt, setTradeStartedAt] = useState(Date.now());
   const [noteStartedAt, setNoteStartedAt] = useState(Date.now());
 
@@ -105,6 +106,23 @@ export default function Home() {
       utm_campaign: params.get("utm_campaign"),
     });
   }, []);
+
+  function moveFaq(direction: -1 | 1) {
+    setFaqRevealed(false);
+    setFaqIndex((current) => (current + direction + faqs.length) % faqs.length);
+    track("faq_navigated", { direction: direction > 0 ? "next" : "previous" });
+  }
+
+  function chooseFaq(index: number) {
+    setFaqRevealed(false);
+    setFaqIndex(index);
+    track("faq_navigated", { position: index + 1 });
+  }
+
+  function revealFaq() {
+    if (!faqRevealed) track("faq_opened", { question: faqs[faqIndex].q });
+    setFaqRevealed(true);
+  }
 
   useEffect(() => {
     document.body.style.overflow = tradeOpen || noteOpen ? "hidden" : "";
@@ -281,7 +299,7 @@ export default function Home() {
   return (
     <main id="top">
       <div className="announcement">
-        <span>Founding members get first pick of the first grail drop</span>
+        <span>Founding members pick the first grail drop</span>
       </div>
 
       <header className="site-header">
@@ -300,7 +318,7 @@ export default function Home() {
 
       <section className="hero section-shell">
         <div className="hero-copy">
-          <p className="eyebrow"><Sparkles size={14} /> A better club for graded-card collectors</p>
+          <p className="eyebrow"><Sparkles size={14} /> The club</p>
           <h1>A better way<br /><em>to collect.</em></h1>
           <p className="hero-lede">Shop graded cards below retail value. Trade slabs for up to full value in store credit. One membership, built around your collection.</p>
           <div className="hero-points" aria-label="Core benefits">
@@ -495,14 +513,38 @@ export default function Home() {
       </section>
 
       <section className="faq-section" id="faq">
-        <div className="section-shell faq-layout">
-          <div className="faq-heading"><p className="eyebrow">Questions, answered plainly</p><h2>The fine print<br /><em>is the point.</em></h2><p>Have something else in mind?</p><button className="button button-outline note-button" type="button" onClick={openNote}>Send us a note <ArrowRight size={16} /></button></div>
-          <div className="faq-list">
-            {faqs.map((faq) => (
-              <details key={faq.q} onToggle={(event) => { if (event.currentTarget.open) track("faq_opened", { question: faq.q }); }}>
-                <summary>{faq.q}<ChevronDown /></summary><p>{faq.a}</p>
-              </details>
-            ))}
+        <div className="section-shell faq-pack-layout">
+          <div className="faq-intro">
+            <p className="eyebrow">The collector’s guide</p>
+            <h2>Pull a question.<br /><em>Reveal the answer.</em></h2>
+            <p>Everything worth knowing, one card at a time.</p>
+            <div className="faq-controls" aria-label="Browse questions">
+              <button type="button" onClick={() => moveFaq(-1)} aria-label="Previous question"><ArrowLeft /></button>
+              <span>{String(faqIndex + 1).padStart(2, "0")} / {String(faqs.length).padStart(2, "0")}</span>
+              <button type="button" onClick={() => moveFaq(1)} aria-label="Next question"><ArrowRight /></button>
+            </div>
+            <button className="text-button faq-note-link" type="button" onClick={openNote}>Ask us something else <ArrowRight size={15} /></button>
+          </div>
+          <div className={`faq-pack ${faqRevealed ? "is-open" : ""}`}>
+            <div className="pack-shadow pack-shadow-one" aria-hidden="true" />
+            <div className="pack-shadow pack-shadow-two" aria-hidden="true" />
+            <article className="question-card" aria-live="polite">
+              <div className="question-card-top"><span>SLAB SUPPLY CO.</span><b>{String(faqIndex + 1).padStart(2, "0")}</b></div>
+              <button className="pack-tear" type="button" onClick={revealFaq} aria-expanded={faqRevealed}>
+                <span>{faqRevealed ? "Answer revealed" : "Rip to reveal"}</span><Sparkles size={14} />
+              </button>
+              <div className="question-copy">
+                <span>Collector question</span>
+                <h3>{faqs[faqIndex].q}</h3>
+              </div>
+              <div className="answer-window">
+                {faqRevealed ? <p>{faqs[faqIndex].a}</p> : <p className="answer-prompt">Open the pack to see what’s inside.</p>}
+              </div>
+              <div className="question-card-mark" aria-hidden="true">✦</div>
+            </article>
+            <div className="faq-dots" aria-label="Choose a question">
+              {faqs.map((faq, index) => <button key={faq.q} type="button" className={index === faqIndex ? "active" : ""} onClick={() => chooseFaq(index)} aria-label={`Question ${index + 1}`} aria-current={index === faqIndex ? "true" : undefined} />)}
+            </div>
           </div>
         </div>
       </section>
