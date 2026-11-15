@@ -472,7 +472,7 @@ footer { padding: 58px 0 28px; background: var(--paper); } .footer-top { display
 .membership-promise p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
 
 .promise-section { padding: 118px 0; overflow: hidden; background: var(--forest-deep); color: var(--white); }
-.promise-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 120px; align-items: end; padding-bottom: 84px; }
+.promise-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 120px; align-items: end; }
 .promise-section .eyebrow { color: var(--sage); }
 .promise-intro h2 { margin-top: 18px; color: var(--white); font: 600 clamp(52px,5.2vw,78px)/.94 "Fraunces",serif; letter-spacing: -.055em; }
 .promise-intro h2 em { color: var(--coral); font-weight: 400; }
