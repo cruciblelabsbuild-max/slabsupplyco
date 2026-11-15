@@ -88,9 +88,7 @@ export default function PromisePage() {
         <p className="eyebrow">The promise, simply</p>
         <h2>More collecting.<br /><em>Less markup.</em></h2>
         <p>Join the founding list and help shape a club built around collectors.</p>
-        <form className="promise-join-form" action="/#join" method="get">
-          <button className="button button-light" type="submit">Join early access <ArrowRight size={16} /></button>
-        </form>
+        <a className="button button-light" href="/?join=early-access#join" target="_top">Join early access <ArrowRight size={16} /></a>
       </div>
     </section>
   </main>;
