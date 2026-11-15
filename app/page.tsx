@@ -529,12 +529,6 @@ export default function Home() {
             <a className="text-button promise-link" href="/promise">Read our promise <ArrowRight size={15} /></a>
           </div>
         </div>
-        <div className="section-shell promise-principles">
-          <article><span>01</span><h3>Collectors first.<br />Always.</h3><p>Every collector deserves the same respect and fair treatment.</p></article>
-          <article><span>02</span><h3>Fair prices.<br />Fair margins.</h3><p>Membership lets us run leaner card margins and return more value.</p></article>
-          <article><span>03</span><h3>Transparency is<br />non-negotiable.</h3><p>Clear values, clear pricing, and no inflated comparisons.</p></article>
-          <article><span>04</span><h3>For collectors.<br />Not scalpers.</h3><p>Fair purchase limits give more members a genuine chance.</p></article>
-        </div>
       </section>
 
       <section className="faq-section" id="faq">

@@ -50,13 +50,14 @@ export default function PromisePage() {
 
     <section className="promise-letter section-shell">
       <div className="promise-letter-copy">
-        <p>Somewhere along the way, collecting started feeling more like competing. Inflated prices, manufactured hype, scalpers, and the feeling that every transaction has to be a negotiation.</p>
-        <p>We think there’s a better way.</p>
-        <p>Slab Supply Co. is being built on a simple idea: <strong>when collectors come together, everyone should get a better deal.</strong></p>
-        <p>Like a wholesale club for the hobby we love, we believe in fair margins, transparent pricing, and putting the value back into our members’ hands.</p>
-        <p>That means great prices on cards worth collecting. Fair offers on cards you’re ready to trade. And a community where the excitement comes from the collection, not the markup.</p>
-        <p>We’re not here to squeeze every dollar out of every slab.</p>
-        <p><strong>We’re here to make collecting more rewarding.</strong></p>
+        <span className="promise-letter-kicker">A note from the Slab Supply Co. team</span>
+        <p>We started Slab Supply Co. because we love collecting—and because too much of the hobby has started to feel like a contest.</p>
+        <p>We’ve watched inflated prices, manufactured hype, and scalpers turn a simple purchase into a negotiation. That isn’t the hobby we want to build around.</p>
+        <p>We believe that when collectors come together, everyone should get a better deal. So we’re building the club we’d want to join ourselves.</p>
+        <p>Membership lets us make money differently: through the strength of the club, not by squeezing the most possible margin out of every slab.</p>
+        <p>That means great prices on cards worth collecting, fair offers on cards you’re ready to trade, and a community where the excitement comes from the collection—not the markup.</p>
+        <p><strong>We’re here to make collecting more rewarding—for all of us.</strong></p>
+        <span className="promise-signature">— The Slab Supply Co. team</span>
       </div>
       <aside className="promise-thesis">
         <span>The model</span>
