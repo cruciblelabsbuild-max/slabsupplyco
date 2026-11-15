@@ -39,3 +39,14 @@ export const analyticsEvents = sqliteTable("analytics_events", {
   metadata: text("metadata").notNull().default("{}"),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
+
+export const siteNotes = sqliteTable("site_notes", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  firstName: text("first_name").notNull(),
+  email: text("email").notNull(),
+  message: text("message").notNull(),
+  ipHash: text("ip_hash").notNull(),
+  consent: integer("consent", { mode: "boolean" }).notNull().default(false),
+  status: text("status").notNull().default("new"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});
