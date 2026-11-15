@@ -436,7 +436,7 @@ footer { padding: 58px 0 28px; background: var(--paper); } .footer-top { display
 .carousel-shadow-two { background: #f1d3ca; transform: translate(22px,12px) rotate(3.5deg); }
 .faq-carousel:hover .carousel-shadow-one { transform: translate(-28px,8px) rotate(-4.5deg); }
 .faq-carousel:hover .carousel-shadow-two { transform: translate(28px,10px) rotate(4.5deg); }
-.question-card { width: 84%; min-height: 395px; position: relative; z-index: 2; display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(38,37,61,.22); border-radius: 6px; background: var(--paper); box-shadow: 0 30px 65px rgba(46,39,51,.2); animation: faq-card-in .5s cubic-bezier(.2,.8,.2,1) both; transition: transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s; }
+.question-card { width: 84%; min-height: 395px; position: relative; z-index: 2; display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(38,37,61,.22); border-radius: 6px; background: var(--paper); box-shadow: 0 30px 65px rgba(46,39,51,.2); animation: faq-card-in .82s cubic-bezier(.16,1,.3,1) both; transition: transform .6s cubic-bezier(.16,1,.3,1),box-shadow .6s; }
 .faq-carousel:hover .question-card { transform: translateY(-5px); box-shadow: 0 38px 74px rgba(46,39,51,.23); }
 .question-card::before { content: ""; width: 330px; height: 330px; position: absolute; right: -125px; bottom: -150px; border: 1px solid rgba(48,50,92,.1); border-radius: 50%; box-shadow: 0 0 0 52px rgba(48,50,92,.04),0 0 0 104px rgba(48,50,92,.022); }
 .question-card-top { min-height: 50px; display: flex; align-items: center; padding: 0 24px; border-bottom: 1px solid rgba(38,37,61,.16); font-size: 7px; font-weight: 900; letter-spacing: .15em; }
@@ -481,8 +481,10 @@ footer { padding: 58px 0 28px; background: var(--paper); } .footer-top { display
 .promise-model>span,.promise-thesis>span { display: block; margin-bottom: 18px; color: var(--coral); font-size: 8px; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
 .promise-model blockquote { max-width: 680px; margin: 0; font: 500 clamp(26px,3vw,40px)/1.16 "Fraunces",serif; letter-spacing: -.035em; }
 .promise-model>p { max-width: 620px; margin: 24px 0; color: rgba(255,255,255,.67); font-size: 12px; line-height: 1.75; }
-.promise-section .promise-link { color: var(--white); }
-.promise-section .promise-link::after { background: var(--coral); }
+.promise-section .promise-link { min-height: 44px; padding: 0 17px; border: 1px solid rgba(255,255,255,.34); border-radius: 4px; background: rgba(255,255,255,.035); color: var(--white); transition: transform .3s cubic-bezier(.16,1,.3,1),border-color .3s,background .3s,box-shadow .3s; }
+.promise-section .promise-link svg { color: var(--coral); transition: transform .3s cubic-bezier(.16,1,.3,1); }
+.promise-section .promise-link:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.62); background: rgba(255,112,87,.1); box-shadow: 0 10px 28px rgba(0,0,0,.16); }
+.promise-section .promise-link:hover svg { transform: translateX(3px); }
 .promise-page { min-height: 100vh; background: var(--paper); }
 .promise-page-nav { background: var(--paper); }
 .promise-page-nav .site-header { display: flex; justify-content: space-between; }
@@ -572,7 +574,7 @@ footer { padding: 58px 0 28px; background: var(--paper); } .footer-top { display
   .promise-page-seal,.promise-page-seal i,.promise-close-orbit { animation: none; }
 }
 
-@keyframes faq-card-in { from { opacity: 0; transform: translateX(24px) rotate(.7deg); } to { opacity: 1; transform: translateX(0) rotate(0); } }
+@keyframes faq-card-in { from { opacity: 0; transform: translate(16px,4px) rotate(.35deg); } to { opacity: 1; transform: translate(0,0) rotate(0); } }
 @keyframes hero-orbit { 0%,100% { transform: scale(.97); opacity: .72; } 50% { transform: scale(1.025); opacity: 1; } }
 @keyframes hero-slab-front { 0%,100% { transform: translate(var(--slab-x),var(--slab-y)) rotate(var(--slab-r)); } 50% { transform: translate(var(--slab-x),calc(var(--slab-y) - 8px)) rotate(var(--slab-r)); } }
 @keyframes hero-slab-back { 0%,100% { transform: translate(var(--slab-x),var(--slab-y)) rotate(var(--slab-r)); } 50% { transform: translate(var(--slab-x),calc(var(--slab-y) + 6px)) rotate(var(--slab-r)); } }
