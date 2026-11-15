@@ -1,5 +1,5 @@
 "use client";
-import { ClerkProvider, useClerk, useUser } from "@clerk/nextjs";
+import { ClerkProvider, useUser } from "@clerk/nextjs";
 import { createContext, useContext, useEffect } from "react";
 type JoinDetails = { firstName: string; emailAddress: string; interest: string; collectingFocus: string; consent: boolean };
 const Availability = createContext(false);
@@ -9,7 +9,6 @@ const Signup = createContext<(details: JoinDetails) => Promise<void>>(async () =
 export const useIdentityEnabled = () => useContext(Availability);
 export const useStartSignup = () => useContext(Signup);
 function SignupBridge({ children }: { children: React.ReactNode }) {
-  const clerk = useClerk();
   const { user } = useUser();
   useEffect(() => {
     if (!user) return;
@@ -21,11 +20,11 @@ function SignupBridge({ children }: { children: React.ReactNode }) {
   async function signup(details: JoinDetails) {
     const preferences = { interest: details.interest, collectingFocus: details.collectingFocus, consent: details.consent };
     try { sessionStorage.setItem("ssc_join_preferences", JSON.stringify(preferences)); } catch { /* Account creation still works when browser storage is unavailable. */ }
-    if (user) { window.location.assign("/account"); return; }
-    await clerk.redirectToSignUp({ initialValues: { firstName: details.firstName, emailAddress: details.emailAddress } });
+    try { sessionStorage.setItem("ssc_join_details", JSON.stringify({ firstName:details.firstName, emailAddress:details.emailAddress })); } catch { /* Enrollment still works without prefill. */ }
+    window.location.assign("/join");
   }
   return <Signup.Provider value={signup}>{children}</Signup.Provider>;
 }
 export default function IdentityProvider({ enabled, initialName = null, children }: { enabled: boolean; initialName?: string | null; children: React.ReactNode }) {
-  return <InitialIdentity.Provider value={initialName}><Availability.Provider value={enabled}>{enabled ? <ClerkProvider dynamic signInUrl="/sign-in" signUpUrl="/sign-up" signInFallbackRedirectUrl="/account" signUpFallbackRedirectUrl="/join" afterSignOutUrl="/" localization={{ signIn: { start: { title: "Sign in to the club", subtitle: "Welcome back to Slab Supply Co." } }, signUp: { start: { title: "Join the club", subtitle: "Welcome to Slab Supply Co." } } }} appearance={{ variables: { colorPrimary: "#30325c", colorBackground: "#fffdf9", colorForeground: "#26253d", fontFamily: "Manrope, sans-serif", borderRadius: "6px" } }}><SignupBridge>{children}</SignupBridge></ClerkProvider> : children}</Availability.Provider></InitialIdentity.Provider>;
+  return <InitialIdentity.Provider value={initialName}><Availability.Provider value={enabled}>{enabled ? <ClerkProvider dynamic signInUrl="/sign-in" signUpUrl="/sign-up" signInFallbackRedirectUrl="/account" signUpFallbackRedirectUrl="/join" afterSignOutUrl="/" localization={{ signIn: { start: { title: "Sign in to the club", subtitle: "Welcome back to Slab Supply Co." } }, signUp: { start: { title: "Become a member", subtitle: "Welcome to Slab Supply Co." } } }} appearance={{ variables: { colorPrimary: "#30325c", colorBackground: "#fffdf9", colorForeground: "#26253d", fontFamily: "Manrope, sans-serif", borderRadius: "6px" } }}><SignupBridge>{children}</SignupBridge></ClerkProvider> : children}</Availability.Provider></InitialIdentity.Provider>;
 }

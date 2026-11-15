@@ -18,5 +18,5 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const member = await getMember();
-  return <html lang="en" data-scroll-behavior="smooth"><head><link rel="preload" href="/fonts/manrope-400.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/fraunces-600.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/></head><body><IdentityProvider enabled={authConfigured()} initialName={member?.name ?? null}>{children}</IdentityProvider></body></html>;
+  return <html lang="en" data-scroll-behavior="smooth"><head><link rel="preload" href="/fonts/manrope-400.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/manrope-700.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/fraunces-600.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/></head><body><IdentityProvider enabled={authConfigured()} initialName={member?.name ?? null}>{children}</IdentityProvider></body></html>;
 }

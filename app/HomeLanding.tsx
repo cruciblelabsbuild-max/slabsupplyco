@@ -221,9 +221,8 @@ export default function Home() {
 
   function expressShelfInterest(label: string) {
     track("shelf_interest", { label });
-    const input = document.querySelector<HTMLInputElement>('input[name="collectingFocus"]');
-    if (input) input.value = label;
-    document.getElementById("join")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    try { sessionStorage.setItem("ssc_join_preferences",JSON.stringify({interest:"buying",collectingFocus:label,consent:false})); } catch { /* Enrollment remains available. */ }
+    window.location.assign("/join");
   }
 
   function scrollShelf(direction: -1 | 1) {
@@ -276,7 +275,7 @@ export default function Home() {
         <div className="join-card" id="join">
             <form onSubmit={submitJoin} onFocus={() => { if (!waitStartedTracked.current) { waitStartedTracked.current = true; track("account_signup_started"); } }}>
               <p className="eyebrow">Founding membership</p>
-              <h2>Join the club.</h2>
+              <h2>Become a member.</h2>
               <div className="field-row">
                 <label><span>First name</span><input name="firstName" autoComplete="given-name" maxLength={60} placeholder="Avery" required /></label>
                 <label><span>Email</span><input name="email" type="email" autoComplete="email" maxLength={160} placeholder="avery@example.com" required /></label>
@@ -291,7 +290,7 @@ export default function Home() {
               <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
               <label className="consent"><input type="checkbox" name="consent" /><span>I agree to receive club updates. I can unsubscribe anytime.</span></label>
               <button className="button submit-button" disabled={waitState === "submitting"} type="submit">
-                <span>{waitState === "submitting" ? "Opening sign-up…" : "Join the club"}</span><ArrowRight size={17} aria-hidden="true"/>
+                <span>{waitState === "submitting" ? "Opening membership…" : "Become a member"}</span><ArrowRight size={17} aria-hidden="true"/>
               </button>
               {waitMessage && <p className="form-message error" role="alert">{waitMessage}</p>}
               <p className="form-footnote">Founding membership is $99 per year.</p>
@@ -375,7 +374,7 @@ export default function Home() {
             <p className="eyebrow">Monthly grail drops</p>
             <h2>The cards you watch for.<br /><em>At member pricing.</em></h2>
             <p>Once a month, members get first access to a tightly curated drop of standout slabs—vintage icons, scarce promos, and modern chase cards.</p>
-            <a className="button button-light" href="#join">Get drop access <ArrowRight size={16} /></a>
+            <a className="button button-light" href="/join">Get drop access <ArrowRight size={16} /></a>
           </div>
           <div className="grail-visual" aria-label="A selection of graded cards from a monthly grail drop">
             <img className="grail-card grail-card-one" src="/cards/lugia-psa8-normalized.webp" alt="2000 Neo Genesis Lugia graded card" />
@@ -438,7 +437,7 @@ export default function Home() {
               <span>The Slab Supply Co. Promise</span>
               <p>Your annual membership supports leaner card margins, transparent pricing, and more value returned to collectors.</p>
             </div>
-            <a className="button submit-button" href="/join">Join the club <ArrowRight size={17} /></a>
+            <a className="button submit-button" href="/join">Become a member <ArrowRight size={17} /></a>
           </div>
         </div>
       </section>
@@ -478,8 +477,8 @@ export default function Home() {
         <div className="final-orbit" />
         <div className="section-shell final-content">
           <p className="eyebrow">The collection should keep moving</p><h2>Be there for<br /><em>the first drop.</em></h2>
-          <p>Join the club for member drops, below-retail pricing, and the Slab Supply Co. trade-in desk.</p>
-          <div className="final-actions"><a className="button button-light" href="/join">Join the club <ArrowRight size={17} /></a><button className="button button-ghost" type="button" onClick={openTrade}>I have cards to trade</button></div>
+          <p>Become a member for card drops, below-retail pricing, and the Slab Supply Co. trade-in desk.</p>
+          <div className="final-actions"><a className="button button-light" href="/join">Become a member <ArrowRight size={17} /></a><button className="button button-ghost" type="button" onClick={openTrade}>I have cards to trade</button></div>
         </div>
       </section>
 

@@ -1,26 +1,46 @@
 "use client";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { SignUp, SignIn } from "@clerk/nextjs";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, LockKeyhole } from "lucide-react";
-export default function CheckoutButton({ ready, signedIn = false }: { ready: boolean; signedIn?: boolean }) {
+const consentKey = "ssc_membership_consent";
+import { enrollmentTermsVersion, hasRecentEnrollmentConsent } from "../../lib/enrollment-consent";
+export default function CheckoutButton({ ready, signedIn = false, autoContinue = false }: { ready: boolean; signedIn?: boolean; autoContinue?: boolean }) {
   const [accepted, setAccepted] = useState(false);
   const [pending, setPending] = useState(false);
+  const [details, setDetails] = useState(false);
+  const [signIn, setSignIn] = useState(false);
+  const [initialValues, setInitialValues] = useState<{firstName?:string;emailAddress?:string}>({});
   const [error, setError] = useState("");
-  const requestKey = useRef<string | null>(null);
-  async function checkout() {
-    if (!accepted || pending) return;
-    setPending(true); setError("");
-    requestKey.current ||= crypto.randomUUID();
+  const started = useRef(false);
+  async function checkout(consent: boolean) {
+    if (!consent) return;
+    setPending(true);setError("");
     try {
-      const response = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": requestKey.current }, body: JSON.stringify({ acceptRenewal: accepted }) });
-      const result = await response.json() as { url?: string; message?: string };
-      if (!response.ok || !result.url) throw new Error(result.message || "Checkout could not open. Please try again.");
-      const url = new URL(result.url);
-      if (url.protocol !== "https:" || url.hostname !== "checkout.stripe.com") throw new Error("Checkout could not open. Please try again.");
+      const response=await fetch("/api/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({acceptRenewal:true})});
+      const result=await response.json() as {url?:string;message?:string};
+      if(!response.ok || !result.url)throw new Error(result.message || "Checkout could not open. Please try again.");
+      const url=new URL(result.url);
+      if(url.protocol!=="https:" || url.hostname!=="checkout.stripe.com")throw new Error("Checkout could not open. Please try again.");
+      try{sessionStorage.removeItem(consentKey);sessionStorage.removeItem("ssc_join_details");}catch{}
       window.location.assign(url.toString());
-    } catch (e) { setError(e instanceof Error ? e.message : "Checkout could not open."); setPending(false); }
+    }catch(error){setError(error instanceof Error ? error.message : "Checkout could not open.");setPending(false);}
   }
-  if (!ready) return <div className="checkout-unavailable"><p><strong>Membership checkout is unavailable.</strong><br />Please try again. No membership has been activated.</p><Link className="club-text-link" href="/help">Contact us</Link></div>;
-  if (!signedIn) return <div className="checkout-unavailable"><p>Set up your sign-in, then complete membership checkout.</p><Link className="button club-wide" href="/sign-up">Join the club <ArrowRight size={16} /></Link><Link className="club-text-link" href="/sign-in">Already a member? Sign in</Link></div>;
-  return <div className="checkout-controls"><div className="club-notice"><p><strong>Test checkout.</strong> No real money is charged, and this does not create a live membership.</p></div><label className="club-consent"><input type="checkbox" checked={accepted} onChange={e => setAccepted(e.target.checked)} /><span>I agree to the <Link href="/membership/terms">membership terms</Link> and understand membership renews at $99 USD/year until canceled.</span></label><button className="button club-wide" type="button" onClick={checkout} disabled={!accepted || pending}>{pending ? "Opening secure checkout…" : "Continue to checkout"}<ArrowRight size={16} /></button><p className="club-small"><LockKeyhole size={12} /> Secure checkout hosted by Stripe. Test cards only.</p>{error && <p className="club-form-error" role="alert">{error}</p>}</div>;
+  useEffect(()=>{
+    try {
+      const prefill=JSON.parse(sessionStorage.getItem("ssc_join_details") || "{}");
+      setInitialValues({firstName:typeof prefill.firstName==="string" ? prefill.firstName:undefined,emailAddress:typeof prefill.emailAddress==="string" ? prefill.emailAddress:undefined});
+      const consent=JSON.parse(sessionStorage.getItem(consentKey)||"null");
+      if(signedIn && ready && autoContinue && hasRecentEnrollmentConsent(consent) && !started.current){started.current=true;setAccepted(true);void checkout(true);}
+    }catch{/* Consent is never assumed from invalid or unavailable storage. */}
+  },[signedIn,ready,autoContinue]);
+  function proceed(){
+    if(!accepted || pending)return;
+    if(signedIn){void checkout(true);return;}
+    try{sessionStorage.setItem(consentKey,JSON.stringify({version:enrollmentTermsVersion,at:Date.now()}));}catch{}
+    setDetails(true);
+  }
+  if(!ready)return <div className="checkout-unavailable"><p>Checkout is unavailable. Please try again.</p></div>;
+  if(details && !signedIn)return <div className="join-inline-identity"><p className="eyebrow">Your details</p>{signIn ? <SignIn routing="hash" forceRedirectUrl="/join?checkout=continue" signUpUrl="/join"/>:<SignUp routing="hash" initialValues={initialValues} forceRedirectUrl="/join?checkout=continue" signInUrl="/sign-in"/>}<button className="club-text-link" type="button" onClick={()=>setSignIn(!signIn)}>{signIn ? "Join as a new member" : "Already a member? Sign in"}</button></div>;
+  return <div className="checkout-controls"><label className="club-consent"><input type="checkbox" checked={accepted} onChange={e=>setAccepted(e.target.checked)}/><span>I agree to the <Link href="/membership/terms">membership terms</Link>. Membership renews at $99 USD/year until canceled.</span></label><button className="button club-wide" type="button" onClick={proceed} disabled={!accepted || pending}>{pending ? "Opening secure checkout…" : "Become a member"}<ArrowRight size={16}/></button><p className="club-small join-payment-note"><LockKeyhole size={12}/> Secure payment through Stripe. No real money is charged in test mode.</p>{error && <p className="club-form-error" role="alert">{error}</p>}</div>;
 }
