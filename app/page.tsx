@@ -337,9 +337,8 @@ export default function Home() {
           <div className="slab slab-front">
             <div className="slab-label"><span>ARCHIVE</span><b>SPECIMEN 01</b><small>SLAB SUPPLY CO.</small></div>
             <div className="card-art art-one"><span className="art-star">✦</span><b>FIRST EDITION</b><small>MEMBER SHELF</small></div>
-            <div className="slab-bottom"><span>Member example</span><b>$148</b><small>verified retail: $172</small></div>
+            <div className="slab-bottom"><span>Member shelf</span><b>$148</b><small>verified retail: $172</small></div>
           </div>
-          <span className="visual-note">The member shelf, reimagined</span>
         </div>
 
         <div className="join-card" id="join">
