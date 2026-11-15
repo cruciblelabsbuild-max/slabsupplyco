@@ -444,7 +444,7 @@ export default function Home() {
       <section className="promise-section" id="promise">
         <div className="section-shell promise-layout">
           <div className="promise-intro">
-            <p className="eyebrow">The Slab Supply Co. Promise</p>
+            <p className="eyebrow">Our promise</p>
             <h2>A better way<br /><em>to collect.</em></h2>
             <p className="promise-lede">We love this hobby. We just think it could be a little fairer.</p>
           </div>
