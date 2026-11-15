@@ -39,9 +39,7 @@ button { color: inherit; }
 .brand-mark-back,.brand-mark-front { transform-box: fill-box; transform-origin: center; transition: transform .28s ease; }
 .brand:hover .brand-mark-back { transform: rotate(-3deg) translate(-1px,1px); }
 .brand:hover .brand-mark-front { transform: rotate(2deg) translate(1px,-1px); }
-.brand-wordmark { display: inline-flex; align-items: center; color: var(--forest-deep); line-height: 1; white-space: nowrap; }
-.brand-name { font-size: 14px; font-weight: 800; letter-spacing: .115em; }
-.brand-company { margin-left: 9px; padding-left: 9px; border-left: 1px solid rgba(38,37,61,.3); color: #666478; font-size: 8px; font-weight: 800; letter-spacing: .15em; }
+.brand-wordmark { display: inline-flex; align-items: center; color: var(--forest-deep); font-size: 13px; font-weight: 800; letter-spacing: .07em; line-height: 1; white-space: nowrap; }
 .nav-links { display: flex; gap: 30px; font-size: 13px; font-weight: 650; }
 .nav-links a { position: relative; }
 .nav-links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -6px; height: 1px; background: var(--coral); transition: right .25s; }
@@ -178,8 +176,7 @@ footer { padding: 58px 0 28px; background: var(--paper); } .footer-top { display
 @media (max-width:560px) { .shelf-card,.shelf-card:last-child { min-width: calc(100vw - 52px); flex-basis: calc(100vw - 52px); } .shelf-art { height: auto; } }
 
 /* Refined brand and membership storytelling */
-.brand-wordmark { position: static; display: inline-flex; align-items: center; color: var(--forest-deep); line-height: 1; }
-.brand-wordmark>span { display: inline-flex; }
+.brand-wordmark { position: static; display: inline-flex; align-items: center; color: var(--forest-deep); font-size: 13px; font-weight: 800; letter-spacing: .07em; line-height: 1; }
 .section-heading h2,.grail-copy h2,.membership-copy h2,.faq-heading h2,.final-content h2 { font-size: clamp(43px,5vw,67px); }
 .benefit-grid { gap: 18px; }
 .benefit-card { min-height: 610px; display: flex; flex-direction: column; padding: 42px; overflow: hidden; }
@@ -233,9 +230,7 @@ footer { padding: 58px 0 28px; background: var(--paper); } .footer-top { display
 }
 @media (max-width:560px) {
   .announcement span:last-child { display: inline; }
-  .brand-wordmark { font-size: 12px; letter-spacing: .13em; }
-  .brand-name { font-size: 12px; letter-spacing: .09em; }
-  .brand-company { margin-left: 7px; padding-left: 7px; font-size: 7px; }
+  .brand-wordmark { font-size: 12px; letter-spacing: .06em; }
   .benefit-card { min-height: 570px; padding: 30px 24px; }
   .benefit-card h3 { margin-top: 28px; font-size: 31px; }
   .benefit-graphic { height: 190px; }
