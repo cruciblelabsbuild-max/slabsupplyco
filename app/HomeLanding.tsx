@@ -139,7 +139,7 @@ export default function Home() {
     try {
       await startSignup({ firstName: String(data.get("firstName") || ""), emailAddress: String(data.get("email") || ""), interest: String(data.get("interest") || ""), collectingFocus: String(data.get("collectingFocus") || ""), consent: data.get("consent") === "on" });
     } catch {
-      setWaitState("error"); setWaitMessage("Sign-up could not open. Please try again.");
+      setWaitState("error"); setWaitMessage("Membership enrollment could not open. Please try again.");
     }
   }
 
@@ -273,7 +273,7 @@ export default function Home() {
         </div>
 
         <div className="join-card" id="join">
-            <form onSubmit={submitJoin} onFocus={() => { if (!waitStartedTracked.current) { waitStartedTracked.current = true; track("account_signup_started"); } }}>
+            <form noValidate onSubmit={submitJoin} onFocus={() => { if (!waitStartedTracked.current) { waitStartedTracked.current = true; track("account_signup_started"); } }}>
               <p className="eyebrow">Founding membership</p>
               <h2>Become a member.</h2>
               <div className="field-row">
