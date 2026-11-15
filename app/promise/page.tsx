@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Logo from "../Logo";
 
@@ -36,7 +35,7 @@ export default function PromisePage() {
     <div className="promise-page-nav">
       <header className="site-header">
         <Logo />
-        <Link className="text-button" href="/"><ArrowLeft size={15} /> Back to the club</Link>
+        <a className="text-button" href="/"><ArrowLeft size={15} /> Back to the club</a>
       </header>
     </div>
 
@@ -88,7 +87,7 @@ export default function PromisePage() {
         <p className="eyebrow">The promise, simply</p>
         <h2>More collecting.<br /><em>Less markup.</em></h2>
         <p>Join the founding list and help shape a club built around collectors.</p>
-        <Link className="button button-light" href="/#join">Join early access <ArrowRight size={16} /></Link>
+        <a className="button button-light" href="/#join">Join early access <ArrowRight size={16} /></a>
       </div>
     </section>
   </main>;
