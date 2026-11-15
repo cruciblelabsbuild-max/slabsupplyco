@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import InquiryForm from "../../../components/club/InquiryForm";
 export const metadata = { title: "A little help · Slab Supply Co." };
 const questions = [
-  ["How do I join the club?", "Create your free collector account from the Join the club page. Your account gives you a home for membership status and billing. Paid annual membership is separate from account registration; checkout is in test mode."],
+  ["How do I join the club?", "Choose Join the club, set up your sign-in, and complete the $99 annual membership checkout. Checkout currently runs in test mode and does not charge real money."],
   ["Are the cards on the shelf available?", "The current shelf is a reference collection, not live inventory. Exact copies, final prices, availability, and shipping terms will be shown when card sales open."],
   ["How does the $99 annual membership work?", "The intended plan is one annual subscription. Cards are purchased separately. Membership is designed to include member pricing, trade-in opportunities, and monthly drops; it does not reserve a specific card."],
   ["How will I manage renewal?", "Stripe’s billing portal will handle payment details, invoices, renewal dates, and cancellation. Open My membership and use the email address from checkout."],

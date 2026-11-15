@@ -64,7 +64,7 @@ The site includes `/membership`, `/join`, `/account`, `/membership/welcome`, `/m
    - `STRIPE_ANNUAL_PRICE_ID`: the annual test Price ID.
    - `STRIPE_CUSTOMER_PORTAL_URL`: activated `https://billing.stripe.com/p/login/test_...` login link, not a temporary portal session URL.
    - `APP_URL`: canonical origin, e.g. `https://slabsupplyco.vercel.app` (or `http://localhost:4317` locally). Set this to the exact preview origin if testing a preview deployment.
-5. Redeploy. `/join` shows test checkout only when all required test settings are present. Otherwise it offers immediate free account registration. Complete a Stripe test checkout, review the confirmed return page, and exercise renewal/cancellation through the test portal. Use Stripe's documented test card details, never real payment data.
+5. Redeploy. `/join` shows test checkout only when all required test settings are present. Otherwise checkout reports that it is unavailable. Complete a Stripe test checkout, review the confirmed return page, and exercise renewal/cancellation through the test portal. Use Stripe's documented test card details, never real payment data.
 
 Stripe is the source of truth for this test subscription flow. Payment details are entered on Stripe, not this website. The return page retrieves the actual Stripe session and active subscription before confirming a test payment. It does not reveal customer details or grant access. Request retries reuse an idempotency key, the price is fixed server-side, and the API rejects cross-origin checkout requests. Clerk authenticates website accounts. Checkout requires a signed-in account with a verified email and stores its immutable Clerk user ID on the Stripe session and subscription. The protected member area checks Stripe for an active test subscription owned by that ID. Stripe’s emailed portal login remains the billing-management flow.
 
@@ -86,7 +86,7 @@ For Vercel, configure `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY`
 - `/account`, `/account/billing`, and `/account/profile` verify the Clerk session on the server.
 - The mobile header shows Sign in for guests, and a named account button and signed-in strip for authenticated users. Its menu adds account, billing, settings, and sign-out controls.
 - The home page sticky mobile action changes from Join the club to My account after sign-in.
-- Account creation is free and separate from the $99 annual test subscription.
+- Sign-up establishes sign-in credentials and returns to `/join` to complete the $99 annual test subscription. There is no separate collector-account offering; sign-in alone does not activate membership.
 - Membership status is verified server-side from a matching Stripe subscription, using `clerk_user_id` metadata. Neither local storage, a URL parameter, nor a client-supplied email grants membership.
 - Stripe search can be eventually consistent after checkout. The verified checkout confirmation is immediate; account membership can take time to appear. No live entitlements are granted by the test flow.
 - Before a real launch, claim/configure the Clerk application for your production domain, set final authentication policies, and complete the Stripe webhook/entitlement work described above.
@@ -95,3 +95,5 @@ A synthetic `+clerk_test@example.com` user was created only in the new developme
 
 
 The home page signup card retains its established design and starts real Clerk registration. It prefills first name and email through Clerk's redirect API. Collecting interests and email-update consent are saved as private account preferences after verified sign-in; they are not used as proof of membership. The account-preferences endpoint verifies the session and request origin. The home form no longer posts to the legacy waitlist endpoint.
+
+Stripe test membership is configured at $99 USD per year. The test billing portal supports invoices, payment method updates, and cancellation at period end. Production Vercel environment variables store the server-only test key and billing settings; no Stripe secrets are committed.

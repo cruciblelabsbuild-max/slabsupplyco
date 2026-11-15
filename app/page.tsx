@@ -45,7 +45,7 @@ const faqs = [
   {
     label: "Founding access",
     q: "What happens after I join the club?",
-    a: "You get your collector account, with membership status and billing in one place. The annual membership costs $99; card purchases are separate.",
+    a: "Annual membership costs $99 and includes member pricing, eligible trade-in benefits, and member drops. Card purchases are separate.",
   },
   {
     label: "Trade-in process",

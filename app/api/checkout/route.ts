@@ -8,7 +8,7 @@ import { getStripe } from "../../../lib/stripe";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
   const config = billingConfig();
-  if (!config.ready) return NextResponse.json({ message: "Paid membership checkout is unavailable. Create your free collector account from the join page." }, { status: 503 });
+  if (!config.ready) return NextResponse.json({ message: "Membership checkout is unavailable. Please try again." }, { status: 503 });
   try {
     const origin = siteOrigin();
     // Prevent another website from creating checkout sessions on a visitor's behalf.
@@ -29,6 +29,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ url }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Test checkout creation failed", error instanceof Error ? error.message : "Unknown error");
-    return NextResponse.json({ message: "Checkout is unavailable just now. Please try again. Your collector account is available from My account." }, { status: 503 });
+    return NextResponse.json({ message: "Checkout is unavailable just now. Please try again. Your membership is available from My account." }, { status: 503 });
   }
 }
