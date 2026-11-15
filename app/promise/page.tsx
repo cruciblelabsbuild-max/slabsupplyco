@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Logo from "../Logo";
-import JoinEarlyAccessButton from "./JoinEarlyAccessButton";
 
 export const metadata: Metadata = {
   title: "The Slab Supply Co. Promise",
@@ -89,7 +88,9 @@ export default function PromisePage() {
         <p className="eyebrow">The promise, simply</p>
         <h2>More collecting.<br /><em>Less markup.</em></h2>
         <p>Join the founding list and help shape a club built around collectors.</p>
-        <JoinEarlyAccessButton />
+        <form className="promise-join-form" action="/#join" method="get">
+          <button className="button button-light" type="submit">Join early access <ArrowRight size={16} /></button>
+        </form>
       </div>
     </section>
   </main>;
