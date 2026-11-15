@@ -318,7 +318,7 @@ export default function Home() {
       <section className="hero section-shell">
         <div className="hero-copy">
           <p className="eyebrow"><Sparkles size={14} /> The club for graded-card collectors</p>
-          <h1>A better way<br /><em>to collect.</em></h1>
+          <h1>Collect more.<br /><em>Spend less.</em></h1>
           <p className="hero-lede">Shop graded cards below retail value. Trade slabs for up to full value in store credit. One membership, built around your collection.</p>
           <div className="hero-points" aria-label="Core benefits">
             <span><Check size={16} /> Exclusive monthly grail drops</span>
@@ -494,7 +494,7 @@ export default function Home() {
         <div className="section-shell membership-layout">
           <div className="membership-copy">
             <p className="eyebrow">Founding membership</p>
-            <h2>Collect more.<br /><em>Spend less.</em></h2>
+            <h2>One membership.<br /><em>Better economics.</em></h2>
             <p className="section-lede">Founding membership is <b>$99 per year</b>—one simple price for member drops, below-retail pricing, and access to the trade-in desk.</p>
           </div>
           <div className="price-card">
@@ -506,8 +506,34 @@ export default function Home() {
               <li><Check /> Up to 100% in trade-in credit</li>
               <li><Check /> Monthly members-only grail drops</li>
             </ul>
+            <div className="membership-promise">
+              <span>The Slab Supply Co. Promise</span>
+              <p>Your annual membership supports leaner card margins, transparent pricing, and more value returned to collectors.</p>
+            </div>
             <a className="button submit-button" href="#join">Join the founding list <ArrowRight size={17} /></a>
           </div>
+        </div>
+      </section>
+
+      <section className="promise-section" id="promise">
+        <div className="section-shell promise-layout">
+          <div className="promise-intro">
+            <p className="eyebrow">The Slab Supply Co. Promise</p>
+            <h2>A better way<br /><em>to collect.</em></h2>
+            <p className="promise-lede">We love this hobby. We just think it could be a little fairer.</p>
+          </div>
+          <div className="promise-model">
+            <span>The model</span>
+            <blockquote>Your membership helps us make money differently—so we can sell cards differently.</blockquote>
+            <p>Instead of maximizing the margin on every slab, membership lets us operate on leaner card margins and return more value through member pricing and fair trade offers.</p>
+            <a className="text-button promise-link" href="/promise">Read our promise <ArrowRight size={15} /></a>
+          </div>
+        </div>
+        <div className="section-shell promise-principles">
+          <article><span>01</span><h3>Collectors first.<br />Always.</h3><p>Every collector deserves the same respect and fair treatment.</p></article>
+          <article><span>02</span><h3>Fair prices.<br />Fair margins.</h3><p>Membership lets us run leaner card margins and return more value.</p></article>
+          <article><span>03</span><h3>Transparency is<br />non-negotiable.</h3><p>Clear values, clear pricing, and no inflated comparisons.</p></article>
+          <article><span>04</span><h3>For collectors.<br />Not scalpers.</h3><p>Fair purchase limits give more members a genuine chance.</p></article>
         </div>
       </section>
 
@@ -552,7 +578,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <div className="section-shell footer-top"><Logo /><p>An independent buying club for graded-card collectors.</p><div className="footer-links"><a href="#how">How it works</a><a href="#trade-ins">Trade-ins</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
+        <div className="section-shell footer-top"><Logo /><p>An independent buying club for graded-card collectors.</p><div className="footer-links"><a href="#how">How it works</a><a href="#trade-ins">Trade-ins</a><a href="/promise">Our promise</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
         <div className="section-shell footer-bottom"><p>© 2026 Slab Supply Co. All rights reserved.</p><p>Not affiliated with or endorsed by Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company. All trademarks belong to their respective owners.</p></div>
       </footer>
 
