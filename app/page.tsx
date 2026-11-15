@@ -2,6 +2,7 @@
 
 import {
   ArrowDownRight,
+  ArrowLeft,
   ArrowRight,
   Check,
   ChevronDown,
@@ -13,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import Logo from "./Logo";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
@@ -49,14 +51,14 @@ const faqs = [
 
 const graders = ["PSA", "CGC", "BGS", "Other / mixed"];
 
-function Logo() {
-  return (
-    <a className="brand" href="#top" aria-label="Slab Supply home">
-      <span className="wordmark"><span>Slab</span><i>·</i><span>Supply</span></span>
-      <span className="brand-beta">Collectors’ club</span>
-    </a>
-  );
-}
+const shelfCards = [
+  { image: "/cards/snorlax-psa9.jpg", alt: "1999 Jungle Snorlax holo graded PSA 9", kicker: "1999 · Vintage holo · PSA 9", name: "Jungle Snorlax #11", retail: "$700", member: "$595", interest: "Vintage holos like 1999 Jungle Snorlax" },
+  { image: "/cards/lugia-psa8.jpg", alt: "2000 Neo Genesis Lugia holo graded PSA 8", kicker: "2000 · Neo-era holo · PSA 8", name: "Neo Genesis Lugia #9", retail: "$1,550", member: "$1,395", interest: "Neo-era holos like 2000 Neo Genesis Lugia" },
+  { image: "/cards/charizard-151-psa10.jpg", alt: "2023 151 Charizard ex special illustration graded PSA 10", kicker: "2023 · Special illustration · PSA 10", name: "151 Charizard ex #199", retail: "$1,275", member: "$1,084", interest: "Modern special illustrations like 2023 151 Charizard ex" },
+  { image: "/cards/charizard-evolutions-psa9.jpg", alt: "2016 Evolutions Charizard holo graded PSA 9", kicker: "2016 · Classic reissue holo · PSA 9", name: "Evolutions Charizard #11", retail: "$210", member: "$179", interest: "Classic Charizard holos like 2016 Evolutions" },
+  { image: "/cards/umbreon-celebrations-psa10.jpg", alt: "2021 Celebrations Umbreon Gold Star graded PSA 10", kicker: "2021 · Gold Star · PSA 10", name: "Celebrations Umbreon #17", retail: "$285", member: "$242", interest: "Gold Star cards like Celebrations Umbreon" },
+  { image: "/cards/pikachu-grey-felt-psa10.jpg", alt: "2023 Pikachu with Grey Felt Hat promo graded PSA 10", kicker: "2023 · Art promo · PSA 10", name: "Pikachu with Grey Felt Hat", retail: "$2,525", member: "$2,145", interest: "Art promos like Pikachu with Grey Felt Hat" },
+];
 
 function track(event: string, metadata: Record<string, unknown> = {}) {
   const sessionKey = "pc_session";
@@ -85,6 +87,7 @@ export default function Home() {
   const [referrer, setReferrer] = useState("");
   const waitStartedAt = useMemo(() => Date.now(), []);
   const waitStartedTracked = useRef(false);
+  const shelfRef = useRef<HTMLDivElement>(null);
   const [tradeStartedAt, setTradeStartedAt] = useState(Date.now());
 
   useEffect(() => {
@@ -209,6 +212,11 @@ export default function Home() {
     document.getElementById("join")?.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
+  function scrollShelf(direction: -1 | 1) {
+    shelfRef.current?.scrollBy({ left: direction * 380, behavior: "smooth" });
+    track("shelf_scrolled", { direction: direction === 1 ? "next" : "previous" });
+  }
+
   return (
     <main id="top">
       <div className="announcement">
@@ -312,26 +320,16 @@ export default function Home() {
         <div className="section-shell">
           <div className="shelf-heading">
             <div><p className="eyebrow">On the member shelf</p><h2>Cards worth collecting.<br /><em>Prices worth joining for.</em></h2></div>
-            <p>Vintage icons and modern illustration rares, curated for the member shelf.</p>
+            <div className="shelf-heading-side"><p>Vintage icons, modern illustration rares, cult favorites, and art-forward promos—curated for the member shelf.</p><div className="shelf-controls" aria-label="Browse member shelf"><button type="button" onClick={() => scrollShelf(-1)} aria-label="Previous cards"><ArrowLeft /></button><span>Swipe the shelf</span><button type="button" onClick={() => scrollShelf(1)} aria-label="Next cards"><ArrowRight /></button></div></div>
           </div>
-          <div className="shelf-grid">
-            <article className="shelf-card">
-              <div className="shelf-art"><img src="/cards/snorlax-psa9.jpg" alt="1999 Jungle Snorlax holo graded PSA 9" /><span className="shelf-badge">Founding selection</span></div>
-              <div className="shelf-meta"><span className="shelf-kicker">1999 · Vintage holo · PSA 9</span><h3>Jungle Snorlax #11</h3><div className="shelf-pricing"><span>Verified retail<s>$700</s></span><span>Member price<b>$595</b></span></div></div>
-              <button className="button button-outline" type="button" onClick={() => expressShelfInterest("Vintage holos like 1999 Jungle Snorlax")}>Get member access <ArrowRight size={15} /></button>
-            </article>
-            <article className="shelf-card">
-              <div className="shelf-art"><img src="/cards/lugia-psa8.jpg" alt="2000 Neo Genesis Lugia holo graded PSA 8" /><span className="shelf-badge">Founding selection</span></div>
-              <div className="shelf-meta"><span className="shelf-kicker">2000 · Neo-era holo · PSA 8</span><h3>Neo Genesis Lugia #9</h3><div className="shelf-pricing"><span>Verified retail<s>$1,550</s></span><span>Member price<b>$1,395</b></span></div></div>
-              <button className="button button-outline" type="button" onClick={() => expressShelfInterest("Neo-era holos like 2000 Neo Genesis Lugia")}>Get member access <ArrowRight size={15} /></button>
-            </article>
-            <article className="shelf-card">
-              <div className="shelf-art"><img src="/cards/charizard-151-psa10.jpg" alt="2023 151 Charizard ex special illustration graded PSA 10" /><span className="shelf-badge">Founding selection</span></div>
-              <div className="shelf-meta"><span className="shelf-kicker">2023 · Special illustration · PSA 10</span><h3>151 Charizard ex #199</h3><div className="shelf-pricing"><span>Verified retail<s>$1,275</s></span><span>Member price<b>$1,084</b></span></div></div>
-              <button className="button button-outline" type="button" onClick={() => expressShelfInterest("Modern special illustrations like 2023 151 Charizard ex")}>Get member access <ArrowRight size={15} /></button>
-            </article>
+          <div className="shelf-grid" ref={shelfRef}>
+            {shelfCards.map((card) => <article className="shelf-card" key={card.name}>
+              <div className="shelf-art"><img src={card.image} alt={card.alt} /><span className="shelf-badge">Member shelf</span></div>
+              <div className="shelf-meta"><span className="shelf-kicker">{card.kicker}</span><h3>{card.name}</h3><div className="shelf-pricing"><span>Verified retail<s>{card.retail}</s></span><span>Member price<b>{card.member}</b></span></div></div>
+              <button className="button button-outline" type="button" onClick={() => expressShelfInterest(card.interest)}>Get member access <ArrowRight size={15} /></button>
+            </article>)}
           </div>
-          <p className="shelf-note">Market reference snapshot: November 14, 2026. Values are rounded from aggregated completed-sale data from <a href="https://www.pricecharting.com/game/pokemon-jungle/snorlax-11" target="_blank" rel="noreferrer">PriceCharting</a> and <a href="https://slabline.ai/cards/2023-scarlet-violet-151-charizard-ex-199-psa-10" target="_blank" rel="noreferrer">Slabline</a>. Exact grades, copies, and values vary by drop.</p>
+          <p className="shelf-note">Market reference snapshot: November 15, 2026. Values are rounded from recent completed-sale data and current market estimates from <a href="https://www.pricecharting.com/game/pokemon-jungle/snorlax-11" target="_blank" rel="noreferrer">PriceCharting</a> and <a href="https://slabline.ai/cards/2023-scarlet-violet-151-charizard-ex-199-psa-10" target="_blank" rel="noreferrer">Slabline</a>. Exact grades, copies, and values vary by drop.</p>
         </div>
       </section>
 

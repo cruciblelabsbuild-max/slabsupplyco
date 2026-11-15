@@ -1,5 +1,14 @@
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="48" height="48" rx="8" fill="#173E33"/>
-  <text x="24" y="29" text-anchor="middle" fill="#F4EFE4" font-family="Georgia, serif" font-size="17" letter-spacing="1">SS</text>
-  <circle cx="24" cy="37" r="1.5" fill="#EF795E"/>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="14" fill="#F4EFE4"/>
+  <g transform="rotate(-9 23 34)">
+    <rect x="8" y="12" width="35" height="45" rx="7" fill="#B9CFB7"/>
+    <rect x="12" y="16" width="27" height="8" rx="2" fill="#F1E4C8"/>
+    <rect x="12" y="28" width="27" height="24" rx="2" fill="#8EAE9D"/>
+  </g>
+  <rect x="23" y="7" width="36" height="48" rx="7" fill="#FBF9F4" stroke="#173E33" stroke-width="2"/>
+  <rect x="27" y="11" width="28" height="10" rx="3" fill="#EF795E"/>
+  <circle cx="32" cy="16" r="1.6" fill="#F4EFE4"/>
+  <path d="M36 14.5H51M36 17.5H47" stroke="#F4EFE4" stroke-width="1.2" stroke-linecap="round"/>
+  <rect x="27" y="25" width="28" height="25" rx="3" fill="#173E33"/>
+  <path d="m42 29 1.4 3.6L47 34l-3.6 1.4L42 39l-1.4-3.6L37 34l3.6-1.4L42 29Z" fill="#F5C976"/>
 </svg>

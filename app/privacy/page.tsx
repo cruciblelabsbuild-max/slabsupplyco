@@ -1,8 +1,9 @@
 import Link from "next/link";
+import Logo from "../Logo";
 
 export default function PrivacyPage() {
   return <main className="legal-page">
-    <div className="legal-header"><header className="site-header"><Link className="brand" href="/"><span className="wordmark"><span>Slab</span><i>·</i><span>Supply</span></span></Link><Link className="text-button" href="/">Back to home</Link></header></div>
+    <div className="legal-header"><header className="site-header"><Logo /><Link className="text-button" href="/">Back to home</Link></header></div>
     <article className="legal-content">
       <p className="eyebrow">Early-access document</p><h1>Privacy notice</h1><p className="updated">Working draft · November 14, 2026</p>
       <p className="draft-notice"><b>Before public launch:</b> this draft should be reviewed by counsel and updated with the operating entity, mailing address, contact email, service providers, and final retention periods.</p>
