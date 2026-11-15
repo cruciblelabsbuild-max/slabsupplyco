@@ -338,3 +338,85 @@ footer { padding: 58px 0 28px; background: var(--paper); } .footer-top { display
   .membership-emblem { width: 56px; transform: scale(.88); transform-origin: top right; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior: auto!important; transition: none!important; } }
+
+/* Quiet, editorial feature compositions */
+.shelf-pricing { display: grid; grid-template-columns: .8fr 1.15fr 1fr; gap: 12px; align-items: end; }
+.shelf-pricing span { min-width: 0; }
+.shelf-pricing b { font-size: 24px; white-space: nowrap; }
+.shelf-pricing .savings { padding-left: 12px; border-left: 1px solid var(--line); }
+.shelf-pricing .savings b { color: var(--coral); }
+.benefit-grid { gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.benefit-card { min-height: 520px; padding: 38px 46px 42px; background: transparent; color: var(--ink); overflow: visible; }
+.benefit-card:first-child { border-right: 1px solid var(--line); }
+.benefit-card h3 { margin: 28px 0 13px; }
+.benefit-card>p { margin-bottom: 22px; opacity: 1; color: var(--muted); }
+.dark-card .text-button,.light-card .text-button { margin-top: auto; color: var(--ink); }
+.dark-card .text-button::after,.light-card .text-button::after { background: var(--ink); }
+.benefit-icon { width: 42px; height: 42px; border-color: rgba(38,37,61,.34); }
+.benefit-icon svg { width: 17px; }
+.benefit-graphic { height: 158px; margin-top: 22px; border: 0; overflow: visible; }
+.benefit-graphic::before { content: ""; width: 240px; height: 150px; position: absolute; left: 50%; top: 50%; border: 1px solid rgba(48,50,92,.1); border-radius: 50%; transform: translate(-50%,-50%); }
+.benefit-graphic::after { content: ""; width: 150px; height: 94px; position: absolute; left: 50%; top: 50%; border: 1px solid rgba(48,50,92,.08); border-radius: 50%; transform: translate(-50%,-50%); }
+.graphic-slab { width: 70px; height: 112px; z-index: 1; padding: 6px; border-color: rgba(48,50,92,.2); background: rgba(255,253,249,.86); box-shadow: 0 14px 30px rgba(38,37,61,.13); }
+.graphic-slab::before { height: 18px; font-size: 3.8px; }
+.graphic-slab>span { height: 74px; margin-top: 4px; font-size: 21px; }
+.graphic-slab-back { transform: translate(-69px,8px) rotate(-9deg); opacity: .55; }
+.graphic-slab-front { transform: translate(-27px,-2px) rotate(4deg); }
+.price-ticket { width: 116px; z-index: 2; padding: 14px; transform: translate(76px,5px) rotate(-2deg); box-shadow: 5px 6px 0 rgba(244,124,102,.82); }
+.price-ticket s { font-size: 17px; }
+.price-ticket b { font-size: 31px; }
+.trade-graphic .trade-slab { transform: translateX(-55px) rotate(-5deg); }
+.trade-graphic>svg { width: 24px; }
+.credit-coin { width: 94px; height: 94px; z-index: 1; transform: translateX(55px) rotate(4deg); box-shadow: 0 0 0 5px var(--paper),0 0 0 6px rgba(38,37,61,.16),0 14px 28px rgba(38,37,61,.13); }
+.credit-coin b { font-size: 27px; }
+.credit-coin strong,.credit-coin span { font-size: 5px; }
+
+/* Unboxed trade journey */
+.trade-story { grid-template-columns: .9fr 1.1fr; gap: 88px; }
+.trade-flow { width: min(100%,560px); min-height: 285px; justify-self: end; grid-template-rows: 1fr; padding: 18px 0; border: 0; background: transparent; overflow: visible; }
+.trade-flow::before { content: ""; height: 1px; position: absolute; left: 8%; right: 8%; top: 50%; background: linear-gradient(90deg,transparent,rgba(48,50,92,.16) 18%,rgba(48,50,92,.16) 82%,transparent); }
+.trade-flow-orbit { width: 275px; height: 275px; opacity: .78; }
+.trade-flow-orbit::before { inset: 45px; }
+.trade-flow-orbit::after { inset: 96px; }
+.flow-slab { width: 78px; height: 122px; padding: 7px; box-shadow: 0 16px 30px rgba(38,37,61,.13); }
+.flow-slab small { height: 21px; font-size: 4px; }
+.flow-slab span { height: 81px; margin-top: 5px; font-size: 26px; }
+.flow-credit { width: 96px; height: 96px; box-shadow: 0 0 0 6px var(--paper),0 0 0 7px rgba(48,50,92,.16),0 16px 30px rgba(38,37,61,.14); }
+.flow-credit b { font-size: 29px; }
+.flow-credit small,.flow-credit span { font-size: 5.5px; }
+.flow-item>strong { padding: 6px 9px; background: var(--paper); }
+
+@media (max-width:820px) {
+  .benefit-grid { gap: 0; }
+  .benefit-card:first-child { border-right: 0; border-bottom: 1px solid var(--line); }
+  .benefit-card { min-height: 500px; }
+  .trade-story { grid-template-columns: 1fr; gap: 48px; }
+  .trade-flow { justify-self: start; }
+}
+@media (max-width:560px) {
+  .shelf-pricing { gap: 7px; }
+  .shelf-pricing b { font-size: 22px; }
+  .shelf-pricing s { font-size: 16px; }
+  .shelf-pricing .savings { padding-left: 7px; }
+  .benefit-card { min-height: 465px; padding: 32px 8px 38px; }
+  .benefit-card h3 { margin-top: 22px; }
+  .benefit-graphic { height: 145px; margin-top: 16px; }
+  .graphic-slab { width: 66px; height: 106px; }
+  .graphic-slab>span { height: 69px; }
+  .graphic-slab-back { transform: translate(-60px,8px) rotate(-9deg); }
+  .graphic-slab-front { transform: translate(-20px,-2px) rotate(4deg); }
+  .price-ticket { width: 110px; transform: translate(65px,5px) rotate(-2deg); }
+  .trade-graphic .trade-slab { transform: translateX(-49px) rotate(-5deg); }
+  .credit-coin { width: 90px; height: 90px; transform: translateX(49px) rotate(4deg); }
+  .trade-story { gap: 36px; }
+  .trade-flow { min-height: 225px; gap: 5px; padding: 10px 0; }
+  .trade-flow-orbit { width: 215px; height: 215px; }
+  .flow-slab { width: 61px; height: 96px; padding: 5px; }
+  .flow-slab small { height: 17px; font-size: 3px; }
+  .flow-slab span { height: 63px; margin-top: 4px; font-size: 21px; }
+  .flow-credit { width: 74px; height: 74px; box-shadow: 0 0 0 4px var(--paper),0 0 0 5px rgba(48,50,92,.16),0 12px 22px rgba(38,37,61,.13); }
+  .flow-credit b { font-size: 22px; }
+  .flow-credit small,.flow-credit span { font-size: 4px; }
+  .flow-arrow { width: 13px; }
+  .flow-item>strong { font-size: 5.5px; letter-spacing: .12em; }
+}
