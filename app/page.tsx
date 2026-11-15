@@ -52,12 +52,12 @@ const faqs = [
 const graders = ["PSA", "CGC", "BGS", "Other / mixed"];
 
 const shelfCards = [
-  { image: "/cards/snorlax-psa9.jpg", alt: "1999 Jungle Snorlax holo graded PSA 9", kicker: "1999 · Vintage holo · PSA 9", name: "Jungle Snorlax #11", retail: "$700", member: "$595", interest: "Vintage holos like 1999 Jungle Snorlax" },
-  { image: "/cards/lugia-psa8.jpg", alt: "2000 Neo Genesis Lugia holo graded PSA 8", kicker: "2000 · Neo-era holo · PSA 8", name: "Neo Genesis Lugia #9", retail: "$1,550", member: "$1,395", interest: "Neo-era holos like 2000 Neo Genesis Lugia" },
-  { image: "/cards/charizard-151-psa10.jpg", alt: "2023 151 Charizard ex special illustration graded PSA 10", kicker: "2023 · Special illustration · PSA 10", name: "151 Charizard ex #199", retail: "$1,275", member: "$1,084", interest: "Modern special illustrations like 2023 151 Charizard ex" },
-  { image: "/cards/charizard-evolutions-psa9.jpg", alt: "2016 Evolutions Charizard holo graded PSA 9", kicker: "2016 · Classic reissue holo · PSA 9", name: "Evolutions Charizard #11", retail: "$210", member: "$179", interest: "Classic Charizard holos like 2016 Evolutions" },
-  { image: "/cards/umbreon-celebrations-psa10.jpg", alt: "2021 Celebrations Umbreon Gold Star graded PSA 10", kicker: "2021 · Gold Star · PSA 10", name: "Celebrations Umbreon #17", retail: "$285", member: "$242", interest: "Gold Star cards like Celebrations Umbreon" },
-  { image: "/cards/pikachu-grey-felt-psa10.jpg", alt: "2023 Pikachu with Grey Felt Hat promo graded PSA 10", kicker: "2023 · Art promo · PSA 10", name: "Pikachu with Grey Felt Hat", retail: "$2,525", member: "$2,145", interest: "Art promos like Pikachu with Grey Felt Hat" },
+  { image: "/cards/snorlax-psa9-normalized.webp", alt: "1999 Jungle Snorlax holo graded PSA 9", kicker: "1999 · Vintage holo · PSA 9", name: "Jungle Snorlax #11", retail: "$700", member: "$595", interest: "Vintage holos like 1999 Jungle Snorlax" },
+  { image: "/cards/lugia-psa8-normalized.webp", alt: "2000 Neo Genesis Lugia holo graded PSA 8", kicker: "2000 · Neo-era holo · PSA 8", name: "Neo Genesis Lugia #9", retail: "$1,550", member: "$1,395", interest: "Neo-era holos like 2000 Neo Genesis Lugia" },
+  { image: "/cards/charizard-151-psa10-normalized.webp", alt: "2023 151 Charizard ex special illustration graded PSA 10", kicker: "2023 · Special illustration · PSA 10", name: "151 Charizard ex #199", retail: "$1,275", member: "$1,084", interest: "Modern special illustrations like 2023 151 Charizard ex" },
+  { image: "/cards/charizard-evolutions-psa9-normalized.webp", alt: "2016 Evolutions Charizard holo graded PSA 9", kicker: "2016 · Classic reissue holo · PSA 9", name: "Evolutions Charizard #11", retail: "$210", member: "$179", interest: "Classic Charizard holos like 2016 Evolutions" },
+  { image: "/cards/umbreon-celebrations-psa10-normalized.webp", alt: "2021 Celebrations Umbreon Gold Star graded PSA 10", kicker: "2021 · Gold Star · PSA 10", name: "Celebrations Umbreon #17", retail: "$285", member: "$242", interest: "Gold Star cards like Celebrations Umbreon" },
+  { image: "/cards/pikachu-grey-felt-psa10-normalized.webp", alt: "2023 Pikachu with Grey Felt Hat promo graded PSA 10", kicker: "2023 · Art promo · PSA 10", name: "Pikachu with Grey Felt Hat", retail: "$2,525", member: "$2,145", interest: "Art promos like Pikachu with Grey Felt Hat" },
 ];
 
 function track(event: string, metadata: Record<string, unknown> = {}) {
@@ -88,6 +88,8 @@ export default function Home() {
   const waitStartedAt = useMemo(() => Date.now(), []);
   const waitStartedTracked = useRef(false);
   const shelfRef = useRef<HTMLDivElement>(null);
+  const [shelfIndex, setShelfIndex] = useState(0);
+  const [shelfPageSize, setShelfPageSize] = useState(1);
   const [tradeStartedAt, setTradeStartedAt] = useState(Date.now());
 
   useEffect(() => {
@@ -105,6 +107,14 @@ export default function Home() {
     document.body.style.overflow = tradeOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [tradeOpen]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 821px)");
+    const updatePageSize = () => setShelfPageSize(media.matches ? 3 : 1);
+    updatePageSize();
+    media.addEventListener("change", updatePageSize);
+    return () => media.removeEventListener("change", updatePageSize);
+  }, []);
 
   async function submitWaitlist(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -213,8 +223,20 @@ export default function Home() {
   }
 
   function scrollShelf(direction: -1 | 1) {
-    shelfRef.current?.scrollBy({ left: direction * 380, behavior: "smooth" });
+    const shelf = shelfRef.current;
+    const firstCard = shelf?.querySelector<HTMLElement>(".shelf-card");
+    if (!shelf || !firstCard) return;
+    const nextIndex = Math.max(0, Math.min(shelfCards.length - shelfPageSize, shelfIndex + direction * shelfPageSize));
+    shelf.scrollTo({ left: nextIndex * (firstCard.offsetWidth + 18), behavior: "smooth" });
+    setShelfIndex(nextIndex);
     track("shelf_scrolled", { direction: direction === 1 ? "next" : "previous" });
+  }
+
+  function syncShelfIndex() {
+    const shelf = shelfRef.current;
+    const firstCard = shelf?.querySelector<HTMLElement>(".shelf-card");
+    if (!shelf || !firstCard) return;
+    setShelfIndex(Math.round(shelf.scrollLeft / (firstCard.offsetWidth + 18)));
   }
 
   return (
@@ -320,9 +342,9 @@ export default function Home() {
         <div className="section-shell">
           <div className="shelf-heading">
             <div><p className="eyebrow">On the member shelf</p><h2>Cards worth collecting.<br /><em>Prices worth joining for.</em></h2></div>
-            <div className="shelf-heading-side"><p>Vintage icons, modern illustration rares, cult favorites, and art-forward promos—curated for the member shelf.</p><div className="shelf-controls" aria-label="Browse member shelf"><button type="button" onClick={() => scrollShelf(-1)} aria-label="Previous cards"><ArrowLeft /></button><span>Swipe the shelf</span><button type="button" onClick={() => scrollShelf(1)} aria-label="Next cards"><ArrowRight /></button></div></div>
+            <div className="shelf-heading-side"><p>Vintage icons, modern illustration rares, cult favorites, and art-forward promos—curated for the member shelf.</p><div className="shelf-controls" aria-label="Browse member shelf"><button type="button" onClick={() => scrollShelf(-1)} aria-label="Previous cards" disabled={shelfIndex === 0}><ArrowLeft /></button><span className="desktop-range">{String(shelfIndex + 1).padStart(2,"0")}–{String(Math.min(shelfIndex + 3,shelfCards.length)).padStart(2,"0")} / {String(shelfCards.length).padStart(2,"0")}</span><span className="mobile-range">{String(shelfIndex + 1).padStart(2,"0")} / {String(shelfCards.length).padStart(2,"0")}</span><button type="button" onClick={() => scrollShelf(1)} aria-label="Next cards" disabled={shelfIndex >= shelfCards.length - shelfPageSize}><ArrowRight /></button></div></div>
           </div>
-          <div className="shelf-grid" ref={shelfRef}>
+          <div className="shelf-grid" ref={shelfRef} onScroll={syncShelfIndex}>
             {shelfCards.map((card) => <article className="shelf-card" key={card.name}>
               <div className="shelf-art"><img src={card.image} alt={card.alt} /><span className="shelf-badge">Member shelf</span></div>
               <div className="shelf-meta"><span className="shelf-kicker">{card.kicker}</span><h3>{card.name}</h3><div className="shelf-pricing"><span>Verified retail<s>{card.retail}</s></span><span>Member price<b>{card.member}</b></span></div></div>

@@ -17,10 +17,7 @@ export default function Logo() {
           <path className="brand-star" d="m37.2 25.2 1.2 3.2 3.2 1.2-3.2 1.2-1.2 3.2-1.2-3.2-3.2-1.2 3.2-1.2 1.2-3.2Z" />
         </g>
       </svg>
-      <span className="brand-lockup">
-        <span className="brand-name"><b>Slab</b><em>Supply</em></span>
-        <span className="brand-tag">Buy · Trade · Collect</span>
-      </span>
+      <span className="brand-wordmark">slab supply<span aria-hidden="true">•</span></span>
     </a>
   );
 }
