@@ -1,6 +1,8 @@
+import Link from "next/link";
+
 export default function Logo() {
   return (
-    <a className="brand" href="/#top" aria-label="Slab Supply Co. home">
+    <Link className="brand" href="/#top" aria-label="Slab Supply Co. home">
       <svg className="brand-mark" viewBox="0 0 58 56" aria-hidden="true">
         <g className="brand-mark-back" transform="rotate(-9 20 29)">
           <rect x="5" y="8" width="32" height="43" rx="6" />
@@ -18,6 +20,6 @@ export default function Logo() {
         </g>
       </svg>
       <span className="brand-wordmark">SLAB SUPPLY CO.</span>
-    </a>
+    </Link>
   );
 }

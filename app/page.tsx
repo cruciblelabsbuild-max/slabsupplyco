@@ -304,12 +304,12 @@ export default function Home() {
       <header className="site-header">
         <Logo />
         <nav className={menuOpen ? "nav-links open" : "nav-links"} aria-label="Primary navigation">
-          <a href="#sample-shelf" onClick={() => setMenuOpen(false)}>Member shelf</a>
-          <a href="#grail-drops" onClick={() => setMenuOpen(false)}>Grail drops</a>
-          <a href="#trade-ins" onClick={() => setMenuOpen(false)}>Trade-ins</a>
-          <a href="#membership" onClick={() => setMenuOpen(false)}>Membership</a>
+          <a href="/shop" onClick={() => setMenuOpen(false)}>Member shelf</a>
+          <a href="/drops" onClick={() => setMenuOpen(false)}>Grail drops</a>
+          <a href="/trade-ins" onClick={() => setMenuOpen(false)}>Trade-ins</a>
+          <a href="/membership" onClick={() => setMenuOpen(false)}>Membership</a>
         </nav>
-        <a className="button button-small desktop-cta" href="#join">Become a founding member <ArrowRight size={15} /></a>
+        <a className="button button-small desktop-cta" href="/join">Join the club <ArrowRight size={15} /></a>
         <button className="menu-button" type="button" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <X /> : <Menu />}
         </button>
@@ -363,7 +363,7 @@ export default function Home() {
             <form onSubmit={submitWaitlist} onFocus={() => { if (!waitStartedTracked.current) { waitStartedTracked.current = true; track("waitlist_started"); } }}>
               <p className="eyebrow">Founding list</p>
               <h2>Join the club.</h2>
-              <p>Join the founding list for member drops and the trade-in desk.</p>
+              <p>Join the free founding list for member drops and the trade-in desk.</p>
               <div className="field-row">
                 <label><span>First name</span><input name="firstName" autoComplete="given-name" maxLength={60} placeholder="Avery" required /></label>
                 <label><span>Email</span><input name="email" type="email" autoComplete="email" maxLength={160} placeholder="avery@example.com" required /></label>
@@ -378,7 +378,7 @@ export default function Home() {
               <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
               <label className="consent"><input type="checkbox" name="consent" required /><span>I agree to receive early-access updates. I can unsubscribe anytime.</span></label>
               <button className="button submit-button" disabled={waitState === "submitting"} type="submit">
-                {waitState === "submitting" ? "Saving your spot…" : <>Become a founding member <ArrowRight size={17} /></>}
+                {waitState === "submitting" ? "Saving your spot…" : <>Join the founding list—free <ArrowRight size={17} /></>}
               </button>
               {waitMessage && <p className="form-message error" role="alert">{waitMessage}</p>}
               <p className="form-footnote">Founding membership is $99 per year.</p>
@@ -526,7 +526,7 @@ export default function Home() {
               <span>The Slab Supply Co. Promise</span>
               <p>Your annual membership supports leaner card margins, transparent pricing, and more value returned to collectors.</p>
             </div>
-            <a className="button submit-button" href="#join">Become a founding member <ArrowRight size={17} /></a>
+            <a className="button submit-button" href="/join">Join the club <ArrowRight size={17} /></a>
           </div>
         </div>
       </section>
@@ -567,16 +567,16 @@ export default function Home() {
         <div className="section-shell final-content">
           <p className="eyebrow">The collection should keep moving</p><h2>Be there for<br /><em>the first drop.</em></h2>
           <p>Join the club for member drops, below-retail pricing, and the Slab Supply Co. trade-in desk.</p>
-          <div className="final-actions"><a className="button button-light" href="#join">Become a founding member <ArrowRight size={17} /></a><button className="button button-ghost" type="button" onClick={openTrade}>I have cards to trade</button></div>
+          <div className="final-actions"><a className="button button-light" href="/join">Join the club <ArrowRight size={17} /></a><button className="button button-ghost" type="button" onClick={openTrade}>I have cards to trade</button></div>
         </div>
       </section>
 
       <footer>
-        <div className="section-shell footer-top"><Logo /><p>An independent buying club for graded-card collectors.</p><div className="footer-links"><a href="#how">How it works</a><a href="#trade-ins">Trade-ins</a><a href="/promise">Our promise</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
+        <div className="section-shell footer-top"><Logo /><p>An independent buying club for graded-card collectors.</p><div className="footer-links"><a href="/membership">Membership</a><a href="/help">Help</a><a href="/account">My membership</a><a href="/promise">Our promise</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
         <div className="section-shell footer-bottom"><p>© 2026 Slab Supply Co. All rights reserved.</p><p>Not affiliated with or endorsed by Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company. All trademarks belong to their respective owners.</p></div>
       </footer>
 
-      <div className="mobile-bar"><a className="button" href="#join">Become a founding member <ArrowRight size={16} /></a></div>
+      <div className="mobile-bar"><a className="button" href="/join">Join the club <ArrowRight size={16} /></a></div>
 
       {tradeOpen && (
         <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setTradeOpen(false); }}>
