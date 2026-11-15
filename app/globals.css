@@ -39,8 +39,9 @@ button { color: inherit; }
 .brand-mark-back,.brand-mark-front { transform-box: fill-box; transform-origin: center; transition: transform .28s ease; }
 .brand:hover .brand-mark-back { transform: rotate(-3deg) translate(-1px,1px); }
 .brand:hover .brand-mark-front { transform: rotate(2deg) translate(1px,-1px); }
-.brand-wordmark { position: relative; color: var(--forest-deep); font-size: 20px; font-weight: 800; letter-spacing: -.055em; line-height: 1; white-space: nowrap; }
-.brand-wordmark>span { position: absolute; top: -4px; right: -9px; color: var(--coral); font-size: 8px; }
+.brand-wordmark { display: inline-flex; align-items: center; color: var(--forest-deep); line-height: 1; white-space: nowrap; }
+.brand-name { font-size: 14px; font-weight: 800; letter-spacing: .115em; }
+.brand-company { margin-left: 9px; padding-left: 9px; border-left: 1px solid rgba(38,37,61,.3); color: #666478; font-size: 8px; font-weight: 800; letter-spacing: .15em; }
 .nav-links { display: flex; gap: 30px; font-size: 13px; font-weight: 650; }
 .nav-links a { position: relative; }
 .nav-links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -6px; height: 1px; background: var(--coral); transition: right .25s; }
