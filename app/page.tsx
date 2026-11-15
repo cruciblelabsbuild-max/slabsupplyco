@@ -509,7 +509,7 @@ export default function Home() {
       <section className="membership-section" id="membership">
         <div className="section-shell membership-layout">
           <div className="membership-copy">
-            <p className="eyebrow">Slab Supply · Founding membership</p>
+            <p className="eyebrow">Slab Supply Co. · Founding membership</p>
             <h2>One membership.<br /><em>More from every card.</em></h2>
             <p className="section-lede">One annual membership designed to put more value back into your collection.</p>
           </div>
