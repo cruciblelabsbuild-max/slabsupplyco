@@ -523,7 +523,7 @@ footer { padding: 28px 0 20px; background: var(--paper); } .footer-top { display
 .promise-principles-grid article:nth-child(4) { background: #fff4ed; }
 .promise-principles-grid article:hover { transform: translateY(-4px) rotate(-.35deg); box-shadow: 0 18px 42px rgba(38,37,61,.11); }
 .promise-principles-grid article>span { display: grid; width: 29px; height: 29px; place-items: center; border: 1px solid rgba(255,112,87,.4); border-radius: 50%; color: var(--coral); font-size: 8px; font-weight: 850; letter-spacing: .08em; }
-.promise-principles-grid h3 { margin: 31px 0 15px; color: var(--forest); font: 500 26px/1.05 "Fraunces",serif; letter-spacing: -.035em; }
+.promise-principles-grid h3 { margin: 31px 0 15px; color: var(--forest); font: 700 26px/1.1 Georgia,"Times New Roman",serif; letter-spacing: -.035em; }
 .promise-principles-grid p { max-width: 490px; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.65; }
 .promise-page-close { position: relative; min-height: 570px; display: grid; place-items: center; overflow: hidden; background: var(--forest); color: var(--white); text-align: center; }
 .promise-page-close .eyebrow { color: var(--sage); }

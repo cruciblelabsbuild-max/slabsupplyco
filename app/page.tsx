@@ -362,8 +362,8 @@ export default function Home() {
           ) : (
             <form onSubmit={submitWaitlist} onFocus={() => { if (!waitStartedTracked.current) { waitStartedTracked.current = true; track("waitlist_started"); } }}>
               <p className="eyebrow">Founding list</p>
-              <h2>Get first access.</h2>
-              <p>Get first access to member drops and the trade-in desk.</p>
+              <h2>Join the club.</h2>
+              <p>Join the founding list for member drops and the trade-in desk.</p>
               <div className="field-row">
                 <label><span>First name</span><input name="firstName" autoComplete="given-name" maxLength={60} placeholder="Avery" required /></label>
                 <label><span>Email</span><input name="email" type="email" autoComplete="email" maxLength={160} placeholder="avery@example.com" required /></label>
@@ -566,7 +566,7 @@ export default function Home() {
         <div className="final-orbit" />
         <div className="section-shell final-content">
           <p className="eyebrow">The collection should keep moving</p><h2>Be there for<br /><em>the first drop.</em></h2>
-          <p>Get first access to member drops, below-retail pricing, and the Slab Supply Co. trade-in desk.</p>
+          <p>Join the club for member drops, below-retail pricing, and the Slab Supply Co. trade-in desk.</p>
           <div className="final-actions"><a className="button button-light" href="#join">Become a founding member <ArrowRight size={17} /></a><button className="button button-ghost" type="button" onClick={openTrade}>I have cards to trade</button></div>
         </div>
       </section>
