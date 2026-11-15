@@ -697,7 +697,7 @@ footer { padding: 28px 0 20px; background: var(--paper); } .footer-top { display
 .club-membership-pass::after { content: ""; position: absolute; width: 400px; height: 400px; top: -230px; right: -180px; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; box-shadow: 0 0 0 40px rgba(255,255,255,.03),0 0 0 80px rgba(255,255,255,.03); }
 .club-membership-pass>span { font-size: 10px; font-weight: 800; letter-spacing: .16em; }
 .club-membership-pass>svg { position: absolute; top: 27px; right: 24px; color: var(--coral); }
-.club-membership-hero .club-membership-pass>p { margin-top: 50px; font-size: 8px; letter-spacing: .15em; color: var(--sage); }
+.club-membership-hero>.club-membership-pass>p:not(.eyebrow) { margin-top: 50px; font-size: 8px; letter-spacing: .15em; color: var(--sage); }
 .club-membership-pass h2 { margin: 13px 0 30px; font: 600 49px/.98 "Fraunces",serif; letter-spacing: -.04em; }
 .club-membership-pass>div { display: flex; align-items: center; justify-content: space-between; gap: 25px; width: 100%; margin-top: auto; border-top: 1px solid rgba(255,255,255,.23); padding-top: 22px; }
 .club-membership-pass>div span { max-width: 90px; font-size: 8px; line-height: 1.6; letter-spacing: .12em; }
