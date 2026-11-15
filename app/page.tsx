@@ -317,7 +317,7 @@ export default function Home() {
 
       <section className="hero section-shell">
         <div className="hero-copy">
-          <p className="eyebrow"><Sparkles size={14} /> The club</p>
+          <p className="eyebrow"><Sparkles size={14} /> The club for graded-card collectors</p>
           <h1>A better way<br /><em>to collect.</em></h1>
           <p className="hero-lede">Shop graded cards below retail value. Trade slabs for up to full value in store credit. One membership, built around your collection.</p>
           <div className="hero-points" aria-label="Core benefits">
