@@ -111,9 +111,6 @@ export default function Home() {
       utm_medium: params.get("utm_medium"),
       utm_campaign: params.get("utm_campaign"),
     });
-    if (params.get("join") === "early-access") {
-      window.requestAnimationFrame(() => document.getElementById("join")?.scrollIntoView({ behavior: "smooth", block: "center" }));
-    }
   }, []);
 
   function moveFaq(direction: -1 | 1) {
