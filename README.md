@@ -107,3 +107,9 @@ Internal release work (do not expose as product promises):
 - Supply actual release dates, inventory, and purchase rules before publishing releases. No fictional release detail is exposed.
 - Connect durable D1 submission storage and operational review before exposing trade-in or help forms. These forms are gated on configured credentials.
 - Complete Stripe test payment/renewal/cancellation verification and production entitlement/webhook work before switching to live billing. Checkout remains test mode.
+
+Member profile stores a validated favorite Pokémon and optional shipping address in Clerk private metadata. The server derives the destination user from the verified session; request bodies cannot select a user. Profile details can be updated and the address cleared. Security settings are separate at `/account/security`. `/account/orders` separates Member deal orders, Trade-in requests, and Grail interests; no orders, shipping events, or reservations are fabricated. Connect real commerce records to these sections as fulfillment is activated.
+
+The root layout seeds identity from the server and Clerk dynamic SSR. Navigation and the mobile account action use that same initial identity, avoiding the guest/loading/member header change on refresh. Signed-in navigation uses one compact desktop header and a separate horizontal navigation only on mobile. Public homepage copy and layout are unchanged.
+
+Checkout binds each Clerk identity to one Stripe test customer in private metadata. It checks customer subscriptions directly, blocks additional checkout for active or unresolved subscriptions, and reuses open Checkout sessions. New session idempotency is derived server-side from the prior session, so simultaneous tabs share one creation request. Active members visiting `/join` return to club home; no duplicate-membership disclaimer is shown. Guest navigation only contains public Membership and Our promise destinations.

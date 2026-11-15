@@ -1,3 +1,4 @@
+import { getMember } from "../lib/member-session";
 import IdentityProvider from "../components/club/IdentityProvider";
 import { authConfigured } from "../lib/auth-config";
 import type { Metadata } from "next";
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" data-scroll-behavior="smooth"><body><IdentityProvider enabled={authConfigured()}>{children}</IdentityProvider></body></html>;
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const member = await getMember();
+  return <html lang="en" data-scroll-behavior="smooth"><head><link rel="preload" href="/fonts/manrope-400.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/fraunces-600.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/></head><body><IdentityProvider enabled={authConfigured()} initialName={member?.name ?? null}>{children}</IdentityProvider></body></html>;
 }

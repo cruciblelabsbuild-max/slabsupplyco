@@ -1,6 +1,6 @@
 import { getMember } from "../../../lib/member-session";
 import { membershipForUser } from "../../../lib/member-subscription";
-import { randomUUID } from "node:crypto";
+import { billingCustomer, reusableCheckout } from "../../../lib/member-billing";
 import { NextResponse } from "next/server";
 import { billingConfig, checkoutOrigin } from "../../../lib/billing-config";
 import { createTestCheckout } from "../../../lib/test-checkout";
@@ -23,9 +23,10 @@ export async function POST(request: Request) {
     if (membership.state === "active-test") return NextResponse.json({ message: "This account already has a membership. Manage it from My account." }, { status: 409 });
     if (membership.state === "unavailable") return NextResponse.json({ message: "Membership status could not be checked. Try again shortly." }, { status: 503 });
     const stripe = getStripe();
-    const priorKey = request.headers.get("idempotency-key");
-    const key = priorKey && /^[a-f0-9-]{36}$/i.test(priorKey) ? priorKey : randomUUID();
-    const url = await createTestCheckout(stripe, config.priceId, origin, key, { id: member.id, email: member.email });
+    const customerId = await billingCustomer(stripe, { id: member.id, email: member.email });
+    const checkout = await reusableCheckout(stripe, customerId, member.id, config.priceId);
+    if (checkout.blocked) return NextResponse.json({ message: "Your membership already has a subscription. Manage it from Billing." }, { status:409 });
+    const url = checkout.url || await createTestCheckout(stripe, config.priceId, origin, checkout.key, { id: member.id, email: member.email, customerId });
     return NextResponse.json({ url }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Test checkout creation failed", error instanceof Error ? error.message : "Unknown error");

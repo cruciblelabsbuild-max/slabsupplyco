@@ -291,7 +291,7 @@ export default function Home() {
               <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
               <label className="consent"><input type="checkbox" name="consent" /><span>I agree to receive club updates. I can unsubscribe anytime.</span></label>
               <button className="button submit-button" disabled={waitState === "submitting"} type="submit">
-                {waitState === "submitting" ? "Opening sign-up…" : <>Join the club <ArrowRight size={17} /></>}
+                <span>{waitState === "submitting" ? "Opening sign-up…" : "Join the club"}</span><ArrowRight size={17} aria-hidden="true"/>
               </button>
               {waitMessage && <p className="form-message error" role="alert">{waitMessage}</p>}
               <p className="form-footnote">Founding membership is $99 per year.</p>
