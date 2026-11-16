@@ -1,4 +1,4 @@
-// Private review assortment. Rounded price-guide references; member prices model a 10% discount.
+// Browsable review assortment; card purchasing remains disabled. Rounded price-guide references; member prices model a 10% discount.
 // Art: Pokémon TCG API. Reference values are estimates, not owned-inventory appraisals.
 export const memberSelection = [
   {

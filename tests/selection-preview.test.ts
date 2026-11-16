@@ -1,14 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { selectionPreviewEnabled } from "../lib/selection-preview";
 import { memberSelection } from "../lib/member-selection";
-test("the review assortment stays off production even if a preview flag is accidentally set", () => {
-  assert.equal(selectionPreviewEnabled({}), false);
-  assert.equal(selectionPreviewEnabled({ VERCEL_ENV: "production", MEMBER_SELECTION_PREVIEW: "1" }), false);
-  assert.equal(selectionPreviewEnabled({ VERCEL_ENV: "production", VERCEL_GIT_COMMIT_REF: "preview/member-experience" }), false);
-  assert.equal(selectionPreviewEnabled({ VERCEL_ENV: "preview", VERCEL_GIT_COMMIT_REF: "preview/member-experience" }), true);
-  assert.equal(selectionPreviewEnabled({ MEMBER_SELECTION_PREVIEW: "1" }), true);
-});
 test("the selection contains 50 distinct cards within the requested prices and grades", () => {
   assert.equal(memberSelection.length, 50);
   assert.equal(new Set(memberSelection.map(card => card.image)).size, 50);

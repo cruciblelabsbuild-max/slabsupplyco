@@ -10,7 +10,7 @@ export type ValueAssumptions = {
 export const membershipValueDefaults: ValueAssumptions = {
   annualSpend: 2500,
   annualTrades: 2000,
-  purchaseDiscount: 10,
+  purchaseDiscount: 15,
   traditionalTradePercent: 85,
   memberTradePercent: 100,
 };

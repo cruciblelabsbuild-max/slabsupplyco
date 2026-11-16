@@ -8,5 +8,5 @@ export default async function SignInComplete({searchParams}:{searchParams:Promis
  const member=await requireMember();const {next,checkout}=await searchParams;
  const enrollment=checkout==="continue";
  const activeMembership=enrollment&&(await membershipForUser(member.id)).state==="active-test";
- return <MemberArrival allowStoredTradeIntent={!enrollment} destination={memberArrivalDestination({enrollment,activeMembership,next})}/>;
+ return <MemberArrival name={member.name} allowStoredTradeIntent={!enrollment} destination={memberArrivalDestination({enrollment,activeMembership,next})}/>;
 }

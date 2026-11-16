@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { membershipValue, membershipValueDefaults } from "../lib/membership-value";
 const defaults = membershipValueDefaults;
 test("default comparison separates purchase savings, additional credit, and membership fee", () => {
-  assert.deepEqual(membershipValue(defaults), { retailPurchases: 250000, memberPurchases: 225000, purchaseSavings: 25000, traditionalCredit: 170000, memberCredit: 200000, additionalCredit: 30000, totalBenefit: 55000, membershipFee: 14900, netBenefit: 40100 });
+  assert.deepEqual(membershipValue(defaults), { retailPurchases: 250000, memberPurchases: 212500, purchaseSavings: 37500, traditionalCredit: 170000, memberCredit: 200000, additionalCredit: 30000, totalBenefit: 67500, membershipFee: 14900, netBenefit: 52600 });
 });
 test("unfavorable credit assumptions and low spending show a negative net benefit", () => {
   const result = membershipValue({ ...defaults, annualSpend: 250, annualTrades: 1000, purchaseDiscount: 0, traditionalTradePercent: 100, memberTradePercent: 80 });

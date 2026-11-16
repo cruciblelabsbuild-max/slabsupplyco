@@ -2,13 +2,12 @@ import Link from "next/link";
 import { memberSelection } from "../../../../lib/member-selection";
 import { getMember } from "../../../../lib/member-session";
 import { membershipForUser } from "../../../../lib/member-subscription";
-import { selectionPreviewEnabled } from "../../../../lib/selection-preview";
 import GradedCardImage from "../../../../components/club/GradedCardImage";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, BadgeCheck, Package, ShieldCheck } from "lucide-react";
 import { catalog, dollars } from "../../../../lib/catalog";
 export const dynamic = "force-dynamic";
-const availableCards = () => [...catalog, ...(selectionPreviewEnabled() ? memberSelection : [])];
+const availableCards = () => [...catalog, ...memberSelection];
 export function generateStaticParams() { return catalog.map(card => ({ slug: card.slug })); }
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) { const { slug } = await params; return { title: `${availableCards().find(card => card.slug === slug)?.name || "Card"} · Slab Supply Co.` }; }
 export default async function CardPage({ params }: { params: Promise<{ slug: string }> }) {
