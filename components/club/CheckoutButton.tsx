@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { enrollmentArrivalUrl } from "../../lib/member-arrival";
 import { authAppearance } from "./auth-appearance";
 import { SignUp, SignIn } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
@@ -15,7 +16,7 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
   const [error, setError] = useState("");
   const started = useRef(false);
   const destinationSuffix = next === "trades" ? "&next=trades" : "";
-  const returnUrl = `/join?checkout=continue${destinationSuffix}`;
+  const returnUrl = enrollmentArrivalUrl(next);
   useEffect(()=>{try{if(next === "trades")sessionStorage.setItem("ssc_membership_next",JSON.stringify({next:"trades",at:Date.now()}));}catch{}},[next]);
   async function checkout(consent: boolean) {
     if (!consent) return;

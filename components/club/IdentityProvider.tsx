@@ -1,4 +1,5 @@
 "use client";
+import { enrollmentArrivalUrl } from "../../lib/member-arrival";
 import { ClerkProvider, useUser } from "@clerk/nextjs";
 import { createContext, useContext, useEffect } from "react";
 type JoinDetails = { firstName: string; emailAddress: string; interest: string; collectingFocus: string; consent: boolean };
@@ -26,5 +27,5 @@ function SignupBridge({ children }: { children: React.ReactNode }) {
   return <Signup.Provider value={signup}>{children}</Signup.Provider>;
 }
 export default function IdentityProvider({ enabled, initialName = null, children }: { enabled: boolean; initialName?: string | null; children: React.ReactNode }) {
-  return <InitialIdentity.Provider value={initialName}><Availability.Provider value={enabled}>{enabled ? <ClerkProvider dynamic signInUrl="/sign-in" signUpUrl="/sign-up" signInFallbackRedirectUrl="/account" signUpFallbackRedirectUrl="/join" afterSignOutUrl="/" localization={{ signIn: { start: { title: "Member sign-in", subtitle: "Welcome back to Slab Supply Co." } }, signUp: { start: { title: "Become a member", subtitle: "Welcome to Slab Supply Co." } } }} appearance={{ variables: { colorPrimary: "#30325c", colorBackground: "#fffdf9", colorForeground: "#26253d", fontFamily: "Manrope, sans-serif", borderRadius: "6px" } }}><SignupBridge>{children}</SignupBridge></ClerkProvider> : children}</Availability.Provider></InitialIdentity.Provider>;
+  return <InitialIdentity.Provider value={initialName}><Availability.Provider value={enabled}>{enabled ? <ClerkProvider dynamic signInUrl="/sign-in" signUpUrl="/sign-up" signInFallbackRedirectUrl="/member-entry" signUpFallbackRedirectUrl={enrollmentArrivalUrl()} afterSignOutUrl="/" localization={{ signIn: { start: { title: "Member sign-in", subtitle: "Welcome back to Slab Supply Co." } }, signUp: { start: { title: "Become a member", subtitle: "Welcome to Slab Supply Co." } } }} appearance={{ variables: { colorPrimary: "#30325c", colorBackground: "#fffdf9", colorForeground: "#26253d", fontFamily: "Manrope, sans-serif", borderRadius: "6px" } }}><SignupBridge>{children}</SignupBridge></ClerkProvider> : children}</Availability.Provider></InitialIdentity.Provider>;
 }

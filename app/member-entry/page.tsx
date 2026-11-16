@@ -1,8 +1,12 @@
 import {requireMember} from "../../lib/member-session";
+import {membershipForUser} from "../../lib/member-subscription";
+import {memberArrivalDestination} from "../../lib/member-arrival";
 import MemberArrival from "../../components/club/MemberArrival";
 export const dynamic="force-dynamic";
 export const metadata={title:"Welcome back · Slab Supply Co.",robots:{index:false,follow:false}};
-export default async function SignInComplete({searchParams}:{searchParams:Promise<{next?:string}>}){
- await requireMember();const {next}=await searchParams;
- return <MemberArrival destination={next==="trades"?"/trade-ins#start-trade":"/account"}/>;
+export default async function SignInComplete({searchParams}:{searchParams:Promise<{next?:string;checkout?:string}>}){
+ const member=await requireMember();const {next,checkout}=await searchParams;
+ const enrollment=checkout==="continue";
+ const activeMembership=enrollment&&(await membershipForUser(member.id)).state==="active-test";
+ return <MemberArrival allowStoredTradeIntent={!enrollment} destination={memberArrivalDestination({enrollment,activeMembership,next})}/>;
 }
