@@ -306,7 +306,7 @@ export default function Home() {
         <div className="section-shell">
           <div className="shelf-heading">
             <div><p className="eyebrow">On the member shelf</p><h2>Cards worth collecting.<br /><em>Prices worth joining for.</em></h2></div>
-            <div className="shelf-heading-side"><p>Vintage icons, modern illustration rares, cult favorites, and art-forward promos—curated for the member shelf.</p><div className="shelf-controls" aria-label="Browse member shelf"><button type="button" onClick={() => scrollShelf(-1)} aria-label="Previous cards" disabled={shelfIndex === 0}><ArrowLeft /></button><button type="button" onClick={() => scrollShelf(1)} aria-label="Next cards" disabled={shelfIndex >= shelfCards.length - shelfPageSize}><ArrowRight /></button></div></div>
+            <div className="shelf-heading-side"><p>Cards you know. Finds worth making room for.</p><div className="shelf-controls" aria-label="Browse member shelf"><button type="button" onClick={() => scrollShelf(-1)} aria-label="Previous cards" disabled={shelfIndex === 0}><ArrowLeft /></button><button type="button" onClick={() => scrollShelf(1)} aria-label="Next cards" disabled={shelfIndex >= shelfCards.length - shelfPageSize}><ArrowRight /></button></div></div>
           </div>
           <div className="shelf-grid" ref={shelfRef} onScroll={syncShelfIndex}>
             {shelfCards.map((card) => <article className="shelf-card" key={card.name}>
@@ -335,7 +335,7 @@ export default function Home() {
             </div>
             <h3>Member pricing<br />below retail</h3>
             <p>Shop a tightly curated shelf of graded cards at pricing built for the membership—not the open-market markup.</p>
-            <a className="text-button" href="#sample-shelf">Shop now <ArrowRight size={15} /></a>
+            <a className="text-button" href="/join">Shop now <ArrowRight size={15} /></a>
           </article>
           <article className="benefit-card light-card">
             <span className="card-number">02</span>
