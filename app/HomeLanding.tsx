@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
+import Link from "next/link";
+import TradeJourney from "../components/TradeJourney";
 import MembershipValueCalculator from "../components/MembershipValueCalculator";
 import { ClubHeader, MobileAccountBar } from "../components/club/ClubShell";
 
@@ -39,8 +41,8 @@ const faqs = [
   },
   {
     label: "New arrivals",
-    q: "How often are new cards and doorbusters available?",
-    a: "Grail drops run monthly. New cards and limited-quantity doorbusters are announced with their release dates and quantities. Check Member deals and Grail drops for current availability.",
+    q: "How often are new cards and grail drops available?",
+    a: "Grail drops run monthly, with release dates and quantities announced for each drop. Check Member deals for new cards and Grail drops for current releases.",
   },
   {
     label: "Membership & cancellation",
@@ -192,7 +194,7 @@ export default function Home() {
   }
 
   return (
-    <main id="top">
+    <main id="top" className="home-page">
       <ClubHeader />
 
       <section className="hero hero-v2 section-shell">
@@ -200,7 +202,7 @@ export default function Home() {
           <p className="eyebrow"><Sparkles size={14} /> THE POKÉMON COLLECTORS’ BUYING CLUB</p>
           <h1>Collect more.<br /><em>Spend less.</em></h1>
           <p className="hero-lede">Buy graded Pokémon cards below market prices. Trade eligible slabs for up to 100% of fair market value in club credit.</p>
-          <div className="hero-actions"><a className="button" href="#sample-shelf">Explore member deals <ArrowRight size={16} /></a><a className="text-button" href="#how">How membership works <ArrowRight size={15} /></a></div>
+          <div className="hero-actions"><Link className="button" href="/shop">Explore member deals <ArrowRight size={16} /></Link><a className="text-button" href="#how">How membership works <ArrowRight size={15} /></a></div>
           <p className="hero-membership-note">$99/year founding membership · Card purchases sold separately</p>
         </div>
 
@@ -228,7 +230,7 @@ export default function Home() {
         <div className="section-shell">
           <div className="shelf-heading">
             <div><p className="eyebrow">On the member shelf</p><h2>Cards worth collecting.<br /><em>Prices worth joining for.</em></h2></div>
-            <div className="shelf-heading-side"><p>Cards you know. Finds worth making room for.</p><div className="shelf-controls" aria-label="Browse member shelf"><button type="button" onClick={() => scrollShelf(-1)} aria-label="Previous cards" disabled={shelfIndex === 0}><ArrowLeft /></button><button type="button" onClick={() => scrollShelf(1)} aria-label="Next cards" disabled={shelfIndex >= shelfCards.length - shelfPageSize}><ArrowRight /></button></div></div>
+            <div className="shelf-heading-side"><div className="shelf-controls" aria-label="Browse member shelf"><button type="button" onClick={() => scrollShelf(-1)} aria-label="Previous cards" disabled={shelfIndex === 0}><ArrowLeft /></button><button type="button" onClick={() => scrollShelf(1)} aria-label="Next cards" disabled={shelfIndex >= shelfCards.length - shelfPageSize}><ArrowRight /></button></div></div>
           </div>
           <div className="shelf-grid" ref={shelfRef} onScroll={syncShelfIndex}>
             {shelfCards.map((card) => <article className="shelf-card" key={card.name}>
@@ -337,12 +339,7 @@ export default function Home() {
           <span>Eligible graders</span>
           <p>Currently accepting eligible graded Pokémon cards from PSA, CGC, BGS, and select other grading companies.</p>
         </div>
-        <ol className="home-trade-steps">
-          <li><span>01</span><h3>Submit your slabs.</h3><p>Provide card details and certification information.</p></li>
-          <li><span>02</span><h3>Get your offer.</h3><p>Receive a quote based on current market values and demand.</p></li>
-          <li><span>03</span><h3>Send your cards.</h3><p>Ship approved cards for verification.</p></li>
-          <li><span>04</span><h3>Receive your credit.</h3><p>Get club credit toward your next purchase after approval.</p></li>
-        </ol>
+        <TradeJourney />
         <p className="fine-print">All offers depend on eligibility, review, and approval. Store credit is not cash.</p>
       </section>
 
@@ -410,7 +407,7 @@ export default function Home() {
         <div className="section-shell final-content">
           <p className="eyebrow">The collection should keep moving</p><h2>Be there for<br /><em>the first drop.</em></h2>
           <p>Join the Pokémon collectors’ club for better card prices, premium trade-in value, and exclusive monthly grail drops.</p>
-          <div className="final-actions"><a className="button button-light" href="/join">Become a member <ArrowRight size={17} /></a><a className="button button-ghost" href="#sample-shelf">Explore member deals</a></div>
+          <div className="final-actions"><a className="button button-light" href="/join">Become a member <ArrowRight size={17} /></a><Link className="button button-ghost" href="/shop">Explore member deals</Link></div>
         </div>
       </section>
 
