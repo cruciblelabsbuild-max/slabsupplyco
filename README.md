@@ -52,7 +52,7 @@ Slab Supply Co. is independent and not affiliated with Nintendo, The Pokémon Co
 
 ## Club pages and subscription test phase
 
-The site includes `/membership`, `/join`, `/account`, `/membership/welcome`, `/membership/terms`, `/shop`, `/shop/[slug]`, `/drops`, `/trade-ins`, and `/help`. The member shelf is a searchable reference collection with individual card pages. It is not live inventory: there is no card purchase button, cart, reservation, or fictional order history.
+The site includes `/membership`, `/join`, `/account`, `/membership/welcome`, `/membership/terms`, `/shop`, `/shop/[slug]`, `/drops`, `/trade-ins`, and `/help`. The member shelf is a searchable reference collection with individual card pages. The 50-card assortment supports Stripe test purchases with Buy now. It is not owned, fulfillable inventory; live keys remain rejected. Orders display only completed, owned Stripe test sessions, never invented purchase history.
 
 ### Connect Stripe in test mode
 
@@ -68,7 +68,7 @@ The site includes `/membership`, `/join`, `/account`, `/membership/welcome`, `/m
 
 Stripe is the source of truth for this test subscription flow. Payment details are entered on Stripe, not this website. The return page retrieves the actual Stripe session and active subscription before confirming a test payment. It does not reveal customer details or grant access. Request retries reuse an idempotency key, the price is fixed server-side, and the API rejects cross-origin checkout requests. Clerk authenticates website accounts. Checkout requires a signed-in account with a verified email and stores its immutable Clerk user ID on the Stripe session and subscription. The protected member area checks Stripe for an active test subscription owned by that ID. Stripe’s emailed portal login remains the billing-management flow.
 
-**Not a live billing implementation:** there are no webhook-driven entitlements, inventory reservations, fulfillment, or private member accounts yet. Before live enrollment, add verified/idempotent webhook processing for renewals/cancellations/failed payments, member access rules, real inventory and order handling, final business/legal/refund/shipping policies, and complete end-to-end testing. Live billing deliberately cannot be enabled through an environment flag in this version.
+**Not a live billing implementation:** there are no webhook-driven live entitlements, inventory reservations, or fulfillment yet. Before live enrollment, add verified/idempotent webhook processing for renewals/cancellations/failed payments, member access rules, real inventory and order handling, final business/legal/refund/shipping policies, and complete end-to-end testing. Live billing deliberately cannot be enabled through an environment flag in this version.
 
 ### Verification
 
@@ -81,7 +81,7 @@ The legacy founding-list endpoint, trade-in, contact, and analytics routes requi
 
 Clerk development authentication is provisioned locally. `.env.local` and `.clerk/` are ignored and must never be committed. Claim the development application with `npx clerk auth login` from this checkout to manage it in your Clerk account.
 
-For Vercel, configure `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` for the same Clerk application, then redeploy. The public key is used in browser code; the secret key stays server-side. The code fixes the sign-in/sign-up routes to `/sign-in` and `/sign-up`, returning to `/account`. Without configured keys the site remains in an explicit guest state, sign-in shows a setup message, and protected pages redirect to sign-in.
+For Vercel, configure `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` for the same Clerk application, then redeploy. The public key is used in browser code; the secret key stays server-side. Sign-in uses `/sign-in`; registration is mounted in `/join?identity=sign-up`, with the legacy `/sign-up` route preserving enrollment intent. Completed identity flows pass through `/member-entry`. Without configured keys the site remains in an explicit guest state, sign-in shows a setup message, and protected pages redirect to sign-in.
 
 - `/account`, `/account/billing`, and `/account/profile` verify the Clerk session on the server.
 - The mobile header shows Sign in for guests, and a named account button and signed-in strip for authenticated users. Its menu adds account, billing, settings, and sign-out controls.
@@ -103,7 +103,7 @@ Stripe test membership is configured at $149 USD per year. The test billing port
 Signed-in visitors enter `/account`; the public homepage design is retained. Club navigation links directly to deals, trade-in guidelines, releases, and settings. Enrollment completion links back to the club. Checkout accepts only the explicit custom and deployment origins, and returns to the same approved origin.
 
 Internal release work (do not expose as product promises):
-- Supply verified inventory and exact slab data before enabling card sales. Sample catalog records are not listed in member deals.
+- Supply verified inventory, exact slab photos, stock reservations, shipping/tax rules, and fulfillment before enabling live card sales. The 50-card assortment is browsable and purchasable only through Stripe test payments.
 - Supply actual release dates, inventory, and purchase rules before publishing releases. No fictional release detail is exposed.
 - Connect durable D1 submission storage and operational review before exposing trade-in or help forms. These forms are gated on configured credentials.
 - Complete Stripe test payment/renewal/cancellation verification and production entitlement/webhook work before switching to live billing. Checkout remains test mode.
@@ -120,10 +120,16 @@ Enrollment is one `/join` flow: membership terms, inline identity details, then 
 
 Authenticated trade submissions store structured card details and a server-owned status in Clerk private metadata, under UUID idempotency keys. Users can read their own requests in Activity → Trade-ins. The initial implementation limits open requests to three and rejects writes over a 7KB metadata budget; move commerce history into dedicated storage before expanding trade volume. No quote, credit, shipment, payment, or review notification is fabricated. The legacy anonymous form still uses D1. Profile/security are consolidated on one page.
 
-Saved payment cards belong to the same verified Stripe test customer as membership. The profile only receives card brand, last four digits, and expiry. Add/update uses the configured Stripe portal's payment_method_update flow, then returns to the profile. This does not charge money or create a subscription. Membership Checkout offers Stripe's save-for-later checkbox; future card/grail checkouts must use that customer and collect confirmation. Inventory purchase processing remains gated on actual inventory and fulfillment implementation.
+Saved payment cards belong to the same verified Stripe test customer as membership. The profile only receives card brand, last four digits, and expiry. Add/update uses the configured Stripe portal's payment_method_update flow, then returns to the profile. This does not charge money or create a subscription. Membership Checkout offers Stripe's save-for-later checkbox; future card/grail checkouts must use that customer and collect confirmation. Card Checkout now uses the same customer, collects shipping details, and offers saved payment methods. Live inventory purchase processing remains gated on actual inventory and fulfillment implementation.
 
 ## Member Home totals
 
 Home reads available credit from the server-owned trade credit ledger and counts submitted, reviewing, and quoted trade requests as active submissions (one submission can contain several cards). Total member savings reads `privateMetadata.memberPurchases`, keyed by order ID. Completed USD orders contain immutable `retailValueCents` and `cardSubtotalCents` snapshots of the card prices before trade-credit payment, shipping, tax, or membership fees; pending, canceled, and refunded orders do not count. Missing histories show zero; unavailable data does not become a fabricated zero.
 
-Before enabling card purchases, connect verified payment/fulfillment events to this order history and the Orders page, including refund handling and durable commerce storage. No sample catalog savings or membership payments count toward this total. The current site has no completed card purchases.
+Card test purchases now also read completed Stripe Checkout sessions belonging to the verified customer. Immutable card and retail snapshots drive the savings total; membership fees are excluded. Fully or partially refunded card orders do not contribute savings. Orders show actual paid test purchases and their collected shipping address. Stripe retrieval failures display unavailable status, not a fabricated zero. Move this history to durable commerce storage with verified webhooks and fulfillment before live sales.
+
+## Card checkout and authentication
+
+`/api/cards/checkout` derives card prices and membership status on the server. Non-members confirm the $149 annual renewal terms and pay for one membership plus one card in a subscription Checkout session; the card line is one-time and is excluded from renewals. Active members use a payment-mode Checkout session for the card alone. Both flows share the same identity-bound Stripe customer, reject unrelated origins, collect shipping details, and save payment details only through Stripe. Stale membership carts are expired when their card selection changes; server-derived idempotency keys protect retry and concurrent creation.
+
+The selected card is preserved through enrollment, existing-account sign-in, the arrival animation, and checkout. Clerk OAuth uses redirect mode, and a completed browser session obtains a fresh token before requesting an authenticated server page. The provider’s sign-up URL points directly at the mounted enrollment component rather than the legacy redirect route.
