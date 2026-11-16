@@ -15,6 +15,7 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
   const [error, setError] = useState("");
   const started = useRef(false);
   const destinationSuffix = next === "trades" ? "&next=trades" : "";
+  const returnUrl = `/join?checkout=continue${destinationSuffix}`;
   useEffect(()=>{try{if(next === "trades")sessionStorage.setItem("ssc_membership_next",JSON.stringify({next:"trades",at:Date.now()}));}catch{}},[next]);
   async function checkout(consent: boolean) {
     if (!consent) return;
@@ -44,6 +45,6 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
     setDetails(true);
   }
   if(!ready)return <div className="checkout-unavailable"><p>Checkout is unavailable. Please try again.</p></div>;
-  if(details && !signedIn)return <div className="join-inline-identity"><p className="eyebrow">Your details</p>{signIn ? <SignIn appearance={authAppearance} routing="hash" forceRedirectUrl={`/join?checkout=continue${destinationSuffix}`} signUpUrl={`/join?identity=sign-up${destinationSuffix}`}/>:<SignUp appearance={authAppearance} routing="hash" initialValues={initialValues} forceRedirectUrl={`/join?checkout=continue${destinationSuffix}`} signInUrl={`/join?identity=sign-in${destinationSuffix}`}/>}</div>;
+  if(details && !signedIn)return <div className="join-inline-identity"><p className="eyebrow">Your details</p>{signIn ? <SignIn appearance={authAppearance} routing="hash" forceRedirectUrl={returnUrl} signUpForceRedirectUrl={returnUrl} signUpUrl={`/join?identity=sign-up${destinationSuffix}`}/>:<SignUp appearance={authAppearance} routing="hash" initialValues={initialValues} forceRedirectUrl={returnUrl} signInForceRedirectUrl={returnUrl} signInUrl={`/join?identity=sign-in${destinationSuffix}`}/>}</div>;
   return <div className="checkout-controls"><label className="club-consent"><input type="checkbox" checked={accepted} onChange={e=>setAccepted(e.target.checked)}/><span>I agree to the <Link href="/membership/terms">membership terms</Link>. Membership renews at $99 USD/year until canceled.</span></label><button className="button club-wide" type="button" onClick={proceed} disabled={!accepted || pending}>{pending ? "Opening secure checkout…" : "Become a member"}<ArrowRight size={16}/></button><p className="club-small join-payment-note"><LockKeyhole size={12}/> Secure payment through Stripe.</p>{error && <p className="club-form-error" role="alert">{error}</p>}</div>;
 }
