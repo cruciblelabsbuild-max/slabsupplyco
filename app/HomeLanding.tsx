@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
-import { useStartSignup } from "../components/club/IdentityProvider";
+import MembershipValueCalculator from "../components/MembershipValueCalculator";
 import { ClubHeader, MobileAccountBar } from "../components/club/ClubShell";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
@@ -86,12 +86,8 @@ function track(event: string, metadata: Record<string, unknown> = {}) {
 
 export default function Home() {
   const [noteOpen, setNoteOpen] = useState(false);
-  const [waitState, setWaitState] = useState<SubmitState>("idle");
   const [noteState, setNoteState] = useState<SubmitState>("idle");
-  const [waitMessage, setWaitMessage] = useState("");
   const [noteMessage, setNoteMessage] = useState("");
-  const startSignup = useStartSignup();
-  const waitStartedTracked = useRef(false);
   const shelfRef = useRef<HTMLDivElement>(null);
   const [shelfIndex, setShelfIndex] = useState(0);
   const [shelfPageSize, setShelfPageSize] = useState(1);
@@ -130,18 +126,6 @@ export default function Home() {
     media.addEventListener("change", updatePageSize);
     return () => media.removeEventListener("change", updatePageSize);
   }, []);
-
-  async function submitJoin(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (waitState === "submitting") return;
-    setWaitState("submitting"); setWaitMessage("");
-    const data = new FormData(event.currentTarget);
-    try {
-      await startSignup({ firstName: String(data.get("firstName") || ""), emailAddress: String(data.get("email") || ""), interest: String(data.get("interest") || ""), collectingFocus: String(data.get("collectingFocus") || ""), consent: data.get("consent") === "on" });
-    } catch {
-      setWaitState("error"); setWaitMessage("Membership enrollment could not open. Please try again.");
-    }
-  }
 
   function openTrade() {
     track("tradein_started");
@@ -211,16 +195,13 @@ export default function Home() {
     <main id="top">
       <ClubHeader />
 
-      <section className="hero section-shell">
+      <section className="hero hero-v2 section-shell">
         <div className="hero-copy">
-          <p className="eyebrow"><Sparkles size={14} /> For graded-card collectors</p>
+          <p className="eyebrow"><Sparkles size={14} /> THE POKÉMON COLLECTORS’ BUYING CLUB</p>
           <h1>Collect more.<br /><em>Spend less.</em></h1>
-          <p className="hero-lede">Shop graded cards below retail value. Trade slabs for up to full value in store credit. One membership, built around your collection.</p>
-          <div className="hero-points" aria-label="Core benefits">
-            <span><Check size={16} /> Exclusive monthly grail drops</span>
-            <span><Check size={16} /> Below-retail member pricing</span>
-            <span><Check size={16} /> Up to 100% trade-in credit</span>
-          </div>
+          <p className="hero-lede">Buy graded Pokémon cards below market prices. Trade eligible slabs for up to 100% of fair market value in club credit.</p>
+          <div className="hero-actions"><a className="button" href="#sample-shelf">Explore member deals <ArrowRight size={16} /></a><a className="text-button" href="#how">How membership works <ArrowRight size={15} /></a></div>
+          <p className="hero-membership-note">$99/year founding membership · Card purchases sold separately</p>
         </div>
 
         <div className="hero-visual" aria-label="Curated graded card display">
@@ -237,30 +218,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="join-card" id="join">
-            <form noValidate onSubmit={submitJoin} onFocus={() => { if (!waitStartedTracked.current) { waitStartedTracked.current = true; track("account_signup_started"); } }}>
-              <p className="eyebrow">Founding membership</p>
-              <h2>Become a member.</h2>
-              <div className="field-row">
-                <label><span>First name</span><input name="firstName" autoComplete="given-name" maxLength={60} placeholder="Avery" required /></label>
-                <label><span>Email</span><input name="email" type="email" autoComplete="email" maxLength={160} placeholder="avery@example.com" required /></label>
-              </div>
-              <fieldset className="interest-choice">
-                <legend>I’m most interested in</legend>
-                <label><input type="radio" name="interest" value="buying" required /><span>Buying</span></label>
-                <label><input type="radio" name="interest" value="trading" /><span>Trading in</span></label>
-                <label><input type="radio" name="interest" value="both" /><span>Both</span></label>
-              </fieldset>
-              <label className="full-field"><span>What do you collect? <i>Optional</i></span><input name="collectingFocus" maxLength={160} placeholder="Vintage, modern, a favorite era…" /></label>
-              <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
-              <label className="consent"><input type="checkbox" name="consent" /><span>I agree to receive membership updates. I can unsubscribe anytime.</span></label>
-              <button className="button submit-button" disabled={waitState === "submitting"} type="submit">
-                <span>{waitState === "submitting" ? "Opening membership…" : "Become a member"}</span><ArrowRight size={17} aria-hidden="true"/>
-              </button>
-              {waitMessage && <p className="form-message error" role="alert">{waitMessage}</p>}
-              <p className="form-footnote">Founding membership is $99 per year.</p>
-            </form>
-        </div>
       </section>
 
       <section className="principle-strip" aria-label="Our operating principles">
@@ -280,7 +237,7 @@ export default function Home() {
               <button className="button button-outline" type="button" onClick={() => expressShelfInterest(card.interest)}>Get member access <ArrowRight size={15} /></button>
             </article>)}
           </div>
-          <p className="shelf-note">Market reference snapshot: November 15, 2026. Values are rounded from recent completed-sale data and current market estimates from <a href="https://www.pricecharting.com/game/pokemon-jungle/snorlax-11" target="_blank" rel="noreferrer">PriceCharting</a> and <a href="https://slabline.ai/cards/2023-scarlet-violet-151-charizard-ex-199-psa-10" target="_blank" rel="noreferrer">Slabline</a>. Exact grades, copies, and values vary by drop.</p>
+          <p className="shelf-note">Illustrative member-pricing examples, not available inventory or live offers. Market reference snapshot: November 15, 2026. Values are rounded from recent completed-sale data and current market estimates from <a href="https://www.pricecharting.com/game/pokemon-jungle/snorlax-11" target="_blank" rel="noreferrer">PriceCharting</a> and <a href="https://slabline.ai/cards/2023-scarlet-violet-151-charizard-ex-199-psa-10" target="_blank" rel="noreferrer">Slabline</a>. Exact grades, copies, and values vary by drop.</p>
         </div>
       </section>
 
@@ -299,7 +256,7 @@ export default function Home() {
               <div className="price-ticket"><small>RETAIL</small><s>$172</s><b>$148</b><span>MEMBER</span></div>
             </div>
             <h3>Member pricing<br />below retail</h3>
-            <p>Shop a tightly curated shelf of graded cards at pricing built for the membership—not the open-market markup.</p>
+            <p>Shop a curated selection of graded Pokémon cards at prices built for our members, not traditional retail markups.</p>
             <a className="text-button" href="/join">Shop now <ArrowRight size={15} /></a>
           </article>
           <article className="benefit-card light-card">
@@ -311,7 +268,7 @@ export default function Home() {
               <div className="credit-coin"><strong>UP TO</strong><b>100%</b><span>CREDIT</span></div>
             </div>
             <h3>Trade toward<br />what’s next</h3>
-            <p>Turn approved slabs into meaningful store credit for your next card—or take instant cash.</p>
+            <p>Turn eligible graded cards into club credit toward your next find, with select cards qualifying for up to full fair market value.</p>
             <button className="text-button" type="button" onClick={openTrade}>Submit your trades <ArrowRight size={15} /></button>
           </article>
         </div>
@@ -338,7 +295,7 @@ export default function Home() {
           <div className="grail-copy">
             <p className="eyebrow">Monthly grail drops</p>
             <h2>The cards you watch for.<br /><em>At member pricing.</em></h2>
-            <p>Once a month, members get first access to a tightly curated drop of standout slabs—vintage icons, scarce promos, and modern chase cards.</p>
+            <p>Once a month, members get first access to a curated drop of standout graded Pokémon cards—vintage icons, scarce promos, and modern grails—all at member pricing.</p>
             <a className="button button-light" href="/join">Get drop access <ArrowRight size={16} /></a>
           </div>
           <div className="grail-visual" aria-label="A selection of graded cards from a monthly grail drop">
@@ -355,10 +312,10 @@ export default function Home() {
           <div className="trade-copy">
             <p className="eyebrow">The trade-in desk</p>
             <h2>Trade what you have.<br /><em>Collect what you want.</em></h2>
-            <p>Send us the graded cards that are ready for a new home. Approved trades become store credit or cash.</p>
+            <p>Get up to 100% of fair market value in store credit on select eligible graded Pokémon cards.</p>
             <button className="button" type="button" onClick={openTrade}>Submit your trades <ArrowRight size={16} /></button>
           </div>
-          <div className="trade-flow" aria-label="Submit a graded card and choose store credit or cash">
+          <div className="trade-flow" aria-label="Trade approved graded cards for store credit">
             <div className="trade-flow-orbit" aria-hidden="true" />
             <div className="flow-item">
               <div className="flow-slab" aria-hidden="true"><small>SLAB SUPPLY CO.</small><span>09</span></div>
@@ -372,15 +329,24 @@ export default function Home() {
             <ArrowRight className="flow-arrow" aria-hidden="true" />
             <div className="flow-item">
               <div className="flow-slab flow-slab-next" aria-hidden="true"><small>YOUR CHOICE</small><span>✦</span></div>
-              <strong>Credit or cash</strong>
+              <strong>Your next card</strong>
             </div>
           </div>
         </div>
         <div className="trade-eligibility">
           <span>Eligible graders</span>
-          <p>Professionally graded cards from PSA, CGC, BGS, and select others.</p>
+          <p>Currently accepting eligible graded Pokémon cards from PSA, CGC, BGS, and select other grading companies.</p>
         </div>
+        <ol className="home-trade-steps">
+          <li><span>01</span><h3>Submit your slabs.</h3><p>Provide card details and certification information.</p></li>
+          <li><span>02</span><h3>Get your offer.</h3><p>Receive a quote based on current market values and demand.</p></li>
+          <li><span>03</span><h3>Send your cards.</h3><p>Ship approved cards for verification.</p></li>
+          <li><span>04</span><h3>Receive your credit.</h3><p>Get club credit toward your next purchase after approval.</p></li>
+        </ol>
+        <p className="fine-print">All offers depend on eligibility, review, and approval. Store credit is not cash.</p>
       </section>
+
+      <MembershipValueCalculator />
 
       <section className="membership-section" id="membership">
         <div className="section-shell membership-layout">
@@ -394,15 +360,16 @@ export default function Home() {
             <div className="price"><sup>$</sup><strong>99</strong><span>/ year</span></div>
             <p>Member pricing, premium trade-in value, and exclusive drops—built around your collection.</p>
             <ul>
-              <li><Check /> Everyday member pricing below retail</li>
-              <li><Check /> Premium trade-in credit—up to 100% of fair market value on eligible graded cards</li>
-              <li><Check /> Exclusive monthly member drops and grail opportunities</li>
+              <li><Check /> Below-retail member pricing on eligible graded Pokémon cards.</li>
+              <li><Check /> Premium trade-in credit, up to 100% of fair market value on select eligible Pokémon slabs.</li>
+              <li><Check /> Exclusive monthly grail drops.</li>
             </ul>
             <div className="membership-promise">
               <span>The Slab Supply Co. Promise</span>
               <p>Your annual membership supports leaner card margins, transparent pricing, and more value returned to collectors.</p>
             </div>
             <a className="button submit-button" href="/join">Become a member <ArrowRight size={17} /></a>
+            <p className="fine-print membership-renewal">$99/year, renewing annually until canceled. Card purchases, applicable taxes, and shipping are separate.</p>
           </div>
         </div>
       </section>
@@ -442,8 +409,8 @@ export default function Home() {
         <div className="final-orbit" />
         <div className="section-shell final-content">
           <p className="eyebrow">The collection should keep moving</p><h2>Be there for<br /><em>the first drop.</em></h2>
-          <p>Become a member for card drops, below-retail pricing, and the Slab Supply Co. trade-in desk.</p>
-          <div className="final-actions"><a className="button button-light" href="/join">Become a member <ArrowRight size={17} /></a><button className="button button-ghost" type="button" onClick={openTrade}>I have cards to trade</button></div>
+          <p>Join the Pokémon collectors’ club for better card prices, premium trade-in value, and exclusive monthly grail drops.</p>
+          <div className="final-actions"><a className="button button-light" href="/join">Become a member <ArrowRight size={17} /></a><a className="button button-ghost" href="#sample-shelf">Explore member deals</a></div>
         </div>
       </section>
 

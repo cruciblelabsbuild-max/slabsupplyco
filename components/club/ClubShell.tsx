@@ -7,7 +7,7 @@ import { ArrowRight, Menu, X, UserRound, LogOut } from "lucide-react";
 import Logo from "../../app/Logo";
 import MemberNavigation from "./MemberNavigation";
 import { useIdentityEnabled, useInitialIdentity } from "./IdentityProvider";
-const guestLinks = [["/membership", "Membership"], ["/promise", "Our promise"]];
+const guestLinks = [["/shop", "Member deals"], ["/trade-ins", "Trade in"], ["/membership", "Membership"], ["/promise", "Our promise"]];
 
 export function ClubHeader() {
   const enabled = useIdentityEnabled();
