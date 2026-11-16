@@ -1,3 +1,4 @@
+import { annualMembership } from "./membership-plan";
 export type ValueAssumptions = {
   annualSpend: number;
   annualTrades: number;
@@ -25,6 +26,6 @@ export function membershipValue(input: ValueAssumptions) {
   const memberCredit = Math.round(trades * percent(input.memberTradePercent) / 100);
   const additionalCredit = memberCredit - traditionalCredit;
   const totalBenefit = purchaseSavings + additionalCredit;
-  const membershipFee = 9900;
+  const membershipFee = annualMembership.amountCents;
   return { retailPurchases, memberPurchases: retailPurchases - purchaseSavings, purchaseSavings, traditionalCredit, memberCredit, additionalCredit, totalBenefit, membershipFee, netBenefit: totalBenefit - membershipFee };
 }

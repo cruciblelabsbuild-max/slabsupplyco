@@ -1,3 +1,4 @@
+import { annualMembership } from "../../../lib/membership-plan";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import InquiryForm from "../../../components/club/InquiryForm";
@@ -5,7 +6,7 @@ export const metadata = { title: "A little help · Slab Supply Co." };
 const questions = [
   ["How do I become a member?", "Choose Become a member and complete enrollment. Checkout currently runs in test mode and does not charge real money."],
   ["Are the cards on the shelf available?", "The collection contains reference examples. No cards are available to purchase."],
-  ["How does the $99 annual membership work?", "The intended plan is one annual subscription. Cards are purchased separately. Membership is designed to include member pricing, trade-in opportunities, and monthly drops; it does not reserve a specific card."],
+  [`How does the ${annualMembership.display} annual membership work?`, "Membership renews annually until canceled. Cards are purchased separately. Membership is designed to include member pricing, trade-in opportunities, and monthly drops; it does not reserve a specific card."],
   ["How do I manage renewal?", "Stripe’s billing portal handles payment details, invoices, renewal dates, and cancellation. Open My membership and use the email address from checkout."],
   ["Does submitting a trade-in commit me to anything?", "No. Interest is not a quote or an agreement to sell. Review and accept a written offer before shipping anything."],
   ["Where are shipping and return policies?", "Card purchases are not open. Shipping costs, dispatch expectations, return eligibility, and inspection terms must be published with live listings before orders can be placed."],

@@ -1,4 +1,6 @@
 "use client";
+import { annualMembership } from "../../lib/membership-plan";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -29,7 +31,7 @@ function Navigation({ name, onSignOut }: { name: string | null; onSignOut?: () =
     try { await onSignOut?.(); } catch { setLeaving(false); setError("Sign-out failed. Please try again."); }
   }
   if (name) return <MemberNavigation onSignOut={logout} leaving={leaving} error={error}/>;
-  return <><div className="announcement"><span>Built around your collection. Founding membership · $99/year.</span></div>
+  return <><div className="announcement"><span>Built around your collection. Founding membership · {annualMembership.display}/year.</span></div>
     <header className="site-header club-header">
       <Logo href="/" />
       <nav id="club-navigation" className={open ? "nav-links open" : "nav-links"} aria-label="Primary navigation">

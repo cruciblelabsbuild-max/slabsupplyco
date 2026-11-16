@@ -1,4 +1,5 @@
-export const enrollmentTermsVersion = "annual-99-v1";
+import { annualMembership } from "./membership-plan";
+export const enrollmentTermsVersion = annualMembership.termsVersion;
 export function hasRecentEnrollmentConsent(value: unknown, now = Date.now()) {
   if (!value || typeof value !== "object") return false;
   const consent = value as Record<string, unknown>;

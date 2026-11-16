@@ -1,3 +1,4 @@
+import { annualMembership } from "./membership-plan";
 export type BillingMode = "test" | "live";
 // Live billing deliberately remains disabled during the design and test phase.
 export function billingConfig(env: Record<string, string | undefined> = process.env) {
@@ -19,7 +20,7 @@ export function siteOrigin(env: Record<string, string | undefined> = process.env
   return url.origin;
 }
 export function validAnnualPrice(price: { active: boolean; currency: string; unit_amount: number | null; type: string; recurring: { interval: string; interval_count: number; usage_type: string } | null }) {
-  return price.active && price.currency === "usd" && price.unit_amount === 9900 && price.type === "recurring" && price.recurring?.interval === "year" && price.recurring.interval_count === 1 && price.recurring.usage_type === "licensed";
+  return price.active && price.currency === annualMembership.currency && price.unit_amount === annualMembership.amountCents && price.type === "recurring" && price.recurring?.interval === "year" && price.recurring.interval_count === 1 && price.recurring.usage_type === "licensed";
 }
 
 // Explicit deployment origins only; never trust an arbitrary request Host.

@@ -5,7 +5,7 @@ import { checkoutStatus } from "../lib/checkout-status";
 import { POST } from "../app/api/checkout/route";
 
 const testConfig = { STRIPE_SECRET_KEY: "sk_test_example", STRIPE_ANNUAL_PRICE_ID: "price_example", STRIPE_CUSTOMER_PORTAL_URL: "https://billing.stripe.com/p/login/test_example" };
-const annualPrice = { active: true, currency: "usd", unit_amount: 9900, type: "recurring", recurring: { interval: "year", interval_count: 1, usage_type: "licensed" } };
+const annualPrice = { active: true, currency: "usd", unit_amount: 14900, type: "recurring", recurring: { interval: "year", interval_count: 1, usage_type: "licensed" } };
 const completeSession = { mode: "subscription", metadata: { membership: "founding-annual", phase: "test" }, livemode: false, status: "complete", payment_status: "paid", subscription: { status: "active" } };
 
 test("checkout stays closed until the test checkout and portal are configured", () => {
@@ -20,6 +20,7 @@ test("portal only allows Stripe-hosted test login links", () => {
 });
 test("annual checkout rejects a mismatched price, currency, or billing interval", () => {
   assert.equal(validAnnualPrice(annualPrice), true);
+  assert.equal(validAnnualPrice({ ...annualPrice, unit_amount: 9900 }), false);
   assert.equal(validAnnualPrice({ ...annualPrice, unit_amount: 99900 }), false);
   assert.equal(validAnnualPrice({ ...annualPrice, currency: "eur" }), false);
   assert.equal(validAnnualPrice({ ...annualPrice, active: false }), false);

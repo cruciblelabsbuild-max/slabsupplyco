@@ -57,7 +57,7 @@ The site includes `/membership`, `/join`, `/account`, `/membership/welcome`, `/m
 ### Connect Stripe in test mode
 
 1. Create a Stripe account and switch to a sandbox/test mode.
-2. Create a product for founding annual membership with a **USD $99.00 recurring price every year** (one licensed unit). Copy its `price_...` identifier.
+2. Create a product for founding annual membership with a **USD $149.00 recurring price every year** (one licensed unit). Copy its `price_...` identifier.
 3. Activate the test customer portal login link in Stripe Billing settings. Enable invoices, payment-method updates, and cancellation **at the end of the billing period**. Enable Stripe's "limit customers to one subscription" / redirect existing subscribers to the portal setting.
 4. Set these server-only environment variables in Vercel (and `.env.local` for local work):
    - `STRIPE_SECRET_KEY`: an `sk_test_...` key; live keys are rejected.
@@ -86,7 +86,7 @@ For Vercel, configure `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY`
 - `/account`, `/account/billing`, and `/account/profile` verify the Clerk session on the server.
 - The mobile header shows Sign in for guests, and a named account button and signed-in strip for authenticated users. Its menu adds account, billing, settings, and sign-out controls.
 - The home page sticky mobile action changes from Join the club to My account after sign-in.
-- Sign-up establishes sign-in credentials and returns to `/join` to complete the $99 annual test subscription. There is no separate collector-account offering; sign-in alone does not activate membership.
+- Sign-up establishes sign-in credentials and returns to `/join` to complete the $149 annual test subscription. There is no separate collector-account offering; sign-in alone does not activate membership.
 - Membership status is verified server-side from a matching Stripe subscription, using `clerk_user_id` metadata. Neither local storage, a URL parameter, nor a client-supplied email grants membership.
 - Stripe search can be eventually consistent after checkout. The verified checkout confirmation is immediate; account membership can take time to appear. No live entitlements are granted by the test flow.
 - Before a real launch, claim/configure the Clerk application for your production domain, set final authentication policies, and complete the Stripe webhook/entitlement work described above.
@@ -96,7 +96,7 @@ A synthetic `+clerk_test@example.com` user was created only in the new developme
 
 The home page signup card retains its established design and starts real Clerk registration. It prefills first name and email through Clerk's redirect API. Collecting interests and email-update consent are saved as private account preferences after verified sign-in; they are not used as proof of membership. The account-preferences endpoint verifies the session and request origin. The home form no longer posts to the legacy waitlist endpoint.
 
-Stripe test membership is configured at $99 USD per year. The test billing portal supports invoices, payment method updates, and cancellation at period end. Production Vercel environment variables store the server-only test key and billing settings; no Stripe secrets are committed.
+Stripe test membership is configured at $149 USD per year. The test billing portal supports invoices, payment method updates, and cancellation at period end. Production Vercel environment variables store the server-only test key and billing settings; no Stripe secrets are committed.
 
 ## Member experience readiness
 

@@ -1,4 +1,6 @@
 "use client";
+import { annualMembership } from "../lib/membership-plan";
+
 
 import {
   ArrowDownRight,
@@ -48,7 +50,7 @@ const faqs = [
   {
     label: "Membership & cancellation",
     q: "What does membership cost, and how do cancellations work?",
-    a: "Membership is $99 USD per year and renews annually until canceled. Manage your subscription and cancel renewal from Membership in your Profile. Your cancellation confirmation shows the date your subscription ends. Card purchases are separate.",
+    a: `Membership is ${annualMembership.display} USD per year and renews annually until canceled. Manage your subscription and cancel renewal from Membership in your Profile. Your cancellation confirmation shows the date your subscription ends. Card purchases are separate.`,
   },
   {
     label: "Card availability",
@@ -204,7 +206,7 @@ export default function Home() {
           <h1>Collect more.<br /><em>Spend less.</em></h1>
           <p className="hero-lede">Buy graded Pokémon cards below market prices. Trade eligible slabs for up to 100% of fair market value in club credit.</p>
           <div className="hero-actions"><Link className="button" href="/shop">Explore member deals <ArrowRight size={16} /></Link><a className="text-button" href="#how">How membership works <ArrowRight size={15} /></a></div>
-          <p className="hero-membership-note">$99/year founding membership · Card purchases sold separately</p>
+          <p className="hero-membership-note">{annualMembership.display}/year founding membership · Card purchases sold separately</p>
         </div>
 
         <div className="hero-visual" aria-label="Curated graded card display">
@@ -355,7 +357,7 @@ export default function Home() {
           </div>
           <div className="price-card">
             <div className="price-card-top"><span className="status-pill coral">founding annual price</span><div className="membership-emblem" aria-hidden="true"><i /><b>✦</b></div></div>
-            <div className="price"><sup>$</sup><strong>99</strong><span>/ year</span></div>
+            <div className="price"><sup>$</sup><strong>{annualMembership.amount}</strong><span>/ year</span></div>
             <p>Member pricing, premium trade-in value, and exclusive drops—built around your collection.</p>
             <ul>
               <li><Check /> Below-retail member pricing on eligible graded Pokémon cards.</li>
@@ -367,7 +369,7 @@ export default function Home() {
               <p>Your annual membership supports leaner card margins, transparent pricing, and more value returned to collectors.</p>
             </div>
             <a className="button submit-button" href="/join">Become a member <ArrowRight size={17} /></a>
-            <p className="fine-print membership-renewal">$99/year, renewing annually until canceled. Card purchases, applicable taxes, and shipping are separate.</p>
+            <p className="fine-print membership-renewal">{annualMembership.display}/year, renewing annually until canceled. Card purchases, applicable taxes, and shipping are separate.</p>
           </div>
         </div>
       </section>
