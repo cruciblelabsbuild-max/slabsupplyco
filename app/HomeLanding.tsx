@@ -12,6 +12,7 @@ import {
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
 import Link from "next/link";
+import CardPricing from "../components/CardPricing";
 import TradeJourney from "../components/TradeJourney";
 import MembershipValueCalculator from "../components/MembershipValueCalculator";
 import { ClubHeader, MobileAccountBar } from "../components/club/ClubShell";
@@ -235,7 +236,7 @@ export default function Home() {
           <div className="shelf-grid" ref={shelfRef} onScroll={syncShelfIndex}>
             {shelfCards.map((card) => <article className="shelf-card" key={card.name}>
               <div className="shelf-art"><img src={card.image} alt={card.alt} /><span className="shelf-badge">Member shelf</span></div>
-              <div className="shelf-meta"><span className="shelf-kicker">{card.kicker}</span><h3>{card.name}</h3><div className="shelf-pricing"><span>Retail<s>{card.retail}</s></span><span>Member price<b>{card.member}</b></span><span className="savings">Your savings<b>{card.savings}</b></span></div></div>
+              <div className="shelf-meta"><span className="shelf-kicker">{card.kicker}</span><h3>{card.name}</h3><CardPricing retail={card.retail} member={card.member} savings={card.savings} /></div>
               <button className="button button-outline" type="button" onClick={() => expressShelfInterest(card.interest)}>Get member access <ArrowRight size={15} /></button>
             </article>)}
           </div>
@@ -259,7 +260,7 @@ export default function Home() {
             </div>
             <h3>Member pricing<br />below retail</h3>
             <p>Shop a curated selection of graded Pokémon cards at prices built for our members, not traditional retail markups.</p>
-            <a className="text-button" href="/join">Shop now <ArrowRight size={15} /></a>
+            <Link className="text-button" href="/shop">Shop now <ArrowRight size={15} /></Link>
           </article>
           <article className="benefit-card light-card">
             <span className="card-number">02</span>

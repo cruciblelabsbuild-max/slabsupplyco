@@ -1,32 +1,47 @@
-// Illustrative assortment, not owned inventory. Card art: Pokémon TCG API (pokemon-tcg-data).
+// Private review assortment. Rounded price-guide references; member prices model a 10% discount.
+// Art: Pokémon TCG API. Reference values are estimates, not owned-inventory appraisals.
 export const memberSelection = [
   {
-    "slug": "selection-sv3pt5-142-psa-8",
+    "slug": "selection-sv3pt5-142-psa-9",
     "image": "/cards/selection/sv3pt5-142.webp",
     "name": "Aerodactyl #142",
     "year": "2023",
     "set": "151",
-    "grade": "PSA 8",
+    "grade": "PSA 9",
     "grader": "PSA",
-    "gradeNumber": 8,
+    "gradeNumber": 9,
     "category": "Modern",
-    "retail": 18,
+    "retail": 17,
     "member": 15,
-    "description": "Aerodactyl from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "description": "Aerodactyl from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-scarlet-%26-violet-151/aerodactyl-142",
+      "grade": "Grade 9",
+      "value": 17,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
-    "slug": "selection-sv3pt5-15-cgc-9",
+    "slug": "selection-sv3pt5-15-psa-9",
     "image": "/cards/selection/sv3pt5-15.webp",
     "name": "Beedrill #15",
     "year": "2023",
     "set": "151",
-    "grade": "CGC 9",
-    "grader": "CGC",
+    "grade": "PSA 9",
+    "grader": "PSA",
     "gradeNumber": 9,
     "category": "Modern",
-    "retail": 179,
-    "member": 155,
-    "description": "Beedrill from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 25,
+    "member": 23,
+    "description": "Beedrill from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-scarlet-%26-violet-151/beedrill-15",
+      "grade": "Grade 9",
+      "value": 24.5,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
     "slug": "selection-sv3pt5-185-bgs-10",
@@ -38,9 +53,16 @@ export const memberSelection = [
     "grader": "BGS",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 76,
-    "member": 66,
-    "description": "Arbok ex from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 90,
+    "member": 81,
+    "description": "Arbok ex from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-scarlet-%26-violet-151/arbok-ex-185",
+      "grade": "BGS 10",
+      "value": 90,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-sv3pt5-150-psa-9",
@@ -52,37 +74,58 @@ export const memberSelection = [
     "grader": "PSA",
     "gradeNumber": 9,
     "category": "Modern",
-    "retail": 207,
-    "member": 180,
-    "description": "Mewtwo from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 23,
+    "member": 21,
+    "description": "Mewtwo from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-scarlet-%26-violet-151/mewtwo-holo-150",
+      "grade": "Grade 9",
+      "value": 22.98,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
-    "slug": "selection-sv3pt5-98-cgc-10",
+    "slug": "selection-sv3pt5-98-psa-10",
     "image": "/cards/selection/sv3pt5-98.webp",
     "name": "Krabby #98",
     "year": "2023",
     "set": "151",
-    "grade": "CGC 10",
-    "grader": "CGC",
+    "grade": "PSA 10",
+    "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 221,
-    "member": 192,
-    "description": "Krabby from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Krabby from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-scarlet-%26-violet-151/krabby-98",
+      "grade": "PSA 10",
+      "value": 31.08,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-sv3pt5-77-bgs-8",
+    "slug": "selection-sv3pt5-77-psa-10",
     "image": "/cards/selection/sv3pt5-77.webp",
     "name": "Ponyta #77",
     "year": "2023",
     "set": "151",
-    "grade": "BGS 8",
-    "grader": "BGS",
-    "gradeNumber": 8,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 87,
-    "member": 75,
-    "description": "Ponyta from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 50,
+    "member": 45,
+    "description": "Ponyta from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-scarlet-%26-violet-151/ponyta-77",
+      "grade": "PSA 10",
+      "value": 49.99,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-sv3pt5-102-psa-10",
@@ -94,37 +137,58 @@ export const memberSelection = [
     "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 195,
-    "member": 169,
-    "description": "Exeggcute from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Exeggcute from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-scarlet-%26-violet-151/exeggcute-102",
+      "grade": "PSA 10",
+      "value": 30.89,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-sv3pt5-92-cgc-9",
+    "slug": "selection-sv3pt5-92-psa-9",
     "image": "/cards/selection/sv3pt5-92.webp",
     "name": "Gastly #92",
     "year": "2023",
     "set": "151",
-    "grade": "CGC 9",
-    "grader": "CGC",
+    "grade": "PSA 9",
+    "grader": "PSA",
     "gradeNumber": 9,
     "category": "Modern",
-    "retail": 197,
-    "member": 171,
-    "description": "Gastly from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 19,
+    "member": 17,
+    "description": "Gastly from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-scarlet-%26-violet-151/gastly-92",
+      "grade": "Grade 9",
+      "value": 19.27,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
-    "slug": "selection-sv3pt5-5-bgs-8",
+    "slug": "selection-sv3pt5-5-psa-8",
     "image": "/cards/selection/sv3pt5-5.webp",
     "name": "Charmeleon #5",
     "year": "2023",
     "set": "151",
-    "grade": "BGS 8",
-    "grader": "BGS",
+    "grade": "PSA 8",
+    "grader": "PSA",
     "gradeNumber": 8,
     "category": "Modern",
-    "retail": 67,
-    "member": 58,
-    "description": "Charmeleon from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 18,
+    "member": 16,
+    "description": "Charmeleon from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-scarlet-%26-violet-151/charmeleon-5",
+      "grade": "Grade 8",
+      "value": 18.34,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
     "slug": "selection-sv3pt5-137-psa-10",
@@ -136,37 +200,58 @@ export const memberSelection = [
     "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 33,
-    "member": 28,
-    "description": "Porygon from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 38,
+    "member": 34,
+    "description": "Porygon from 151. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-scarlet-%26-violet-151/porygon-137",
+      "grade": "PSA 10",
+      "value": 38.28,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh12-77-cgc-8",
+    "slug": "selection-swsh12-77-psa-10",
     "image": "/cards/selection/swsh12-77.webp",
     "name": "Duosion #77",
     "year": "2022",
     "set": "Silver Tempest",
-    "grade": "CGC 8",
-    "grader": "CGC",
-    "gradeNumber": 8,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 176,
-    "member": 153,
-    "description": "Duosion from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Duosion from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-silver-tempest/duosion-77",
+      "grade": "PSA 10",
+      "value": 30.87,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh12-104-bgs-9",
+    "slug": "selection-swsh12-104-psa-10",
     "image": "/cards/selection/swsh12-104.webp",
     "name": "Golbat #104",
     "year": "2022",
     "set": "Silver Tempest",
-    "grade": "BGS 9",
-    "grader": "BGS",
-    "gradeNumber": 9,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 27,
-    "member": 23,
-    "description": "Golbat from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 29,
+    "member": 26,
+    "description": "Golbat from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-silver-tempest/golbat-104",
+      "grade": "PSA 10",
+      "value": 29.45,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-swsh12-112-psa-10",
@@ -178,23 +263,37 @@ export const memberSelection = [
     "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 128,
-    "member": 111,
-    "description": "Krokorok from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Krokorok from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-silver-tempest/krokorok-112",
+      "grade": "PSA 10",
+      "value": 30.8,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh12-29-cgc-9",
+    "slug": "selection-swsh12-29-psa-10",
     "image": "/cards/selection/swsh12-29.webp",
     "name": "Talonflame #29",
     "year": "2022",
     "set": "Silver Tempest",
-    "grade": "CGC 9",
-    "grader": "CGC",
-    "gradeNumber": 9,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 90,
-    "member": 78,
-    "description": "Talonflame from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Talonflame from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-silver-tempest/talonflame-29",
+      "grade": "PSA 10",
+      "value": 31.18,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-swsh12-196-bgs-10",
@@ -206,9 +305,16 @@ export const memberSelection = [
     "grader": "BGS",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 122,
-    "member": 106,
-    "description": "Serperior VSTAR from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 84,
+    "member": 76,
+    "description": "Serperior VSTAR from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-silver-tempest/serperior-vstar-196",
+      "grade": "BGS 10",
+      "value": 84,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-swsh12-173-psa-8",
@@ -220,93 +326,142 @@ export const memberSelection = [
     "grader": "PSA",
     "gradeNumber": 8,
     "category": "Modern",
-    "retail": 140,
-    "member": 121,
-    "description": "Alolan Vulpix V from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 20,
+    "member": 18,
+    "description": "Alolan Vulpix V from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-silver-tempest/alolan-vulpix-v-173",
+      "grade": "Grade 8",
+      "value": 20,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
-    "slug": "selection-swsh12-9-cgc-10",
+    "slug": "selection-swsh12-9-psa-10",
     "image": "/cards/selection/swsh12-9.webp",
     "name": "Petilil #9",
     "year": "2022",
     "set": "Silver Tempest",
-    "grade": "CGC 10",
-    "grader": "CGC",
+    "grade": "PSA 10",
+    "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 120,
-    "member": 104,
-    "description": "Petilil from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Petilil from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-silver-tempest/petilil-9",
+      "grade": "PSA 10",
+      "value": 30.72,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh12-201-bgs-9",
+    "slug": "selection-swsh12-201-psa-9",
     "image": "/cards/selection/swsh12-201.webp",
     "name": "Regidrago VSTAR #201",
     "year": "2022",
     "set": "Silver Tempest",
-    "grade": "BGS 9",
-    "grader": "BGS",
+    "grade": "PSA 9",
+    "grader": "PSA",
     "gradeNumber": 9,
     "category": "Modern",
-    "retail": 65,
-    "member": 56,
-    "description": "Regidrago VSTAR from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 24,
+    "member": 22,
+    "description": "Regidrago VSTAR from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-silver-tempest/regidrago-vstar-201",
+      "grade": "Grade 9",
+      "value": 24.24,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
-    "slug": "selection-swsh12-109-psa-8",
+    "slug": "selection-swsh12-109-psa-10",
     "image": "/cards/selection/swsh12-109.webp",
     "name": "Croagunk #109",
     "year": "2022",
     "set": "Silver Tempest",
-    "grade": "PSA 8",
+    "grade": "PSA 10",
     "grader": "PSA",
-    "gradeNumber": 8,
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 218,
-    "member": 189,
-    "description": "Croagunk from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 30,
+    "member": 27,
+    "description": "Croagunk from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-silver-tempest/croagunk-109",
+      "grade": "PSA 10",
+      "value": 30.23,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh12-108-cgc-10",
+    "slug": "selection-swsh12-108-psa-10",
     "image": "/cards/selection/swsh12-108.webp",
     "name": "Skuntank V #108",
     "year": "2022",
     "set": "Silver Tempest",
-    "grade": "CGC 10",
-    "grader": "CGC",
+    "grade": "PSA 10",
+    "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 133,
-    "member": 115,
-    "description": "Skuntank V from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 22,
+    "member": 20,
+    "description": "Skuntank V from Silver Tempest. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-silver-tempest/skuntank-v-108",
+      "grade": "PSA 10",
+      "value": 22.49,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh9-8-bgs-8",
+    "slug": "selection-swsh9-8-psa-9",
     "image": "/cards/selection/swsh9-8.webp",
     "name": "Torterra #8",
-    "year": "2022",
-    "set": "Brilliant Stars",
-    "grade": "BGS 8",
-    "grader": "BGS",
-    "gradeNumber": 8,
-    "category": "Modern",
-    "retail": 99,
-    "member": 86,
-    "description": "Torterra from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
-  },
-  {
-    "slug": "selection-swsh9-73-psa-9",
-    "image": "/cards/selection/swsh9-73.webp",
-    "name": "Nosepass #73",
     "year": "2022",
     "set": "Brilliant Stars",
     "grade": "PSA 9",
     "grader": "PSA",
     "gradeNumber": 9,
     "category": "Modern",
-    "retail": 30,
-    "member": 26,
-    "description": "Nosepass from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 43,
+    "member": 39,
+    "description": "Torterra from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-brilliant-stars/torterra-holo-8",
+      "grade": "Grade 9",
+      "value": 43.39,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
+  },
+  {
+    "slug": "selection-swsh9-73-psa-10",
+    "image": "/cards/selection/swsh9-73.webp",
+    "name": "Nosepass #73",
+    "year": "2022",
+    "set": "Brilliant Stars",
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
+    "category": "Modern",
+    "retail": 31,
+    "member": 28,
+    "description": "Nosepass from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-brilliant-stars/nosepass-73",
+      "grade": "PSA 10",
+      "value": 30.77,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-swsh9-7-cgc-10",
@@ -318,23 +473,37 @@ export const memberSelection = [
     "grader": "CGC",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 153,
-    "member": 133,
-    "description": "Grotle from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 25,
+    "member": 23,
+    "description": "Grotle from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-brilliant-stars/grotle-7",
+      "grade": "CGC 10",
+      "value": 25,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh9-86-bgs-9",
+    "slug": "selection-swsh9-86-psa-10",
     "image": "/cards/selection/swsh9-86.webp",
     "name": "Sneasel #86",
     "year": "2022",
     "set": "Brilliant Stars",
-    "grade": "BGS 9",
-    "grader": "BGS",
-    "gradeNumber": 9,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 74,
-    "member": 64,
-    "description": "Sneasel from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Sneasel from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-brilliant-stars/sneasel-86",
+      "grade": "PSA 10",
+      "value": 30.58,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-swsh9-92-psa-10",
@@ -346,37 +515,58 @@ export const memberSelection = [
     "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 155,
-    "member": 134,
-    "description": "Impidimp from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Impidimp from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-brilliant-stars/impidimp-92",
+      "grade": "PSA 10",
+      "value": 30.73,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh9-181-cgc-8",
+    "slug": "selection-swsh9-181-psa-8",
     "image": "/cards/selection/swsh9-181.webp",
     "name": "Galarian Articuno V #181",
     "year": "2022",
     "set": "Brilliant Stars",
-    "grade": "CGC 8",
-    "grader": "CGC",
+    "grade": "PSA 8",
+    "grader": "PSA",
     "gradeNumber": 8,
     "category": "Modern",
-    "retail": 94,
-    "member": 81,
-    "description": "Galarian Articuno V from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 20,
+    "member": 18,
+    "description": "Galarian Articuno V from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-brilliant-stars/galarian-articuno-v-181",
+      "grade": "Grade 8",
+      "value": 19.99,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
-    "slug": "selection-swsh9-56-bgs-10",
+    "slug": "selection-swsh9-56-psa-9",
     "image": "/cards/selection/swsh9-56.webp",
     "name": "Mewtwo #56",
     "year": "2022",
     "set": "Brilliant Stars",
-    "grade": "BGS 10",
-    "grader": "BGS",
-    "gradeNumber": 10,
+    "grade": "PSA 9",
+    "grader": "PSA",
+    "gradeNumber": 9,
     "category": "Modern",
-    "retail": 122,
-    "member": 106,
-    "description": "Mewtwo from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 87,
+    "member": 78,
+    "description": "Mewtwo from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-brilliant-stars/mewtwo-56",
+      "grade": "Grade 9",
+      "value": 86.62,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
     "slug": "selection-swsh9-28-psa-9",
@@ -388,23 +578,37 @@ export const memberSelection = [
     "grader": "PSA",
     "gradeNumber": 9,
     "category": "Modern",
-    "retail": 167,
-    "member": 145,
-    "description": "Kingler V from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 20,
+    "member": 18,
+    "description": "Kingler V from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-brilliant-stars/kingler-v-28",
+      "grade": "Grade 9",
+      "value": 19.99,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
-    "slug": "selection-swsh9-40-cgc-8",
+    "slug": "selection-swsh9-40-psa-10",
     "image": "/cards/selection/swsh9-40.webp",
     "name": "Lumineon V #40",
     "year": "2022",
     "set": "Brilliant Stars",
-    "grade": "CGC 8",
-    "grader": "CGC",
-    "gradeNumber": 8,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 230,
-    "member": 200,
-    "description": "Lumineon V from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 37,
+    "member": 33,
+    "description": "Lumineon V from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-brilliant-stars/lumineon-v-40",
+      "grade": "PSA 10",
+      "value": 37,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-swsh9-24-bgs-10",
@@ -416,37 +620,58 @@ export const memberSelection = [
     "grader": "BGS",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 163,
-    "member": 141,
-    "description": "Chimchar from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 72,
+    "member": 65,
+    "description": "Chimchar from Brilliant Stars. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-brilliant-stars/chimchar-24",
+      "grade": "BGS 10",
+      "value": 72,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh45-3-psa-8",
+    "slug": "selection-swsh45-3-psa-10",
     "image": "/cards/selection/swsh45-3.webp",
     "name": "Celebi #3",
     "year": "2021",
     "set": "Shining Fates",
-    "grade": "PSA 8",
+    "grade": "PSA 10",
     "grader": "PSA",
-    "gradeNumber": 8,
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 25,
-    "member": 21,
-    "description": "Celebi from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 53,
+    "member": 48,
+    "description": "Celebi from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-shining-fates/celebi-3",
+      "grade": "PSA 10",
+      "value": 52.5,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh45-4-cgc-9",
+    "slug": "selection-swsh45-4-psa-10",
     "image": "/cards/selection/swsh45-4.webp",
     "name": "Cacnea #4",
     "year": "2021",
     "set": "Shining Fates",
-    "grade": "CGC 9",
-    "grader": "CGC",
-    "gradeNumber": 9,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 100,
-    "member": 87,
-    "description": "Cacnea from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 30,
+    "member": 27,
+    "description": "Cacnea from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-shining-fates/cacnea-4",
+      "grade": "PSA 10",
+      "value": 30.48,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-swsh45-44-bgs-10",
@@ -458,9 +683,16 @@ export const memberSelection = [
     "grader": "BGS",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 32,
-    "member": 27,
-    "description": "Crobat V from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 40,
+    "member": 36,
+    "description": "Crobat V from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-shining-fates/crobat-v-44",
+      "grade": "BGS 10",
+      "value": 40,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-swsh45-48-psa-9",
@@ -472,79 +704,121 @@ export const memberSelection = [
     "grader": "PSA",
     "gradeNumber": 9,
     "category": "Modern",
-    "retail": 219,
-    "member": 190,
-    "description": "Thievul from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 22,
+    "member": 20,
+    "description": "Thievul from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-shining-fates/thievul-48",
+      "grade": "Grade 9",
+      "value": 22,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
-    "slug": "selection-swsh45-24-cgc-10",
+    "slug": "selection-swsh45-24-psa-9",
     "image": "/cards/selection/swsh45-24.webp",
     "name": "Manaphy #24",
     "year": "2021",
     "set": "Shining Fates",
-    "grade": "CGC 10",
-    "grader": "CGC",
-    "gradeNumber": 10,
+    "grade": "PSA 9",
+    "grader": "PSA",
+    "gradeNumber": 9,
     "category": "Modern",
-    "retail": 218,
-    "member": 189,
-    "description": "Manaphy from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 30,
+    "member": 27,
+    "description": "Manaphy from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-shining-fates/manaphy-24",
+      "grade": "Grade 9",
+      "value": 29.9,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
-    "slug": "selection-swsh45-33-bgs-8",
+    "slug": "selection-swsh45-33-psa-10",
     "image": "/cards/selection/swsh45-33.webp",
     "name": "Luxray #33",
-    "year": "2021",
-    "set": "Shining Fates",
-    "grade": "BGS 8",
-    "grader": "BGS",
-    "gradeNumber": 8,
-    "category": "Modern",
-    "retail": 73,
-    "member": 63,
-    "description": "Luxray from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
-  },
-  {
-    "slug": "selection-swsh45-7-psa-10",
-    "image": "/cards/selection/swsh45-7.webp",
-    "name": "Dartrix #7",
     "year": "2021",
     "set": "Shining Fates",
     "grade": "PSA 10",
     "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 127,
-    "member": 110,
-    "description": "Dartrix from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 43,
+    "member": 39,
+    "description": "Luxray from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-shining-fates/luxray-33",
+      "grade": "PSA 10",
+      "value": 43.46,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-swsh45-30-cgc-9",
+    "slug": "selection-swsh45-7-bgs-10",
+    "image": "/cards/selection/swsh45-7.webp",
+    "name": "Dartrix #7",
+    "year": "2021",
+    "set": "Shining Fates",
+    "grade": "BGS 10",
+    "grader": "BGS",
+    "gradeNumber": 10,
+    "category": "Modern",
+    "retail": 17,
+    "member": 15,
+    "description": "Dartrix from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-shining-fates/dartrix-7",
+      "grade": "BGS 10",
+      "value": 17,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
+  },
+  {
+    "slug": "selection-swsh45-30-psa-9",
     "image": "/cards/selection/swsh45-30.webp",
     "name": "Frosmoth #30",
     "year": "2021",
     "set": "Shining Fates",
-    "grade": "CGC 9",
-    "grader": "CGC",
+    "grade": "PSA 9",
+    "grader": "PSA",
     "gradeNumber": 9,
     "category": "Modern",
-    "retail": 200,
-    "member": 174,
-    "description": "Frosmoth from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 25,
+    "member": 23,
+    "description": "Frosmoth from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-shining-fates/frosmoth-30",
+      "grade": "Grade 9",
+      "value": 25,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
-    "slug": "selection-swsh45-40-bgs-8",
+    "slug": "selection-swsh45-40-psa-10",
     "image": "/cards/selection/swsh45-40.webp",
     "name": "Trapinch #40",
     "year": "2021",
     "set": "Shining Fates",
-    "grade": "BGS 8",
-    "grader": "BGS",
-    "gradeNumber": 8,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 155,
-    "member": 134,
-    "description": "Trapinch from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 36,
+    "member": 32,
+    "description": "Trapinch from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-shining-fates/trapinch-40",
+      "grade": "PSA 10",
+      "value": 36.09,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-swsh45-28-psa-10",
@@ -556,37 +830,58 @@ export const memberSelection = [
     "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 174,
-    "member": 151,
-    "description": "Cramorant from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 62,
+    "member": 56,
+    "description": "Cramorant from Shining Fates. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-shining-fates/cramorant-28",
+      "grade": "PSA 10",
+      "value": 62.44,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-sv3-176-cgc-8",
+    "slug": "selection-sv3-176-psa-10",
     "image": "/cards/selection/sv3-176.webp",
     "name": "Yungoos #176",
     "year": "2023",
     "set": "Obsidian Flames",
-    "grade": "CGC 8",
-    "grader": "CGC",
-    "gradeNumber": 8,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 210,
-    "member": 182,
-    "description": "Yungoos from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Yungoos from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-obsidian-flames/yungoos-176",
+      "grade": "PSA 10",
+      "value": 30.61,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-sv3-157-bgs-9",
+    "slug": "selection-sv3-157-psa-10",
     "image": "/cards/selection/sv3-157.webp",
     "name": "Dratini #157",
     "year": "2023",
     "set": "Obsidian Flames",
-    "grade": "BGS 9",
-    "grader": "BGS",
-    "gradeNumber": 9,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 20,
-    "member": 17,
-    "description": "Dratini from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 40,
+    "member": 36,
+    "description": "Dratini from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-obsidian-flames/dratini-157",
+      "grade": "PSA 10",
+      "value": 39.85,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
     "slug": "selection-sv3-21-psa-10",
@@ -598,23 +893,37 @@ export const memberSelection = [
     "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 103,
-    "member": 89,
-    "description": "Arboliva from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Arboliva from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-obsidian-flames/arboliva-21",
+      "grade": "PSA 10",
+      "value": 31.15,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-sv3-164-cgc-9",
+    "slug": "selection-sv3-164-psa-9",
     "image": "/cards/selection/sv3-164.webp",
     "name": "Pidgeot ex #164",
     "year": "2023",
     "set": "Obsidian Flames",
-    "grade": "CGC 9",
-    "grader": "CGC",
+    "grade": "PSA 9",
+    "grader": "PSA",
     "gradeNumber": 9,
     "category": "Modern",
-    "retail": 189,
-    "member": 164,
-    "description": "Pidgeot ex from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 18,
+    "member": 16,
+    "description": "Pidgeot ex from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-obsidian-flames/pidgeot-ex-164",
+      "grade": "Grade 9",
+      "value": 17.99,
+      "checkedAt": "2026-11-16",
+      "basis": "Grade-level price guide estimate; not a grader-specific appraisal"
+    }
   },
   {
     "slug": "selection-sv3-154-bgs-10",
@@ -626,78 +935,120 @@ export const memberSelection = [
     "grader": "BGS",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 80,
-    "member": 69,
-    "description": "Varoom from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 34,
+    "member": 31,
+    "description": "Varoom from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-obsidian-flames/varoom-154",
+      "grade": "BGS 10",
+      "value": 34,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-sv3-6-psa-8",
+    "slug": "selection-sv3-6-psa-10",
     "image": "/cards/selection/sv3-6.webp",
     "name": "Surskit #6",
     "year": "2023",
     "set": "Obsidian Flames",
-    "grade": "PSA 8",
+    "grade": "PSA 10",
     "grader": "PSA",
-    "gradeNumber": 8,
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 41,
-    "member": 35,
-    "description": "Surskit from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Surskit from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-obsidian-flames/surskit-6",
+      "grade": "PSA 10",
+      "value": 30.61,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-sv3-92-cgc-10",
+    "slug": "selection-sv3-92-psa-10",
     "image": "/cards/selection/sv3-92.webp",
     "name": "Lunatone #92",
     "year": "2023",
     "set": "Obsidian Flames",
-    "grade": "CGC 10",
-    "grader": "CGC",
+    "grade": "PSA 10",
+    "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 214,
-    "member": 186,
-    "description": "Lunatone from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Lunatone from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-obsidian-flames/lunatone-92",
+      "grade": "PSA 10",
+      "value": 30.69,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-sv3-109-bgs-9",
+    "slug": "selection-sv3-109-psa-10",
     "image": "/cards/selection/sv3-109.webp",
     "name": "Whiscash #109",
     "year": "2023",
     "set": "Obsidian Flames",
-    "grade": "BGS 9",
-    "grader": "BGS",
-    "gradeNumber": 9,
+    "grade": "PSA 10",
+    "grader": "PSA",
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 76,
-    "member": 66,
-    "description": "Whiscash from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 50,
+    "member": 45,
+    "description": "Whiscash from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-obsidian-flames/whiscash-109",
+      "grade": "PSA 10",
+      "value": 49.99,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-sv3-48-psa-8",
+    "slug": "selection-sv3-48-psa-10",
     "image": "/cards/selection/sv3-48.webp",
     "name": "Buizel #48",
     "year": "2023",
     "set": "Obsidian Flames",
-    "grade": "PSA 8",
+    "grade": "PSA 10",
     "grader": "PSA",
-    "gradeNumber": 8,
+    "gradeNumber": 10,
     "category": "Modern",
-    "retail": 178,
-    "member": 154,
-    "description": "Buizel from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Buizel from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-obsidian-flames/buizel-48",
+      "grade": "PSA 10",
+      "value": 30.58,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   },
   {
-    "slug": "selection-sv3-74-cgc-10",
+    "slug": "selection-sv3-74-psa-10",
     "image": "/cards/selection/sv3-74.webp",
     "name": "Tadbulb #74",
     "year": "2023",
     "set": "Obsidian Flames",
-    "grade": "CGC 10",
-    "grader": "CGC",
+    "grade": "PSA 10",
+    "grader": "PSA",
     "gradeNumber": 10,
     "category": "Modern",
-    "retail": 161,
-    "member": 140,
-    "description": "Tadbulb from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale."
+    "retail": 31,
+    "member": 28,
+    "description": "Tadbulb from Obsidian Flames. An illustrative graded-card listing; the displayed grade and prices are examples, not a certified slab offered for sale.",
+    "reference": {
+      "url": "https://www.pricecharting.com/game/pokemon-obsidian-flames/tadbulb-74",
+      "grade": "PSA 10",
+      "value": 30.81,
+      "checkedAt": "2026-11-16",
+      "basis": "Grader-specific price guide estimate"
+    }
   }
 ] as const;

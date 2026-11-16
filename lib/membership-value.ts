@@ -6,6 +6,14 @@ export type ValueAssumptions = {
   memberTradePercent: number;
 };
 
+export const membershipValueDefaults: ValueAssumptions = {
+  annualSpend: 2500,
+  annualTrades: 2000,
+  purchaseDiscount: 10,
+  traditionalTradePercent: 85,
+  memberTradePercent: 100,
+};
+
 /** Dollar inputs become cents before comparison; adverse scenarios remain visible. */
 export function membershipValue(input: ValueAssumptions) {
   const cents = (value: number) => Math.round(Math.max(0, Number.isFinite(value) ? value : 0) * 100);

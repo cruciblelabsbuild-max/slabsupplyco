@@ -1470,3 +1470,20 @@ body[data-member="true"] .club-footer .footer-top>.brand { display:none; }
 .catalog-member-access { padding:0 0 16px; border:0; border-bottom:1px solid var(--line); background:none; }
 @media(max-width:560px) { .catalog-member-access { flex-direction:row; align-items:center; gap:12px; }.catalog-member-access>span { font-size:11px; }.catalog-member-access .button { font-size:10px; min-height:38px; padding-inline:12px; }.selection-grid .selection-slab { width:88%; } }
 @media(max-width:359px) { .selection-grid .selection-slab { width:60%; } }
+/* Identical retail → member price → savings presentation on both card shelves. */
+.selection-grid .shelf-pricing { gap:10px; margin-top:0; }
+.selection-grid .shelf-pricing>span { min-width:0; }
+.calculator-comparison { grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr); align-items:stretch; }
+.calculator-comparison .calculator-member { padding:22px; border:1px solid rgba(255,112,87,.4); box-shadow:0 5px 18px rgba(38,37,61,.12); }
+.calculator-comparison .calculator-member h3 { font-size:17px; padding-right:22px; }
+.calculator-comparison .calculator-member strong { font-size:27px; }
+.calculator-member-mark { top:21px; right:17px; }
+.calculator-breakdown.calculator-value-walk { display:block; margin-block:22px; }
+.calculator-value-walk>div { padding-block:9px; margin:0; border-bottom:1px solid var(--line); }
+.calculator-value-walk>div:last-child { border-bottom:0; }
+.calculator-value-walk dt { max-width:none; display:flex; align-items:center; gap:12px; }
+.calculator-value-walk dt>span { display:inline-block; width:12px; color:var(--coral); font-size:15px; font-weight:700; }
+.calculator-net { position:relative; border-top:2px solid var(--coral); }
+.calculator-net>span { font-weight:700; }.calculator-net small { display:block; margin-top:3px; font-size:10px; font-weight:400; color:#ddd9e8; }
+.calculator-net strong { font-size:46px; }
+@media(max-width:560px) { .selection-grid .shelf-pricing { gap:6px; padding-top:12px; }.selection-grid .shelf-pricing>span { font-size:7px; letter-spacing:.03em; line-height:1.6; }.selection-grid .shelf-pricing b { font-size:20px; }.selection-grid .shelf-pricing s { font-size:15px; }.calculator-comparison { grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); }.calculator-comparison .calculator-member { padding:14px; }.calculator-comparison .calculator-member h3 { font-size:15px; padding-right:0; }.calculator-member-mark { position:static; margin-bottom:8px; }.calculator-retail h3 { padding-top:21px; }.calculator-comparison .calculator-member strong { font-size:24px; }.calculator-net strong { font-size:40px; } }
