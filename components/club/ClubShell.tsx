@@ -2,6 +2,7 @@
 import { annualMembership } from "../../lib/membership-plan";
 
 import Link from "next/link";
+import {BagTrigger} from "./BagProvider";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useClerk, useUser } from "@clerk/nextjs";
@@ -39,8 +40,8 @@ function Navigation({ name, onSignOut }: { name: string | null; onSignOut?: () =
         {guestLinks.map(([href,label])=><Link key={href} href={href} aria-current={path.startsWith(href)?"page":undefined} onClick={()=>setOpen(false)}>{label}</Link>)}
         <div className="mobile-account-actions"><Link className="button" href="/sign-in" onClick={()=>setOpen(false)}>Sign in<ArrowRight size={15}/></Link><Link href="/join" onClick={()=>setOpen(false)}>Become a member</Link></div>
       </nav>
-      <div className="club-header-actions"><Link className="session-sign-in" href="/sign-in"><UserRound size={15}/><span>Sign in</span></Link><Link className="button button-small" href="/join">Become a member<ArrowRight size={14}/></Link></div>
-      <button className="menu-button" type="button" aria-label={open?"Close navigation":"Open navigation"} aria-expanded={open} aria-controls="club-navigation" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button>
+      <div className="club-header-actions"><BagTrigger/><Link className="session-sign-in" href="/sign-in"><UserRound size={15}/><span>Sign in</span></Link><Link className="button button-small" href="/join">Become a member<ArrowRight size={14}/></Link></div>
+      <div className="public-mobile-bag"><BagTrigger/></div><button className="menu-button" type="button" aria-label={open?"Close navigation":"Open navigation"} aria-expanded={open} aria-controls="club-navigation" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button>
     </header>
   </>;
 }

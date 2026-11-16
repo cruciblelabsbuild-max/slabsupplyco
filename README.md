@@ -133,3 +133,13 @@ Card test purchases now also read completed Stripe Checkout sessions belonging t
 `/api/cards/checkout` derives card prices and membership status on the server. Non-members confirm the $149 annual renewal terms and pay for one membership plus one card in a subscription Checkout session; the card line is one-time and is excluded from renewals. Active members use a payment-mode Checkout session for the card alone. Both flows share the same identity-bound Stripe customer, reject unrelated origins, collect shipping details, and save payment details only through Stripe. Stale membership carts are expired when their card selection changes; server-derived idempotency keys protect retry and concurrent creation.
 
 The selected card is preserved through enrollment, existing-account sign-in, the arrival animation, and checkout. Clerk OAuth uses redirect mode, and a completed browser session obtains a fresh token before requesting an authenticated server page. The provider’s sign-up URL points directly at the mounted enrollment component rather than the legacy redirect route.
+
+### Shopping bag and inventory
+
+Member deals use a persistent shopping bag (20 unique slabs maximum), shared across tabs and preserved through enrollment. New members pay one $149 annual fee alongside all selected cards; existing active members pay only for cards. Orders keep each purchased card's price and retail reference snapshot.
+
+Neon stores stock, checkout reservations, and short-lived anonymous bag presence. Adding a card to a bag does not reserve it. Checkout atomically reserves the entire selection; overlapping selections cannot both succeed. Stripe test webhooks mark paid cards sold and release expired checkouts. Canceling checkout expires the Stripe session before releasing stock. Signed Stripe events are verified and sessions retrieved again before inventory changes; retries are idempotent. Failed availability checks block checkout. Refunds do not automatically restock cards.
+
+Production requires `INVENTORY_DATABASE_URL` and `STRIPE_WEBHOOK_SECRET`. The test webhook endpoint is `/api/stripe/webhook` and receives `checkout.session.completed`, `checkout.session.async_payment_succeeded`, and `checkout.session.expired`. Preview deployments have isolated Neon branches and should use a separately configured test webhook when testing payment completion there. Live billing remains disabled.
+
+Validation: `npm test`, `npm run build`, and `npx tsx scripts/check-inventory.ts`. The inventory check uses temporary QA rows, tests overlapping reservations and settlement replays, and cleans up only its own fixtures.

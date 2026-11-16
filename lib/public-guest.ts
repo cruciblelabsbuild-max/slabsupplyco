@@ -1,6 +1,6 @@
 // Public browsing must not require a Clerk development-browser handshake.
 // Requests carrying auth state still go through Clerk, including OAuth returns.
-const publicPages = new Set(["/", "/membership", "/membership/terms", "/promise", "/help", "/privacy", "/terms", "/join", "/shop", "/drops", "/trade-ins", "/robots.txt", "/sitemap.xml"]);
+const publicPages = new Set(["/", "/membership", "/membership/terms", "/promise", "/help", "/privacy", "/terms", "/join", "/shop", "/drops", "/trade-ins", "/robots.txt", "/sitemap.xml", "/api/inventory", "/checkout"]);
 export const publicGuestHeader = "x-ssc-public-guest";
 export function isPublicGuestRequest(request: Pick<Request,"url"|"headers"|"method">) {
  const url = new URL(request.url);

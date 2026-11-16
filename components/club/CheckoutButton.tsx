@@ -2,6 +2,7 @@
 import { annualMembership } from "../../lib/membership-plan";
 
 import Link from "next/link";
+import {useBag} from "./BagProvider";
 import {cardQuery} from "../../lib/card-intent";
 import AuthCompletionBridge from "./AuthCompletionBridge";
 import ExistingAccountRedirect from "./ExistingAccountRedirect";
@@ -14,6 +15,7 @@ import { ArrowRight, LockKeyhole } from "lucide-react";
 const consentKey = "ssc_membership_consent";
 import { enrollmentTermsVersion, hasRecentEnrollmentConsent } from "../../lib/enrollment-consent";
 export default function CheckoutButton({ ready, signedIn = false, autoContinue = false, identity, next,card }: { ready: boolean; signedIn?: boolean; autoContinue?: boolean; identity?: "sign-in" | "sign-up"; next?: "trades";card?:string }) {
+  const shoppingBag=useBag();
   const [accepted, setAccepted] = useState(false);
   const [pending, setPending] = useState(false);
   const [details, setDetails] = useState(Boolean(identity));
@@ -28,7 +30,7 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
     if (!consent) return;
     setPending(true);setError("");
     try {
-      const response=await fetch(card?"/api/cards/checkout":"/api/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({acceptRenewal:true,...(card?{slug:card}:{})})});
+      const response=await fetch(card?"/api/cards/checkout":"/api/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({acceptRenewal:true,...(card==="bag"?{slugs:shoppingBag.slugs}:card?{slug:card}:{})})});
       const result=await response.json() as {url?:string;message?:string};
       if(!response.ok || !result.url)throw new Error(result.message || "Checkout could not open. Please try again.");
       const url=new URL(result.url);
@@ -42,9 +44,9 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
       const prefill=JSON.parse(sessionStorage.getItem("ssc_join_details") || "{}");
       setInitialValues({firstName:typeof prefill.firstName==="string" ? prefill.firstName:undefined,emailAddress:typeof prefill.emailAddress==="string" ? prefill.emailAddress:undefined});
       const consent=JSON.parse(sessionStorage.getItem(consentKey)||"null");
-      if(signedIn && ready && autoContinue && hasRecentEnrollmentConsent(consent) && !started.current){started.current=true;setAccepted(true);void checkout(true);}
+      if((card!=="bag" || shoppingBag.slugs.length>0) && signedIn && ready && autoContinue && hasRecentEnrollmentConsent(consent) && !started.current){started.current=true;setAccepted(true);void checkout(true);}
     }catch{/* Consent is never assumed from invalid or unavailable storage. */}
-  },[signedIn,ready,autoContinue]);
+  },[signedIn,ready,autoContinue,card,shoppingBag.slugs.length]);
   function proceed(){
     if(!accepted || pending)return;
     if(signedIn){void checkout(true);return;}
@@ -53,5 +55,5 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
   }
   if(!ready)return <div className="checkout-unavailable"><p>Checkout is unavailable. Please try again.</p></div>;
   if(details && !signedIn)return <div className="join-inline-identity"><AuthCompletionBridge destination={returnUrl}/><p className="eyebrow">Your details</p>{signIn ? <SignIn oauthFlow="redirect" appearance={authAppearance} routing="hash" forceRedirectUrl={returnUrl} signUpForceRedirectUrl={returnUrl} signUpUrl={`/join?identity=sign-up${destinationSuffix}`}/>:<><ExistingAccountRedirect next={next} card={card}/><SignUp oauthFlow="redirect" appearance={authAppearance} routing="hash" initialValues={initialValues} forceRedirectUrl={returnUrl} signInForceRedirectUrl={returnUrl} signInUrl={enrollmentSignInUrl(next,card)}/></>}</div>;
-  return <div className="checkout-controls"><label className="club-consent"><input type="checkbox" checked={accepted} onChange={e=>setAccepted(e.target.checked)}/><span>I agree to the <Link href="/membership/terms">membership terms</Link>. Membership renews at {annualMembership.display} USD/year until canceled.</span></label><button className="button club-wide" type="button" onClick={proceed} disabled={!accepted || pending}>{pending ? "Opening secure checkout…" : card?"Buy now":"Become a member"}<ArrowRight size={16}/></button><p className="club-small join-payment-note"><LockKeyhole size={12}/> Secure payment through Stripe.</p>{error && <p className="club-form-error" role="alert">{error}</p>}</div>;
+  return <div className="checkout-controls"><label className="club-consent"><input type="checkbox" checked={accepted} onChange={e=>setAccepted(e.target.checked)}/><span>I agree to the <Link href="/membership/terms">membership terms</Link>. Membership renews at {annualMembership.display} USD/year until canceled.</span></label><button className="button club-wide" type="button" onClick={proceed} disabled={!accepted || pending}>{pending ? "Opening secure checkout…" : card?"Continue to checkout":"Become a member"}<ArrowRight size={16}/></button><p className="club-small join-payment-note"><LockKeyhole size={12}/> Secure payment through Stripe.</p>{error && <p className="club-form-error" role="alert">{error}</p>}</div>;
 }
