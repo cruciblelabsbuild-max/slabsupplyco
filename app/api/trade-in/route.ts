@@ -1,9 +1,13 @@
+import { getMember } from "../../../lib/member-session";
+import { submitMemberTrade } from "../../../lib/member-trade-handler";
 import { and, eq, gte, sql } from "drizzle-orm";
 import { getDb } from "../../../db";
 import { tradeInInterests } from "../../../db/schema";
 import { asText, cutoffSqlDate, ipFingerprint, isEmail, json, validFormTiming } from "../../../lib/form-utils";
 
 export async function POST(request: Request) {
+  const member = await getMember();
+  if (member) return submitMemberTrade(request,member);
   try {
     if (Number(request.headers.get("content-length") || 0) > 16_000) return json({ message: "That submission is too large." }, 413);
     const body = await request.json() as Record<string, unknown>;

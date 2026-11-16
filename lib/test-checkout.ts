@@ -12,6 +12,7 @@ export async function createTestCheckout(stripe: Stripe, priceId: string, origin
     cancel_url: `${origin}/join?canceled=1`,
     allowed_payment_method_types: ["card", "link"],
     billing_address_collection: "auto",
+    saved_payment_method_options: { payment_method_save: "enabled" },
     metadata: { membership: "founding-annual", phase: "test", clerk_user_id: member.id, membership_price: priceId },
     subscription_data: { metadata: { membership: "founding-annual", phase: "test", clerk_user_id: member.id } },
     custom_text: { submit: { message: "Test membership only. No real payment or live member access. $99 USD per year in this test subscription; cancel renewal through the billing portal." } },

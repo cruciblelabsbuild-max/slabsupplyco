@@ -1167,3 +1167,61 @@ body h1,body h2,body h3,body h4,body h1 em,body h2 em,body h3 em,body h4 em { fo
 /* Header metrics stay stable even before webfonts finish loading. */
 .club-header,.club-member-nav,.announcement { font-family:Arial,Helvetica,sans-serif; }
 body blockquote,body blockquote em { font-family:Georgia,"Times New Roman",serif!important; }
+/* Smaller hero and shared alignment without changing the display face. */
+.hero-copy h1 { font-size:clamp(46px,4.65vw,68px); line-height:1.02; }
+@media(min-width:1101px) { .hero { align-items:start; } .hero-visual { align-self:center; } .hero .join-card { align-self:start; } }
+.club-enrollment .club-back { padding-block:0; margin-bottom:28px; }
+.club-enrollment-card { margin-top:0; }
+.club-enrollment-copy .club-check-list li { white-space:nowrap; font-size:12px; gap:9px; }
+/* Member home is a compact welcome and three equal actions. */
+.member-home-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-start; gap:25px 45px; padding-block:38px 30px; }
+.member-home-heading h1 { font-size:clamp(28px,3vw,40px); line-height:1.15; letter-spacing:-.04em; }
+.member-home-heading h1 em { font-style:normal; color:var(--ink); }
+.member-home-status { display:flex; align-items:center; gap:10px; border-left:1px solid var(--line); padding-left:25px; font-size:10px; }
+.member-home-status>span { color:var(--muted); }
+.member-home-status strong { display:flex; gap:6px; align-items:center; font-size:10px; }
+.member-home-status a { display:flex; align-items:center; gap:4px; margin-left:8px; }
+.membership-dot { width:5px; height:5px; border-radius:50%; background:var(--muted); }.membership-dot.active { background:#527453; }
+.member-action-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+.member-action-card { display:flex; flex-direction:column; min-width:0; min-height:280px; padding:28px; border:1px solid var(--line); background:var(--white); }
+.member-action-top { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.member-action-top .eyebrow { margin:0; font-size:9px!important; }
+.member-action-card h2 { font-size:30px; margin:35px 0 15px; white-space:nowrap; }
+.member-action-card>p { font-size:11px; line-height:1.6; color:var(--muted); margin:0 0 25px; }
+.member-action-card .button { margin-top:auto; width:100%; min-height:44px; font-size:10px; white-space:nowrap; }
+.member-action-1 { background:#e9ede8; }.member-action-2 { background:#ebe9f2; }
+.profile-security { border-top:1px solid var(--line); padding-top:35px; margin-top:30px; }
+.profile-security>h2 { font-size:30px; margin-bottom:25px; }
+.profile-security .cl-rootBox,.profile-security .cl-userProfile-root,.profile-security .cl-cardBox { max-width:100%; width:100%; }
+.profile-security .cl-cardBox { box-shadow:none; border:1px solid var(--line); }
+.trade-page-heading { padding-block:40px 30px; }.trade-page-heading h1 { font-size:clamp(38px,4vw,52px); }
+.trade-workspace { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); align-items:start; gap:55px; }
+.trade-form-panel { padding:30px; border:1px solid var(--line); background:var(--white); scroll-margin-top:20px; }
+.trade-form-panel>h2 { font-size:30px; margin-bottom:25px; }
+.member-trade-form { display:grid; gap:18px; }
+.member-trade-form label:not(.club-consent) { display:grid; gap:8px; font-size:11px; font-weight:650; }
+.member-trade-form input:not([type=checkbox]),.member-trade-form select,.member-trade-form textarea { width:100%; min-width:0; min-height:44px; border:1px solid var(--line); background:var(--paper); padding:11px; border-radius:3px; color:var(--ink); font-size:12px; }
+.member-trade-form .club-consent { margin:0; }.member-trade-form .club-consent>span { text-transform:none; letter-spacing:0; line-height:1.7; font-weight:400; }
+.member-trade-form .club-small { margin:0; text-align:left; justify-content:flex-start; }
+.trade-process { background:#e9ede8; padding:35px; text-align:center; }
+.trade-process>.eyebrow { justify-content:center; font-size:8px!important; line-height:1.7; }
+.trade-process-step { display:flex; flex-direction:column; align-items:center; }
+.trade-process-icon { width:60px; height:60px; display:grid; place-items:center; border:1px solid var(--line); border-radius:50%; background:var(--paper); margin-top:16px; }
+.trade-process-step h3 { font-size:22px; margin:16px 0 9px; }.trade-process-step p { font-size:11px; line-height:1.7; max-width:240px; color:var(--muted); }
+.trade-process-step>svg { margin-top:15px; color:var(--coral); }
+.trade-process-eligibility { text-align:left; margin-top:30px; border-top:1px solid var(--line); padding-top:22px; }.trade-process-eligibility h3 { font-size:20px; margin-bottom:12px; }.trade-process-eligibility p { font-size:10px; line-height:1.8; color:var(--muted); margin-top:10px; }
+.trade-saved { padding:25px 0; }.trade-saved h2 { font-size:28px; margin:20px 0; }.trade-saved p { font-size:11px; margin-bottom:25px; color:var(--muted); }
+.member-trade-history details { border:1px solid var(--line); margin-bottom:15px; padding:22px; background:var(--white); }
+.member-trade-history summary { display:flex; justify-content:space-between; align-items:center; gap:20px; cursor:pointer; }
+.member-trade-history h2 { font-size:24px; margin:12px 0; }.member-trade-history p { font-size:11px; color:var(--muted); line-height:1.8; }
+.trade-status { font-size:10px; text-transform:capitalize; background:var(--mint); padding:8px 12px; border-radius:20px; }
+.trade-history-detail { border-top:1px solid var(--line); margin-top:20px; padding-top:15px; }.trade-history-detail strong { display:inline-block; min-width:105px; color:var(--ink); }
+@media(max-width:900px) { .member-action-grid { gap:12px; }.member-action-card { padding:22px 18px; }.member-action-card h2 { font-size:25px; }.trade-workspace { gap:25px; } }
+@media(max-width:560px) { .hero-copy h1 { font-size:46px; }.member-home-heading { gap:18px; padding-block:28px; }.member-home-heading h1 { font-size:29px; }.member-home-status { border:0; padding:0; }.member-action-grid { grid-template-columns:1fr; gap:14px; }.member-action-card { min-height:230px; padding:24px; }.member-action-card h2 { margin-top:25px; font-size:28px; }.trade-workspace { grid-template-columns:1fr; }.trade-form-panel,.trade-process { padding:24px 20px; }.club-enrollment-copy .club-check-list li { font-size:11px; }.member-trade-history summary { align-items:start; gap:10px; flex-direction:column; } }
+.member-payment-section { display:grid; grid-template-columns:1fr 1.1fr; gap:65px; padding:35px 0; border-top:1px solid var(--line); }
+.member-payment-section h2 { font-size:30px; margin:20px 0 14px; }.member-payment-section p { font-size:12px; line-height:1.8; color:var(--muted); }
+.saved-payment-cards { margin-bottom:22px; }.saved-payment-cards>div { display:flex; align-items:center; gap:14px; padding:18px; border:1px solid var(--line); background:var(--white); margin-bottom:10px; }.saved-payment-cards strong { display:block; text-transform:capitalize; font-size:12px; }.saved-payment-cards small { display:block; font-size:10px; color:var(--muted); margin-top:6px; }
+.member-payment-section .payment-card-note { font-size:10px; margin-top:15px; }
+@media(max-width:560px){.member-payment-section { grid-template-columns:1fr; gap:25px; padding:28px 0; }}
+.join-card form>h2 { font-size:clamp(24px,2.2vw,28px); white-space:nowrap; }
+.member-action-top { justify-content:flex-start; }

@@ -20,16 +20,16 @@ const faqs = [
   {
     label: "Independent by design",
     q: "Is Slab Supply Co. affiliated with Pokémon, Nintendo, or The Pokémon Company?",
-    a: "No. Slab Supply Co. is an independent graded-card buying club. It is not affiliated with, endorsed by, or sponsored by Nintendo, The Pokémon Company, Game Freak, or Creatures.",
+    a: "No. Slab Supply Co. is an independent graded-card membership. It is not affiliated with, endorsed by, or sponsored by Nintendo, The Pokémon Company, Game Freak, or Creatures.",
   },
   {
     label: "Member pricing",
-    q: "Does ‘below retail’ mean every card will always be the cheapest online?",
+    q: "Does below retail mean every card will always be the cheapest online?",
     a: "Member prices sit below the fair retail value established when each card is listed. That is different from a lowest-price-anywhere claim: markets move, condition varies, and temporary marketplace listings can be lower.",
   },
   {
     label: "Trade-in value",
-    q: "What does ‘up to 100% of fair retail value’ mean?",
+    q: "What does up to 100% of fair retail value mean?",
     a: "Select approved cards receive a store-credit quote worth up to the fair retail value established at review. Every quote reflects demand, liquidity, grade, slab condition, and current inventory needs.",
   },
   {
@@ -44,7 +44,7 @@ const faqs = [
   },
   {
     label: "Founding access",
-    q: "What happens after I join the club?",
+    q: "What happens after I become a member?",
     a: "Annual membership costs $99 and includes member pricing, eligible trade-in benefits, and member drops. Card purchases are separate.",
   },
   {
@@ -248,7 +248,7 @@ export default function Home() {
 
       <section className="hero section-shell">
         <div className="hero-copy">
-          <p className="eyebrow"><Sparkles size={14} /> The club for graded-card collectors</p>
+          <p className="eyebrow"><Sparkles size={14} /> For graded-card collectors</p>
           <h1>Collect more.<br /><em>Spend less.</em></h1>
           <p className="hero-lede">Shop graded cards below retail value. Trade slabs for up to full value in store credit. One membership, built around your collection.</p>
           <div className="hero-points" aria-label="Core benefits">
@@ -288,7 +288,7 @@ export default function Home() {
               </fieldset>
               <label className="full-field"><span>What do you collect? <i>Optional</i></span><input name="collectingFocus" maxLength={160} placeholder="Vintage, modern, a favorite era…" /></label>
               <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
-              <label className="consent"><input type="checkbox" name="consent" /><span>I agree to receive club updates. I can unsubscribe anytime.</span></label>
+              <label className="consent"><input type="checkbox" name="consent" /><span>I agree to receive membership updates. I can unsubscribe anytime.</span></label>
               <button className="button submit-button" disabled={waitState === "submitting"} type="submit">
                 <span>{waitState === "submitting" ? "Opening membership…" : "Become a member"}</span><ArrowRight size={17} aria-hidden="true"/>
               </button>
@@ -334,7 +334,7 @@ export default function Home() {
               <div className="price-ticket"><small>RETAIL</small><s>$172</s><b>$148</b><span>MEMBER</span></div>
             </div>
             <h3>Member pricing<br />below retail</h3>
-            <p>Shop a tightly curated shelf of graded cards at pricing built for the club—not the open-market markup.</p>
+            <p>Shop a tightly curated shelf of graded cards at pricing built for the membership—not the open-market markup.</p>
             <a className="text-button" href="#sample-shelf">Shop now <ArrowRight size={15} /></a>
           </article>
           <article className="benefit-card light-card">
@@ -361,7 +361,7 @@ export default function Home() {
           </div>
           <div className="promise-model">
             <span>The model</span>
-            <blockquote>Your membership helps us make money differently—so we can sell cards differently.</blockquote>
+            <blockquote>Your membership helps us sell cards differently.</blockquote>
             <p>Instead of maximizing the margin on every slab, membership lets us operate on leaner card margins and return more value through member pricing and fair trade offers.</p>
             <a className="text-button promise-link" href="/promise">Read our promise <ArrowRight size={15} /></a>
           </div>
@@ -483,7 +483,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <div className="section-shell footer-top"><Logo /><p>An independent buying club for graded-card collectors.</p><div className="footer-links"><a href="/membership">Membership</a><a href="/help">Help</a><a href="/account">My account</a><a href="/promise">Our promise</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
+        <div className="section-shell footer-top"><Logo /><p>Independent. Built for graded-card collectors.</p><div className="footer-links"><a href="/membership">Membership</a><a href="/help">Help</a><a href="/account">My account</a><a href="/promise">Our promise</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
         <div className="section-shell footer-bottom"><p>© 2026 Slab Supply Co. All rights reserved.</p><p>Not affiliated with or endorsed by Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company. All trademarks belong to their respective owners.</p></div>
       </footer>
 

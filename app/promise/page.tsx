@@ -4,7 +4,7 @@ import { ClubHeader } from "../../components/club/ClubShell";
 
 export const metadata: Metadata = {
   title: "The Slab Supply Co. Promise",
-  description: "Why Slab Supply Co. is building a fairer buying club for graded-card collectors.",
+  description: "Why Slab Supply Co. is building a fairer membership for graded-card collectors.",
 };
 
 const principles = [
@@ -64,7 +64,7 @@ export default function PromisePage() {
         <span className="promise-letter-kicker">A note from the Slab Supply Co. team</span>
         <p>We started Slab Supply Co. because we love collecting—and because too much of the hobby has started to feel like a contest.</p>
         <p>We’ve watched inflated prices, manufactured hype, and scalpers turn a simple purchase into a negotiation. That isn’t the hobby we want to build around.</p>
-        <p>We believe that when collectors come together, everyone should get a better deal. So we’re building the club we’d want to join ourselves.</p>
+        <p>We believe that when collectors come together, everyone should get a better deal. So we’re building the membership we’d want to join ourselves.</p>
         <p>Annual membership lets us keep card margins lean and put more value back into your collection.</p>
         <p>That means great prices on cards worth collecting, fair offers on cards you’re ready to trade, and a community where the excitement comes from the collection—not the markup.</p>
         <p><strong>We’re here to make collecting more rewarding—for all of us.</strong></p>
@@ -82,7 +82,7 @@ export default function PromisePage() {
       <div className="section-shell">
         <p className="eyebrow">The promise, simply</p>
         <h2>More collecting.<br /><em>Less markup.</em></h2>
-        <p>Become a founding member and help shape a club built around collectors.</p>
+        <p>Become a founding member and help shape a membership built around collectors.</p>
         <a className="button button-light" href="/join">Become a member <ArrowRight size={16} /></a>
       </div>
     </section>
