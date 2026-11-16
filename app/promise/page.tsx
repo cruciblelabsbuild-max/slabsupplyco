@@ -61,7 +61,7 @@ export default function PromisePage() {
 
     <section className="promise-letter section-shell">
       <div className="promise-letter-copy">
-        <span className="promise-letter-kicker">A note from the Slab Supply Co. team</span>
+        <span className="promise-letter-kicker">A note from the team</span>
         <p>We started Slab Supply Co. because we love collecting—and because too much of the hobby has started to feel like a contest.</p>
         <p>We’ve watched inflated prices, manufactured hype, and scalpers turn a simple purchase into a negotiation. That isn’t the hobby we want to build around.</p>
         <p>We believe that when collectors come together, everyone should get a better deal. So we’re building the membership we’d want to join ourselves.</p>
