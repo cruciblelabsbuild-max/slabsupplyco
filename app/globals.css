@@ -1152,10 +1152,6 @@ footer { padding: 28px 0 20px; background: var(--paper); } .footer-top { display
 .join-payment-note>svg { flex-shrink:0; margin-top:2px; }
 .join-inline-identity { margin-top:25px; }
 .join-inline-identity>.eyebrow { margin-bottom:15px; }
-.join-inline-identity .cl-rootBox,.join-inline-identity .cl-cardBox { width:100%; max-width:100%; }
-.join-inline-identity .cl-card { box-shadow:none; padding:0; border:0; background:transparent; }
-.join-inline-identity .cl-header { display:none; }
-.join-inline-identity .cl-footer { background:transparent; }
 .join-inline-identity>.club-text-link { margin-top:15px; }
 @media(max-width:820px){.club-enrollment { grid-template-columns:minmax(0,1fr); gap:25px; }.club-enrollment-card { margin-top:0; justify-self:start; }}
 .dashboard-membership .membership-state { display:flex; align-items:center; gap:10px; font:600 24px/1.3 "Fraunces",serif; }
@@ -1255,17 +1251,10 @@ body blockquote,body blockquote em { font-family:Georgia,"Times New Roman",serif
 /* Consistent hosted identity controls, with explicit single-line Google buttons. */
 .auth-screen { max-width:440px; padding-block:55px 70px; min-height:70vh; }
 .auth-screen>.eyebrow { justify-content:center; }.auth-screen>h1 { text-align:center; font-size:38px; margin:15px 0 30px; }
-.auth-provider .cl-rootBox,.auth-provider .cl-cardBox { width:100%; max-width:100%; }
-.auth-provider .cl-cardBox { border:1px solid var(--line); box-shadow:none; }
-.auth-provider .cl-card { box-shadow:none; padding:28px; }
-.auth-provider .cl-footer { background:transparent; }
-:is(.auth-provider,.join-inline-identity,.profile-security) .cl-formButtonPrimary { min-height:44px; background:var(--forest)!important; background-image:none!important; box-shadow:none!important; font-size:12px; font-weight:650; }
-:is(.auth-provider,.join-inline-identity) .cl-socialButtonsBlockButton { min-height:44px; display:flex; align-items:center; justify-content:center; gap:10px; background:var(--white); border:1px solid var(--line); box-shadow:none; padding:10px 12px; }
-:is(.auth-provider,.join-inline-identity) .cl-socialButtonsBlockButtonText { white-space:nowrap; font-family:Arial,Helvetica,sans-serif; font-size:12px; }
-:is(.auth-provider,.join-inline-identity,.profile-security) .cl-headerTitle { font-family:Arial,Helvetica,sans-serif!important; font-size:21px; }
-:is(.auth-provider,.join-inline-identity) .cl-formFieldInput { min-height:44px; font-size:13px; box-shadow:none; }
-:is(.auth-provider,.join-inline-identity) .cl-formFieldInputGroup { width:100%; }
-:is(.auth-provider,.join-inline-identity) .cl-footerActionText,:is(.auth-provider,.join-inline-identity) .cl-footerActionLink { font-size:11px; }
+.auth-provider { padding:26px; border:1px solid var(--line); border-radius:5px; background:var(--white); }
+/* Keep text fields readable and prevent iOS focus zoom inside hosted identity forms. */
+:is(.auth-provider,.join-inline-identity) input:not([type=checkbox]):not([type=radio]) { font-size:16px; min-height:46px; }
+.join-inline-identity + .club-text-link { margin-top:14px; }
 @view-transition { navigation:auto; }
 ::view-transition-old(root) { animation:page-leave 140ms ease-out both; }
 ::view-transition-new(root) { animation:page-enter 240ms ease-out both; }
@@ -1273,4 +1262,4 @@ body blockquote,body blockquote em { font-family:Georgia,"Times New Roman",serif
 @keyframes page-enter { from { opacity:.4; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 @media(prefers-reduced-motion:reduce) { ::view-transition-old(root),::view-transition-new(root) { animation:none!important; } }
 @media(max-width:820px) { .profile-sheet .member-profile-section,.profile-sheet .member-payment-section { grid-template-columns:180px minmax(0,1fr); gap:24px; }.club-benefits p { font-size:11px; } }
-@media(max-width:560px) { .member-original-services { grid-template-columns:1fr; }.member-home-status { padding:10px 13px; }.member-home-status strong { font-size:14px; }.profile-sheet { padding-inline:20px; }.profile-sheet .member-profile-section,.profile-sheet .member-payment-section { grid-template-columns:1fr; gap:18px; }.profile-identity-summary { align-items:flex-start; flex-direction:column; }.profile-identity-summary>a { margin-left:0; }.profile-section-nav { gap:22px; }.auth-screen { padding-block:35px 50px; }.auth-provider .cl-card { padding:22px; }.club-benefits p { white-space:normal; } }
+@media(max-width:560px) { .member-original-services { grid-template-columns:1fr; }.member-home-status { padding:10px 13px; }.member-home-status strong { font-size:14px; }.profile-sheet { padding-inline:20px; }.profile-sheet .member-profile-section,.profile-sheet .member-payment-section { grid-template-columns:1fr; gap:18px; }.profile-identity-summary { align-items:flex-start; flex-direction:column; }.profile-identity-summary>a { margin-left:0; }.profile-section-nav { gap:22px; }.auth-screen { padding-block:35px 50px; }.auth-provider { padding:22px; }.club-benefits p { white-space:normal; } }

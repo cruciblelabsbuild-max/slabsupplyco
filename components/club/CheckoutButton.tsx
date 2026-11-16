@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { authAppearance } from "./auth-appearance";
 import { SignUp, SignIn } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, LockKeyhole } from "lucide-react";
@@ -41,6 +42,6 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
     setDetails(true);
   }
   if(!ready)return <div className="checkout-unavailable"><p>Checkout is unavailable. Please try again.</p></div>;
-  if(details && !signedIn)return <div className="join-inline-identity"><p className="eyebrow">Your details</p>{signIn ? <SignIn appearance={{options:{socialButtonsPlacement:"bottom",socialButtonsVariant:"blockButton"}}} routing="hash" forceRedirectUrl="/join?checkout=continue" signUpUrl="/join?identity=sign-up"/>:<SignUp appearance={{options:{socialButtonsPlacement:"bottom",socialButtonsVariant:"blockButton"}}} routing="hash" initialValues={initialValues} forceRedirectUrl="/join?checkout=continue" signInUrl="/join?identity=sign-in"/>}</div>;
+  if(details && !signedIn)return <div className="join-inline-identity"><p className="eyebrow">Your details</p>{signIn ? <SignIn appearance={authAppearance} routing="hash" forceRedirectUrl="/join?checkout=continue" signUpUrl="/join?identity=sign-up"/>:<SignUp appearance={authAppearance} routing="hash" initialValues={initialValues} forceRedirectUrl="/join?checkout=continue" signInUrl="/join?identity=sign-in"/>}</div>;
   return <div className="checkout-controls"><label className="club-consent"><input type="checkbox" checked={accepted} onChange={e=>setAccepted(e.target.checked)}/><span>I agree to the <Link href="/membership/terms">membership terms</Link>. Membership renews at $99 USD/year until canceled.</span></label><button className="button club-wide" type="button" onClick={proceed} disabled={!accepted || pending}>{pending ? "Opening secure checkout…" : "Become a member"}<ArrowRight size={16}/></button><p className="club-small join-payment-note"><LockKeyhole size={12}/> Secure payment through Stripe.</p>{error && <p className="club-form-error" role="alert">{error}</p>}</div>;
 }
