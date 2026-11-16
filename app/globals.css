@@ -1516,3 +1516,25 @@ body[data-member="true"] .club-footer .footer-top>.brand { display:none; }
 @media(prefers-reduced-motion:reduce) { .arrival-pass-owner>strong { animation:none; } }
 
 @media(max-width:359px) { .calculator-inputs { grid-template-columns:1fr; }.calculator-range label { min-height:0; } }
+
+/* Keep wide calculator totals on one line without growing the comparison. */
+.calculator-inputs .calculator-net { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; min-width:0; }
+.calculator-inputs .calculator-net strong { font-size:clamp(34px,3.7vw,46px); letter-spacing:-.045em; font-variant-numeric:tabular-nums; }
+.calculator-inputs .calculator-net>span { font-size:11px; min-width:0; }
+.calculator-inputs .calculator-net small { font-size:9px; }
+.selection-grid .shelf-pricing s,.selection-detail .shelf-pricing s,.join-card-selection .shelf-pricing s { text-decoration:line-through; text-decoration-thickness:1px; }
+.selection-grid .shelf-pricing b,.selection-detail .shelf-pricing b { font-size:30px; color:var(--forest); }
+.selection-grid .shelf-pricing .savings b,.selection-detail .shelf-pricing .savings b { color:var(--coral); }
+.card-buy-control { margin-top:18px; }.card-buy-control>.button { width:100%; }
+.selection-detail .shelf-pricing { margin-block:24px; }
+.join-card-selection { display:grid; grid-template-columns:62px minmax(0,1fr); gap:16px; padding-bottom:22px; margin-bottom:24px; border-bottom:1px solid var(--line); }
+.join-card-selection>img { width:62px; height:auto; align-self:start; border-radius:4px; }
+.join-card-selection h2 { font-size:23px; margin:8px 0 14px; }.join-card-selection .eyebrow { font-size:8px!important; }
+.join-card-selection .shelf-pricing { padding-top:10px; gap:8px; }.join-card-selection .shelf-pricing b { font-size:21px; }.join-card-selection .shelf-pricing s { font-size:15px; }.join-card-selection .shelf-pricing span { font-size:6px; letter-spacing:.03em; }
+.join-card-total { display:flex; justify-content:space-between; align-items:center; padding-block:18px; margin-bottom:18px; border-block:1px solid var(--line); }.join-card-total span { font-size:13px; font-weight:700; }.join-card-total small { display:block; font-size:10px; color:var(--muted); font-weight:400; margin-top:5px; }.join-card-total strong { font-size:28px; }
+.card-checkout-review { max-width:560px; padding-block:48px; }.card-checkout-review h1 { font-size:36px; }.card-checkout-review>img { display:block; width:180px; margin:24px auto; }.card-checkout-review>.club-text-link { display:block; margin-top:22px; }
+@media(max-width:560px) { .calculator-inputs .calculator-net strong { font-size:38px; }.selection-grid .shelf-pricing b { font-size:23px; }.selection-grid .shelf-pricing s { font-size:14px; }.selection-grid .shelf-pricing { gap:5px; }.selection-grid .shelf-pricing .savings { padding-left:5px; }.selection-grid .card-buy-control .button { font-size:10px; min-height:42px; padding-inline:8px; } }
+
+.order-confirmation { display:flex; align-items:center; gap:12px; padding:18px; margin-bottom:24px; background:var(--mint); font-size:13px; }
+.member-orders { display:grid; gap:22px; }.member-order { display:grid; grid-template-columns:100px minmax(0,1fr); gap:26px; padding:26px; background:var(--white); border:1px solid var(--line); border-radius:5px; }.member-order>img { width:100%; border-radius:4px; }.member-order h2 { font-size:28px; margin:10px 0; }.member-order p { font-size:12px; line-height:1.7; color:var(--muted); }.member-order small { font-size:9px; color:var(--muted); }.order-amounts { display:flex; flex-wrap:wrap; gap:16px 28px; padding-block:16px; }.order-amounts>span { display:grid; gap:6px; font-size:10px; color:var(--muted); }.order-amounts b { font-size:17px; color:var(--ink); }.order-shipping { margin-bottom:18px; padding-top:16px; border-top:1px solid var(--line); }.order-shipping>span { font-size:10px; font-weight:700; }
+@media(max-width:560px) { .member-order { grid-template-columns:64px minmax(0,1fr); gap:16px; padding:18px; }.member-order h2 { font-size:23px; } }

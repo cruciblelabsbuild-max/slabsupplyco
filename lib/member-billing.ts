@@ -15,17 +15,20 @@ export async function billingCustomer(stripe: Stripe, member: { id: string; emai
   return customer.id;
 }
 export const blocksNewMembership = (status: string) => !["canceled", "incomplete_expired"].includes(status);
-export async function reusableCheckout(stripe: Stripe, customerId: string, userId: string, priceId: string) {
+export async function reusableCheckout(stripe: Stripe, customerId: string, userId: string, priceId: string, cardSlug = "") {
   const subscriptions = await stripe.subscriptions.list({ customer: customerId, status: "all", limit:100 });
   if (subscriptions.data.some(s => blocksNewMembership(s.status))) return { blocked: true as const, url:undefined, key:undefined };
   const sessions = await stripe.checkout.sessions.list({ customer:customerId, limit:100 });
   const ours = sessions.data.filter(s => s.metadata?.clerk_user_id === userId && s.metadata?.membership === "founding-annual");
-  const open = ours.find(s => s.status === "open" && s.metadata?.membership_price === priceId && s.url);
+  const open = ours.find(s => s.status === "open" && s.metadata?.membership_price === priceId && (s.metadata?.card_slug || "") === cardSlug && s.url);
   if (open?.url) {
     const url = new URL(open.url);
     if (open.livemode || url.protocol !== "https:" || url.hostname !== "checkout.stripe.com") throw new Error("Unexpected checkout destination.");
     return { blocked:false as const, url:open.url, key:open.id };
   }
+  // An annual checkout must contain only the currently selected card. Retire stale
+  // carts before making another; shared idempotency keys also protect concurrent tabs.
+  for (const session of ours.filter(s => s.status === "open" && !s.livemode)) await stripe.checkout.sessions.expire(session.id);
   // Concurrent tabs derive the same key from the last session, rather than the browser.
   return { blocked:false as const, key:ours[0]?.id || "first" };
 }

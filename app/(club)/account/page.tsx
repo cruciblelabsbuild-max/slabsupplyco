@@ -1,3 +1,4 @@
+import {ordersForUser,orderSavings} from "../../../lib/member-orders";
 import {clerkClient} from "@clerk/nextjs/server";
 import {memberHomeMetrics} from "../../../lib/member-home-metrics";
 import { requireMember } from "../../../lib/member-session";
@@ -7,7 +8,9 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Member home · Slab Supply Co.", robots: { index: false, follow: false } };
 export default async function MemberArea() {
  const member = await requireMember();
- const [membership,user] = await Promise.all([membershipForUser(member.id),(await clerkClient()).users.getUser(member.id).catch(()=>null)]);
+ const [membership,user,orders] = await Promise.all([membershipForUser(member.id),(await clerkClient()).users.getUser(member.id).catch(()=>null),ordersForUser(member.id)]);
  const metrics=memberHomeMetrics(user?.privateMetadata??null);
+ const savings=orderSavings(orders);
+ metrics.savingsCents=metrics.savingsCents===null||savings===null?null:metrics.savingsCents+savings;
  return <MemberHome {...metrics} memberId={member.id} name={member.name} active={membership.state === "active-test"} unavailable={membership.state === "unavailable"}/>;
 }

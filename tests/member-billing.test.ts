@@ -19,3 +19,12 @@ test("repeated checkout reuses one open session and concurrent requests share a 
  assert.equal(one.key,"cs_test_expired");assert.deepEqual(one,two);
  assert.equal((await reusableCheckout(stripe([{...open,metadata:{...open.metadata,clerk_user_id:"user_other"}}]),"cus_member","user_member","price_annual")).url,undefined);
 });
+test("membership-only and bundled carts cannot reuse the wrong open checkout",async()=>{
+ const old={id:"cs_test_old",status:"open",livemode:false,url:"https://checkout.stripe.com/c/pay/cs_test_old",metadata:{clerk_user_id:"user_member",membership:"founding-annual",membership_price:"price_annual"}};
+ const expired:string[]=[];
+ const stripe={subscriptions:{list:async()=>({data:[]})},checkout:{sessions:{list:async()=>({data:[old]}),expire:async(id:string)=>{expired.push(id);}}}} as unknown as Stripe;
+ const result=await reusableCheckout(stripe,"cus_member","user_member","price_annual","selection-card");
+ assert.equal(result.url,undefined);
+ assert.equal(result.key,old.id);
+ assert.deepEqual(expired,[old.id]);
+});

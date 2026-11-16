@@ -2,6 +2,8 @@
 import { annualMembership } from "../../lib/membership-plan";
 
 import Link from "next/link";
+import {cardQuery} from "../../lib/card-intent";
+import AuthCompletionBridge from "./AuthCompletionBridge";
 import ExistingAccountRedirect from "./ExistingAccountRedirect";
 import { enrollmentSignInUrl } from "../../lib/enrollment-sign-in";
 import { enrollmentArrivalUrl } from "../../lib/member-arrival";
@@ -11,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowRight, LockKeyhole } from "lucide-react";
 const consentKey = "ssc_membership_consent";
 import { enrollmentTermsVersion, hasRecentEnrollmentConsent } from "../../lib/enrollment-consent";
-export default function CheckoutButton({ ready, signedIn = false, autoContinue = false, identity, next }: { ready: boolean; signedIn?: boolean; autoContinue?: boolean; identity?: "sign-in" | "sign-up"; next?: "trades" }) {
+export default function CheckoutButton({ ready, signedIn = false, autoContinue = false, identity, next,card }: { ready: boolean; signedIn?: boolean; autoContinue?: boolean; identity?: "sign-in" | "sign-up"; next?: "trades";card?:string }) {
   const [accepted, setAccepted] = useState(false);
   const [pending, setPending] = useState(false);
   const [details, setDetails] = useState(Boolean(identity));
@@ -19,14 +21,14 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
   const [initialValues, setInitialValues] = useState<{firstName?:string;emailAddress?:string}>({});
   const [error, setError] = useState("");
   const started = useRef(false);
-  const destinationSuffix = next === "trades" ? "&next=trades" : "";
-  const returnUrl = enrollmentArrivalUrl(next);
+  const destinationSuffix = (next === "trades" ? "&next=trades" : "") + cardQuery(card);
+  const returnUrl = enrollmentArrivalUrl(next,card);
   useEffect(()=>{try{if(next === "trades")sessionStorage.setItem("ssc_membership_next",JSON.stringify({next:"trades",at:Date.now()}));}catch{}},[next]);
   async function checkout(consent: boolean) {
     if (!consent) return;
     setPending(true);setError("");
     try {
-      const response=await fetch("/api/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({acceptRenewal:true})});
+      const response=await fetch(card?"/api/cards/checkout":"/api/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({acceptRenewal:true,...(card?{slug:card}:{})})});
       const result=await response.json() as {url?:string;message?:string};
       if(!response.ok || !result.url)throw new Error(result.message || "Checkout could not open. Please try again.");
       const url=new URL(result.url);
@@ -50,6 +52,6 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
     setDetails(true);
   }
   if(!ready)return <div className="checkout-unavailable"><p>Checkout is unavailable. Please try again.</p></div>;
-  if(details && !signedIn)return <div className="join-inline-identity"><p className="eyebrow">Your details</p>{signIn ? <SignIn appearance={authAppearance} routing="hash" forceRedirectUrl={returnUrl} signUpForceRedirectUrl={returnUrl} signUpUrl={`/join?identity=sign-up${destinationSuffix}`}/>:<><ExistingAccountRedirect next={next}/><SignUp appearance={authAppearance} routing="hash" initialValues={initialValues} forceRedirectUrl={returnUrl} signInForceRedirectUrl={returnUrl} signInUrl={enrollmentSignInUrl(next)}/></>}</div>;
-  return <div className="checkout-controls"><label className="club-consent"><input type="checkbox" checked={accepted} onChange={e=>setAccepted(e.target.checked)}/><span>I agree to the <Link href="/membership/terms">membership terms</Link>. Membership renews at {annualMembership.display} USD/year until canceled.</span></label><button className="button club-wide" type="button" onClick={proceed} disabled={!accepted || pending}>{pending ? "Opening secure checkout…" : "Become a member"}<ArrowRight size={16}/></button><p className="club-small join-payment-note"><LockKeyhole size={12}/> Secure payment through Stripe.</p>{error && <p className="club-form-error" role="alert">{error}</p>}</div>;
+  if(details && !signedIn)return <div className="join-inline-identity"><AuthCompletionBridge destination={returnUrl}/><p className="eyebrow">Your details</p>{signIn ? <SignIn oauthFlow="redirect" appearance={authAppearance} routing="hash" forceRedirectUrl={returnUrl} signUpForceRedirectUrl={returnUrl} signUpUrl={`/join?identity=sign-up${destinationSuffix}`}/>:<><ExistingAccountRedirect next={next} card={card}/><SignUp oauthFlow="redirect" appearance={authAppearance} routing="hash" initialValues={initialValues} forceRedirectUrl={returnUrl} signInForceRedirectUrl={returnUrl} signInUrl={enrollmentSignInUrl(next,card)}/></>}</div>;
+  return <div className="checkout-controls"><label className="club-consent"><input type="checkbox" checked={accepted} onChange={e=>setAccepted(e.target.checked)}/><span>I agree to the <Link href="/membership/terms">membership terms</Link>. Membership renews at {annualMembership.display} USD/year until canceled.</span></label><button className="button club-wide" type="button" onClick={proceed} disabled={!accepted || pending}>{pending ? "Opening secure checkout…" : card?"Buy now":"Become a member"}<ArrowRight size={16}/></button><p className="club-small join-payment-note"><LockKeyhole size={12}/> Secure payment through Stripe.</p>{error && <p className="club-form-error" role="alert">{error}</p>}</div>;
 }
