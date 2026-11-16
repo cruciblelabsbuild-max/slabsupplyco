@@ -1,0 +1,39 @@
+import {test} from "node:test";
+import assert from "node:assert/strict";
+import {randomUUID} from "node:crypto";
+import {inventoryDb} from "../lib/inventory-db";
+import {ensureTrades,submitTrade,getTrade,operatorAction,applyTradeCommand,tradeCreditBalance,uploadTradeFile,downloadTradeFile,deleteTradeFile,importLegacyTrades,listTrades} from "../lib/trades/store";
+import {pendingCredit,type Trade} from "../lib/trades/model";
+const enabled=process.env.RUN_TRADE_DB_TESTS==="1";
+test("trade lifecycle is private, versioned and posts credit exactly once",{skip:!enabled},async()=>{
+ await ensureTrades();const owner=`trade-qa-${randomUUID()}`,admin="trade-qa-operator";const ids:string[]=[];
+ const db=inventoryDb();
+ const terms={included:["QA card / lot"],includedCount:1,creditCents:8500,shippingDeductionCents:0,conditions:"QA reviewed sales.",shippingTerms:"QA member-paid postage.",inspectionTerms:"QA grade and slab must match.",returnTerms:"QA member pays return label.",coverage:"QA no coverage claimed; provider terms must be verified."};
+ const op=(t:Trade,action:string,data:Record<string,unknown>={})=>operatorAction(t,admin,{action,note:"QA verified record",requestId:randomUUID(),...data});
+ const accept=(t:Trade,id=t.currentOfferId)=>applyTradeCommand(t,owner,owner,"accept",{offerId:id,consent:true},randomUUID());
+ async function submitted(){const id=randomUUID();ids.push(id);return submitTrade(owner,{requestId:id,mode:"bulk",description:"QA collection",cardCount:1,consent:true});}
+ try{
+ let t=await submitted();assert.equal(t.state,"submitted");assert.equal((await submitTrade(owner,{requestId:t.id})).id,t.id);
+ await assert.rejects(()=>getTrade(t.id,"other-owner"));await assert.rejects(()=>op(t,"issue_credit"));
+ t=await op(t,"request_info");t=await applyTradeCommand(t,owner,owner,"info",{note:"QA details provided"},randomUUID());assert.equal(t.state,"reviewing");
+ const uploaded=await uploadTradeFile({...t,state:"draft"},{name:"cards.csv",bytes:Buffer.from("Card,Grade\nQA,9")},"collection",null).catch(()=>null);assert.equal(uploaded,null,"database rechecks actual upload stage");
+ t=await op(t,"offer",terms);const first=t.currentOfferId;assert.equal(pendingCredit(t),0);
+ t=await op(t,"offer",{...terms,creditCents:8000,reason:"QA preliminary correction"});await assert.rejects(()=>accept(t,first));assert.equal(t.offers.length,2);
+ await assert.rejects(()=>applyTradeCommand(t,owner,owner,"accept",{offerId:t.currentOfferId,consent:false},randomUUID()));
+ t=await accept(t);assert.equal(pendingCredit(t),8000);assert.equal(await tradeCreditBalance(owner),0);await assert.rejects(()=>op(t,"issue_credit"));
+ const pdf=await uploadTradeFile(t,{name:"qa-label.pdf",bytes:Buffer.from("%PDF-1.4\nQA fixture only")},"label",null,true);
+ await assert.rejects(()=>downloadTradeFile(t.id,pdf.id,"other-owner"));assert.equal((await downloadTradeFile(t.id,pdf.id,owner)).mime,"application/pdf");await assert.rejects(()=>deleteTradeFile(t.id,pdf.id,owner));
+ t=await getTrade(t.id,owner);
+ const label={fileId:pdf.id,carrier:"UPS",tracking:"QA123",trackingUrl:"https://www.ups.com/track?tracknum=QA123",service:"QA ground",sender:"QA sender",recipient:"QA receiving address",package:"QA 8 x 6 x 4, 1 lb",approvedValueCents:8000,coverage:"QA coverage arrangements",instructions:"QA package securely",coverageVerified:true,termsMatchAccepted:true};
+ await assert.rejects(()=>op(t,"label",{...label,coverageVerified:false}));t=await op(t,"label",label);t=await op(t,"label",label);assert.equal(t.labels.length,2);
+ t=await op(t,"stage",{state:"in_transit"});t=await op(t,"stage",{state:"delivered"});assert.equal(await tradeCreditBalance(owner),0);await assert.rejects(()=>op(t,"issue_credit"));t=await op(t,"stage",{state:"received"});t=await op(t,"stage",{state:"inspecting"});
+ t=await op(t,"offer",{...terms,kind:"inspection",creditCents:7000,reason:"QA slab condition differs"});assert.equal(pendingCredit(t),8000);await assert.rejects(()=>op(t,"issue_credit"));t=await accept(t);assert.equal(t.state,"ready_credit");assert.equal(pendingCredit(t),7000);
+ const issued=await Promise.all([op(t,"issue_credit"),op(t,"issue_credit"),op(t,"issue_credit")]);assert(issued.every(item=>item.state==="credit_issued"));assert.equal(await tradeCreditBalance(owner),7000);assert.equal((await db`SELECT * FROM ssc_trade_credit WHERE trade_id=${t.id}::uuid`).length,1);t=await getTrade(t.id,owner);assert.equal(pendingCredit(t),0);assert(t.creditTransactionId);
+ await assert.rejects(()=>applyTradeCommand(t,owner,owner,"issue_credit",{note:"injected"},randomUUID()));
+ // Expiration is checked again by the database at acceptance time.
+ let expired=await submitted();expired=await op(expired,"offer",terms);await db`UPDATE ssc_trade_offers SET data=jsonb_set(data,'{expiresAt}','"2020-01-01T00:00:00Z"'::jsonb) WHERE id=${expired.currentOfferId}::uuid`;expired=await getTrade(expired.id,owner);await assert.rejects(()=>accept(expired));
+ // Rejected inspection revisions clear pending credit and follow a separate return path.
+ let returned=await submitted();returned=await op(returned,"offer",terms);returned=await accept(returned);const returnPdf=await uploadTradeFile(returned,{name:"qa.pdf",bytes:Buffer.from("%PDF-1.4 QA")},"label",null,true);returned=await op(await getTrade(returned.id,owner),"label",{...label,fileId:returnPdf.id});returned=await op(returned,"stage",{state:"in_transit"});returned=await op(returned,"stage",{state:"received"});returned=await op(returned,"offer",{...terms,kind:"inspection",creditCents:6500,reason:"QA revised grade"});returned=await applyTradeCommand(returned,owner,owner,"decline_offer",{offerId:returned.currentOfferId,consent:false},randomUUID());assert.equal(returned.state,"return_requested");assert.equal(pendingCredit(returned),0);const ret=await uploadTradeFile(returned,{name:"return.pdf",bytes:Buffer.from("%PDF-1.4 QA")},"return_label",null,true);returned=await op(await getTrade(returned.id,owner),"return_label",{...label,fileId:ret.id});returned=await op(returned,"stage",{state:"return_shipped"});returned=await op(returned,"stage",{state:"returned"});await assert.rejects(()=>op(returned,"issue_credit"));assert.equal(await tradeCreditBalance(owner),7000);
+ const raw={id:randomUUID(),createdAt:new Date().toISOString(),status:"submitted",goal:"QA legacy",preference:"credit",cards:[{cardName:"QA legacy card",set:"Base",year:"1999",grader:"PSA",grade:"9",certification:"123",condition:"Good"}]};ids.push(raw.id);const metadata={tradeRequests:{[raw.id]:raw}};await importLegacyTrades(owner,metadata);await importLegacyTrades(owner,metadata);const imported=(await listTrades(owner)).filter(item=>item.id===raw.id);assert.equal(imported.length,1);assert.deepEqual(imported[0].submission.legacy,raw);
+ }finally{for(const table of ["ssc_trade_credit","ssc_trade_events","ssc_trade_labels","ssc_trade_files","ssc_trade_offers"])await db.query(`DELETE FROM ${table} WHERE trade_id=ANY($1::uuid[])`,[ids]);await db`DELETE FROM ssc_trades_v3 WHERE id=ANY(${ids}::uuid[]) AND user_id=${owner}`;}
+});
