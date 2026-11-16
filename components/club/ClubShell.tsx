@@ -5,9 +5,10 @@ import { useState } from "react";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { ArrowRight, Menu, X, UserRound, LogOut } from "lucide-react";
 import Logo from "../../app/Logo";
+import MemberNavigation from "./MemberNavigation";
 import { useIdentityEnabled, useInitialIdentity } from "./IdentityProvider";
 const guestLinks = [["/membership", "Membership"], ["/promise", "Our promise"]];
-const memberLinks = [["/account", "Home"], ["/shop", "Member deals"], ["/trade-ins", "Trade in"], ["/drops", "Grail drops"], ["/account/orders", "Activity"]];
+
 export function ClubHeader() {
   const enabled = useIdentityEnabled();
   return enabled ? <SessionHeader /> : <Navigation name={null} />;
@@ -27,18 +28,18 @@ function Navigation({ name, onSignOut }: { name: string | null; onSignOut?: () =
     setLeaving(true); setError("");
     try { await onSignOut?.(); } catch { setLeaving(false); setError("Sign-out failed. Please try again."); }
   }
-  return <>{!name && <div className="announcement"><span>{name ? `Welcome back, ${name}. Your collection starts here.` : "Built around your collection. Founding membership · $99/year."}</span></div>}
-    <header className={name ? "site-header club-header club-header-member" : "site-header club-header"}>
-      <Logo href={name ? "/account" : "/"} />
+  if (name) return <MemberNavigation onSignOut={logout} leaving={leaving} error={error}/>;
+  return <><div className="announcement"><span>Built around your collection. Founding membership · $99/year.</span></div>
+    <header className="site-header club-header">
+      <Logo href="/" />
       <nav id="club-navigation" className={open ? "nav-links open" : "nav-links"} aria-label="Primary navigation">
-        <div className="mobile-session"><span className="session-avatar"><UserRound size={18} /></span><div><strong>{name ? `Hi, ${name}.` : "Welcome aboard."}</strong><p>{name ? "Signed in · Your account" : "You’re browsing as a guest"}</p></div></div>
-        {(name ? memberLinks : guestLinks).map(([href, label]) => <Link key={href} href={href} aria-current={(href === "/account" ? path === href : path.startsWith(href)) ? "page" : undefined} onClick={() => setOpen(false)}>{label}</Link>)}
-        {<div className="mobile-account-actions">{name ? <><Link href="/account/billing" onClick={() => setOpen(false)}>Manage billing</Link><Link href="/account/profile" onClick={() => setOpen(false)}>Account settings</Link><button type="button" onClick={logout} disabled={leaving}><LogOut size={15} /> {leaving ? "Signing out…" : "Sign out"}</button></> : <><Link className="button" href="/sign-in" onClick={() => setOpen(false)}>Sign in <ArrowRight size={15} /></Link><Link href="/join" onClick={() => setOpen(false)}>Become a member</Link></>}</div>}
+        <div className="mobile-session"><span className="session-avatar"><UserRound size={18} /></span><div><strong>Welcome aboard.</strong><p>You’re browsing as a guest</p></div></div>
+        {guestLinks.map(([href,label])=><Link key={href} href={href} aria-current={path.startsWith(href)?"page":undefined} onClick={()=>setOpen(false)}>{label}</Link>)}
+        <div className="mobile-account-actions"><Link className="button" href="/sign-in" onClick={()=>setOpen(false)}>Sign in<ArrowRight size={15}/></Link><Link href="/join" onClick={()=>setOpen(false)}>Become a member</Link></div>
       </nav>
-      <div className="club-header-actions">{name ? <Link className="session-account-link" href="/account/profile" onClick={() => setOpen(false)}><span className="session-avatar">{name.slice(0, 1).toUpperCase()}</span><span>Profile</span></Link> : <Link className="session-sign-in" href="/sign-in" onClick={() => setOpen(false)}><UserRound size={15} /><span>Sign in</span></Link>}{name && <button className="session-desktop-out" type="button" onClick={logout} disabled={leaving} aria-label="Sign out"><LogOut size={14} /><span>{leaving ? "Signing out…" : "Sign out"}</span></button>}{!name && <Link className="button button-small" href="/join" onClick={() => setOpen(false)}>Become a member <ArrowRight size={14} /></Link>}</div>
-      <button className="menu-button" type="button" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} aria-controls="club-navigation" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
-    </header>{error && <p className="club-form-error" role="alert">{error}</p>}
-    {name && <nav className="club-member-nav" aria-label="Membership navigation">{memberLinks.map(([href,label]) => <Link key={href} href={href} aria-current={(href === "/account" ? path === href : path.startsWith(href)) ? "page" : undefined}>{label}</Link>)}</nav>}
+      <div className="club-header-actions"><Link className="session-sign-in" href="/sign-in"><UserRound size={15}/><span>Sign in</span></Link><Link className="button button-small" href="/join">Become a member<ArrowRight size={14}/></Link></div>
+      <button className="menu-button" type="button" aria-label={open?"Close navigation":"Open navigation"} aria-expanded={open} aria-controls="club-navigation" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button>
+    </header>
   </>;
 }
 export function ClubFooter() {
@@ -56,3 +57,6 @@ function SessionMobileBar() {
   const initialName = useInitialIdentity();
   return (isLoaded ? Boolean(user) : Boolean(initialName)) ? <div className="mobile-bar"><Link className="button" href="/account">Home <ArrowRight size={16} /></Link></div> : <GuestMobileBar />;
 }
+
+export function ProfileSignOut(){return useIdentityEnabled()?<SessionProfileSignOut/>:null;}
+function SessionProfileSignOut(){const {signOut}=useClerk();const [pending,setPending]=useState(false);const [error,setError]=useState("");async function leave(){setPending(true);try{await signOut({redirectUrl:"/"});}catch{setPending(false);setError("Sign-out failed. Please try again.");}}return <div className="profile-signout"><button type="button" onClick={leave} disabled={pending}><LogOut size={17}/>{pending?"Signing out…":"Sign out"}</button>{error&&<p role="alert">{error}</p>}</div>;}

@@ -1,0 +1,4 @@
+import type { TradeRequest } from "../../lib/member-trades";
+export default function TradeHistory({trades}:{trades:TradeRequest[]}){
+ return <section className="trade-history-section" id="your-trades"><h2>Your trades</h2>{trades.length?<div className="member-trade-history">{trades.map(trade=><details key={trade.id}><summary><div><span className="eyebrow">Trade-in request / {trade.id.slice(-8).toUpperCase()}</span><h3>{trade.cardName}</h3><p>{trade.year} · {trade.set} · {trade.grader} {trade.grade}</p></div><span className="trade-status">{trade.status}</span></summary><div className="trade-history-detail"><p><strong>Submitted</strong>{new Date(trade.createdAt).toLocaleDateString("en-US",{timeZone:"America/New_York"})}</p><p><strong>Condition</strong>{trade.condition}</p>{trade.goal&&<p><strong>Trading toward</strong>{trade.goal}</p>}</div></details>)}</div>:<p className="trade-history-empty">No trade requests yet.</p>}</section>;
+}

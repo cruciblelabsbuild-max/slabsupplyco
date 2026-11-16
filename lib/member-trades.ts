@@ -21,7 +21,7 @@ export async function saveMemberTrade(body:Record<string,unknown>,store:{read:()
  const request=parseTradeRequest(body);
  const metadata=await store.read();const existing=memberTrades(metadata.tradeRequests);
  const previous=existing.find(t=>t.id===request.id);if(previous)return previous;
- if(existing.filter(t=>!["declined","completed"].includes(t.status)).length>=3)throw new TradeValidationError("You have three open trade requests. Review them in Activity before submitting another.");
+ if(existing.filter(t=>!["declined","completed"].includes(t.status)).length>=3)throw new TradeValidationError("You have three open trade requests. Review them in Trades before submitting another.");
  const next={...metadata,tradeRequests:{...(typeof metadata.tradeRequests==="object" ? metadata.tradeRequests:{}),[request.id]:request}};
  if(new TextEncoder().encode(JSON.stringify(next)).length>7000)throw new TradeValidationError("Your trade request could not be added. Contact the trade-in desk before submitting another.");
  await store.write(request.id,request);return request;
