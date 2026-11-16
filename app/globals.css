@@ -1310,3 +1310,26 @@ body[data-member="true"] .club-footer .footer-top>.brand { display:none; }
  .member-home-heading { gap:22px; padding-block:28px; }.member-home-heading h1 { font-size:29px; }.member-pass { width:100%; padding:16px 20px; }.member-pass-identity { margin-top:8px; }.member-pass-identity>strong { font-size:23px; }.member-pass-top>span { font-size:8px; }.member-pass-manage { margin-top:10px; }
  .profile-sheet .profile-membership { grid-template-columns:1fr; gap:18px; }.profile-section-nav { gap:20px; }.member-sidebar>.brand .brand-wordmark { font-size:10px; }
 }
+/* One structured trade request can include several individually graded cards. */
+.member-trade-form fieldset { min-width:0; margin:0; border:0; padding:0; }
+.member-trade-form .trade-count { border-bottom:1px solid var(--line); padding-bottom:24px; margin-bottom:3px; }
+.trade-count>legend { display:flex; align-items:center; gap:9px; color:var(--ink); font-size:12px; font-weight:700; text-transform:none; letter-spacing:0; margin:0 0 18px; }
+.member-trade-form .trade-card-fields { display:grid; gap:18px; border:1px solid var(--line); border-radius:4px; padding:20px; }
+.trade-card-fields>legend { width:auto; margin:0; padding:0 8px; color:var(--ink); font-size:13px; font-weight:700; letter-spacing:0; text-transform:none; }.trade-card-fields>legend>span { font-size:10px; font-weight:400; color:var(--muted); margin-left:8px; }
+.member-trade-form label>span { font-size:9px; color:var(--muted); font-weight:400; margin:0; text-transform:none; letter-spacing:0; }
+.member-trade-form input:not([type=checkbox]),.member-trade-form select,.member-trade-form textarea { font-size:16px; }
+.trade-history-card { border-top:1px solid var(--line); padding-top:16px; margin-top:16px; }.trade-history-card h4 { font-size:20px; margin:0 0 10px; }
+/* The sign-in arrival uses the existing logo unchanged, surrounded by motion. */
+.member-loading { min-height:65vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:50px 24px; background:var(--paper); text-align:center; }
+.member-loading-full { position:fixed; inset:0; z-index:200; min-height:100dvh; }
+.member-loading-emblem { position:relative; display:grid; place-items:center; min-height:130px; margin-bottom:30px; }
+.member-loading-emblem>.brand { position:relative; z-index:1; }
+.member-loading-orbit { position:absolute; width:200px; height:200px; border:1px solid var(--line); border-radius:50%; animation:member-orbit 1.8s ease-in-out infinite; }
+.member-loading-orbit::before { content:""; position:absolute; width:5px; height:5px; top:24px; right:24px; border-radius:50%; background:var(--coral); }
+.member-loading h1 { font-size:38px; letter-spacing:-.04em; }
+.member-loading-dots { display:flex; gap:7px; margin-top:25px; }.member-loading-dots>i { width:5px; height:5px; border-radius:50%; background:var(--forest); animation:member-dot 1.1s ease-in-out infinite; }.member-loading-dots>i:nth-child(2) { animation-delay:.15s; }.member-loading-dots>i:nth-child(3) { animation-delay:.3s; }
+@keyframes member-dot { 0%,70%,100% { opacity:.25; transform:translateY(0); } 35% { opacity:1; transform:translateY(-4px); } }
+@keyframes member-orbit { 0%,100% { transform:scale(.95); opacity:.5; } 50% { transform:scale(1.03); opacity:1; } }
+@media(prefers-reduced-motion:reduce) { .member-loading-orbit,.member-loading-dots>i { animation:none; } }
+@media(max-width:560px) { .member-trade-form .trade-card-fields { padding:18px 15px; }.member-loading h1 { font-size:32px; } }
+.trade-guest>.club-text-link { display:flex; width:max-content; margin-top:8px; }

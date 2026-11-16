@@ -49,12 +49,11 @@ const faqs = [
   },
   {
     label: "Trade-in process",
-    q: "What happens after I submit a trade-in interest form?",
+    q: "What happens after I submit a trade request?",
     a: "Your submission goes to the trade-in desk for review. When a card fits our buying needs, you receive a quote to approve before shipping.",
   },
 ];
 
-const graders = ["PSA", "CGC", "BGS", "Other / mixed"];
 
 const shelfCards = [
   { image: "/cards/snorlax-psa9-normalized.webp", alt: "1999 Jungle Snorlax holo graded PSA 9", kicker: "1999 · Vintage holo · PSA 9", name: "Jungle Snorlax #11", retail: "$700", member: "$595", savings: "$105", interest: "Vintage holos like 1999 Jungle Snorlax" },
@@ -81,13 +80,10 @@ function track(event: string, metadata: Record<string, unknown> = {}) {
 }
 
 export default function Home() {
-  const [tradeOpen, setTradeOpen] = useState(false);
   const [noteOpen, setNoteOpen] = useState(false);
   const [waitState, setWaitState] = useState<SubmitState>("idle");
-  const [tradeState, setTradeState] = useState<SubmitState>("idle");
   const [noteState, setNoteState] = useState<SubmitState>("idle");
   const [waitMessage, setWaitMessage] = useState("");
-  const [tradeMessage, setTradeMessage] = useState("");
   const [noteMessage, setNoteMessage] = useState("");
   const startSignup = useStartSignup();
   const waitStartedTracked = useRef(false);
@@ -95,7 +91,6 @@ export default function Home() {
   const [shelfIndex, setShelfIndex] = useState(0);
   const [shelfPageSize, setShelfPageSize] = useState(1);
   const [faqIndex, setFaqIndex] = useState(0);
-  const [tradeStartedAt, setTradeStartedAt] = useState(Date.now());
   const [noteStartedAt, setNoteStartedAt] = useState(Date.now());
 
   useEffect(() => {
@@ -119,9 +114,9 @@ export default function Home() {
   }
 
   useEffect(() => {
-    document.body.style.overflow = tradeOpen || noteOpen ? "hidden" : "";
+    document.body.style.overflow = noteOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [tradeOpen, noteOpen]);
+  }, [noteOpen]);
 
   useEffect(() => {
     const media = window.matchMedia("(min-width: 821px)");
@@ -143,44 +138,9 @@ export default function Home() {
     }
   }
 
-  async function submitTrade(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setTradeState("submitting");
-    setTradeMessage("");
-    const data = new FormData(event.currentTarget);
-    const payload = {
-      firstName: data.get("firstName"),
-      email: data.get("email"),
-      grader: data.get("grader"),
-      estimatedValue: data.get("estimatedValue"),
-      timeframe: data.get("timeframe"),
-      cardDetails: data.get("cardDetails"),
-      company: data.get("company"),
-      consent: data.get("consent") === "on",
-      startedAt: tradeStartedAt,
-    };
-
-    try {
-      const response = await fetch("/api/trade-in", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json() as { message?: string };
-      if (!response.ok) throw new Error(result.message || "We couldn’t save your interest. Please try again.");
-      setTradeState("success");
-      setTradeMessage(result.message || "Your trade-in interest is saved.");
-      track("tradein_submitted", { grader: payload.grader, value: payload.estimatedValue });
-    } catch (error) {
-      setTradeState("error");
-      setTradeMessage(error instanceof Error ? error.message : "Something went wrong. Please try again.");
-    }
-  }
-
   function openTrade() {
-    setTradeStartedAt(Date.now());
-    setTradeOpen(true);
     track("tradein_started");
+    window.location.assign("/trade-ins#start-trade");
   }
 
   function openNote() {
@@ -488,30 +448,6 @@ export default function Home() {
       </footer>
 
       <MobileAccountBar />
-
-      {tradeOpen && (
-        <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setTradeOpen(false); }}>
-          <section className="trade-modal" role="dialog" aria-modal="true" aria-labelledby="trade-title">
-            <button className="modal-close" type="button" aria-label="Close trade-in form" onClick={() => setTradeOpen(false)}><X /></button>
-            {tradeState === "success" ? (
-              <div className="trade-success" role="status"><span className="success-icon"><Check /></span><p className="eyebrow">Interest saved</p><h2 id="trade-title">Thanks for showing your hand.</h2><p>{tradeMessage}</p><p className="fine-print">This is not a quote or acceptance. We’ll reach out when the trade-in desk opens.</p><button className="button" type="button" onClick={() => setTradeOpen(false)}>Done</button></div>
-            ) : (
-              <form onSubmit={submitTrade}>
-                <p className="eyebrow">Trade-in interest</p><h2 id="trade-title">What might you trade?</h2><p>Tell us enough to understand demand. This is not a quote, approval, or commitment to ship.</p>
-                <div className="field-row"><label><span>First name</span><input name="firstName" autoComplete="given-name" maxLength={60} required /></label><label><span>Email</span><input name="email" type="email" autoComplete="email" maxLength={160} required /></label></div>
-                <div className="field-row"><label><span>Primary grader</span><select name="grader" required defaultValue=""><option value="" disabled>Select one</option>{graders.map((grader) => <option key={grader}>{grader}</option>)}</select></label><label><span>Estimated total value</span><select name="estimatedValue" required defaultValue=""><option value="" disabled>Select a range</option><option>Under $250</option><option>$250–$999</option><option>$1,000–$4,999</option><option>$5,000+</option><option>Not sure</option></select></label></div>
-                <label className="full-field"><span>What cards are you considering?</span><textarea name="cardDetails" rows={4} maxLength={1200} placeholder="Card, set/year, grade, and slab condition. A rough list is perfect." required /></label>
-                <label className="full-field"><span>When would you consider trading?</span><select name="timeframe" required defaultValue=""><option value="" disabled>Select one</option><option>As soon as the desk opens</option><option>Within 1–3 months</option><option>Later this year</option><option>Just exploring</option></select></label>
-                <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
-                <label className="consent"><input type="checkbox" name="consent" /><span>I agree to receive trade-in updates about this submission.</span></label>
-                <button className="button submit-button" disabled={tradeState === "submitting"} type="submit">{tradeState === "submitting" ? "Saving…" : <>Register interest <ArrowRight size={17} /></>}</button>
-                {tradeMessage && <p className="form-message error" role="alert">{tradeMessage}</p>}
-                <p className="form-footnote">Please don’t include certification numbers or other sensitive details yet.</p>
-              </form>
-            )}
-          </section>
-        </div>
-      )}
 
       {noteOpen && (
         <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setNoteOpen(false); }}>

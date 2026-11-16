@@ -72,7 +72,7 @@ export default function PromisePage() {
       </div>
       <aside className="promise-thesis">
         <span>The model</span>
-        <blockquote>Fair prices. Strong trade-ins. More room for the cards you love.</blockquote>
+        <blockquote>Fair prices. More room for the cards you love.</blockquote>
         <p>We’re not promising every card will always be the cheapest. We’re building a business where the way Slab Supply Co. makes money is aligned with helping members get more from the hobby.</p>
       </aside>
     </section>

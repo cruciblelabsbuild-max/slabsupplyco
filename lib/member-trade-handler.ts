@@ -3,9 +3,9 @@ import { saveMemberTrade, TradeValidationError } from "./member-trades";
 export async function submitMemberTrade(request:Request,member:{id:string;email:string|null}) {
  if(request.headers.get("origin")!==new URL(request.url).origin)return Response.json({message:"Invalid request origin."},{status:403});
  if(!member.email)return Response.json({message:"Verify your email before submitting a trade."},{status:403});
- if(Number(request.headers.get("content-length")||0)>4000)return Response.json({message:"That request is too large."},{status:413});
+ if(Number(request.headers.get("content-length")||0)>8000)return Response.json({message:"That request is too large."},{status:413});
  let body:Record<string,unknown>;
- try {body=await request.json() as Record<string,unknown>;if(!body || typeof body!=="object")throw Error();}
+ try {const raw=await request.text();if(new TextEncoder().encode(raw).length>8000)return Response.json({message:"That request is too large."},{status:413});body=JSON.parse(raw) as Record<string,unknown>;if(!body || typeof body!=="object")throw Error();}
  catch{return Response.json({message:"Check your trade details."},{status:400});}
  try {
   const clerk=await clerkClient();

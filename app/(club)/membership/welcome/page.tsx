@@ -1,6 +1,7 @@
+import MembershipCompletionActions from "../../../../components/club/MembershipCompletionActions";
 import { requireMember } from "../../../../lib/member-session";
 import Link from "next/link";
-import { ArrowRight, Check, Clock3 } from "lucide-react";
+import { Check, Clock3 } from "lucide-react";
 import { checkoutStatus } from "../../../../lib/checkout-status";
 import { getStripe } from "../../../../lib/stripe";
 export const dynamic = "force-dynamic";
@@ -18,5 +19,5 @@ export default async function WelcomePage({ searchParams }: { searchParams: Prom
       pending = result.pending;
     } catch { /* An invalid or unavailable session must never claim payment succeeded. */ }
   }
-  return <section className="section-shell club-result"><span className="club-result-icon">{paid ? <Check size={35} /> : <Clock3 size={35} />}</span>{!paid && <p className="eyebrow">Checkout status</p>}<h1>{paid ? <>Membership confirmed.<br /><em>Welcome aboard.</em></> : pending ? <>We’re checking<br /><em>your payment.</em></> : <>Let’s make sure<br /><em>you’re all set.</em></>}</h1>{!paid && <p>{pending ? "Your checkout was submitted, but payment or subscription activation is still pending. Check your Stripe confirmation before trying again." : "We couldn’t confirm a completed checkout from this link. No membership status is being assumed. If you completed checkout, check your confirmation or contact us."}</p>}<div className="club-result-actions"><Link className="button" href="/account">Member home <ArrowRight size={16} /></Link><Link className="button club-button-outline" href="/shop">Browse member deals</Link></div><Link className="club-text-link" href="/help">Questions? We’re here to help.</Link></section>;
+  return <section className="section-shell club-result"><span className="club-result-icon">{paid ? <Check size={35} /> : <Clock3 size={35} />}</span>{!paid && <p className="eyebrow">Checkout status</p>}<h1>{paid ? <>Membership confirmed.<br /><em>Welcome aboard.</em></> : pending ? <>We’re checking<br /><em>your payment.</em></> : <>Let’s make sure<br /><em>you’re all set.</em></>}</h1>{!paid && <p>{pending ? "Your checkout was submitted, but payment or subscription activation is still pending. Check your Stripe confirmation before trying again." : "We couldn’t confirm a completed checkout from this link. No membership status is being assumed. If you completed checkout, check your confirmation or contact us."}</p>}<MembershipCompletionActions paid={paid}/><Link className="club-text-link" href="/help">Questions? We’re here to help.</Link></section>;
 }
