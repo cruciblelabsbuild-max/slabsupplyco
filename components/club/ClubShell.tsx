@@ -1,4 +1,5 @@
 "use client";
+import {identityFirstName} from "../../lib/member-name";
 import { annualMembership } from "../../lib/membership-plan";
 
 import Link from "next/link";
@@ -20,7 +21,7 @@ function SessionHeader() {
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
   const initialName = useInitialIdentity();
-  return <Navigation name={isLoaded ? (user ? user.firstName || "Collector" : null) : initialName} onSignOut={() => signOut({ redirectUrl: "/" })} />;
+  return <Navigation name={isLoaded ? (user ? identityFirstName(user) || initialName || "Collector" : null) : initialName} onSignOut={() => signOut({ redirectUrl: "/" })} />;
 }
 function Navigation({ name, onSignOut }: { name: string | null; onSignOut?: () => Promise<unknown> }) {
   const path = usePathname();
