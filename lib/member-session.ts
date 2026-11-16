@@ -4,9 +4,10 @@ import { cache } from "react";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { authConfigured } from "./auth-config";
+import { resolveSessionUser } from "./session-user";
 export const getMember = cache(async () => {
   if (!authConfigured() || (await headers()).get(publicGuestHeader) === "1") return null;
-  const user = await currentUser();
+  const user = await resolveSessionUser(currentUser);
   if (!user) return null;
   const email = user.emailAddresses.find(address => address.id === user.primaryEmailAddressId && address.verification?.status === "verified");
   return { id: user.id, name: user.firstName || "Collector", email: email?.emailAddress || null };
