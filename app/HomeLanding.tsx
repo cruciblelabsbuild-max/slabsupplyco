@@ -92,7 +92,7 @@ export default function Home() {
   const [shelfIndex, setShelfIndex] = useState(0);
   const [shelfPageSize, setShelfPageSize] = useState(1);
   const [faqIndex, setFaqIndex] = useState(0);
-  const [noteStartedAt, setNoteStartedAt] = useState(Date.now());
+  const [noteStartedAt, setNoteStartedAt] = useState(0);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
