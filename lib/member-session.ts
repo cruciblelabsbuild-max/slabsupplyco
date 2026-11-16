@@ -1,9 +1,11 @@
+import { headers } from "next/headers";
+import { publicGuestHeader } from "./public-guest";
 import { cache } from "react";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { authConfigured } from "./auth-config";
 export const getMember = cache(async () => {
-  if (!authConfigured()) return null;
+  if (!authConfigured() || (await headers()).get(publicGuestHeader) === "1") return null;
   const user = await currentUser();
   if (!user) return null;
   const email = user.emailAddresses.find(address => address.id === user.primaryEmailAddressId && address.verification?.status === "verified");
