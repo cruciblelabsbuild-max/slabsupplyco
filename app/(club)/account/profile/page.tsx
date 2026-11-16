@@ -18,8 +18,8 @@ export default async function ProfilePage() {
   const membership = await membershipForUser(member.id);
   const {portalUrl} = billingConfig();
   const user = await (await clerkClient()).users.getUser(member.id);
-  let profile = emptyProfile;
-  try { if (user.privateMetadata.memberProfile) profile = parseMemberProfile(user.privateMetadata.memberProfile); } catch { /* Invalid legacy data is never rendered. */ }
+  let profile = {...emptyProfile,collectingFocus:typeof user.privateMetadata.collectingFocus==="string"?user.privateMetadata.collectingFocus.slice(0,160):""};
+  try { const saved=user.privateMetadata.memberProfile;if(saved&&typeof saved==="object"&&!Array.isArray(saved)) profile = parseMemberProfile({collectingFocus:profile.collectingFocus,...saved}); } catch { /* Invalid legacy data is never rendered. */ }
   let cards: SavedPaymentCard[] = [];
   let paymentUnavailable = false;
   if (typeof user.privateMetadata.stripeTestCustomerId === "string") { try { cards = await savedPaymentCards(getStripe(),user.privateMetadata.stripeTestCustomerId,member.id); } catch { paymentUnavailable = true; } }

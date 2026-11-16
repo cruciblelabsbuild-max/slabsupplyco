@@ -1361,3 +1361,29 @@ body[data-member="true"] .club-footer .footer-top>.brand { display:none; }
 .member-home-metrics dd:not(.member-metric-note) { margin:13px 0 10px; font:normal 34px/1.1 Georgia,serif; letter-spacing:-.035em; overflow-wrap:anywhere; }
 .member-home-metrics .member-metric-note { margin:0; color:var(--muted); font-size:11px; line-height:1.6; }
 @media(max-width:600px) { .member-home-metrics dl { grid-template-columns:1fr; }.member-home-metrics dl>div { padding:20px 24px; }.member-home-metrics dl>div+div { border-left:0; border-top:1px solid var(--line); }.member-home-metrics dd:not(.member-metric-note) { font-size:30px; } }
+
+/* A non-modal first-visit guide, separate from the sign-in arrival animation. */
+.member-welcome { position:fixed; z-index:80; right:26px; bottom:24px; }
+.member-welcome-trigger { display:flex; align-items:center; gap:16px; border:1px solid var(--line); background:var(--white); padding:12px 17px; color:var(--forest); border-radius:4px; box-shadow:0 5px 22px rgba(38,37,61,.08); font-size:11px; font-weight:650; cursor:pointer; }
+.member-welcome-trigger[hidden] { display:none; }
+.member-welcome-panel { position:relative; width:390px; max-height:calc(100dvh - 48px); overflow-y:auto; overscroll-behavior:contain; padding:28px; background:var(--white); border:1px solid var(--line); border-radius:8px; box-shadow:0 16px 65px rgba(38,37,61,.16); }
+.member-welcome-close { position:absolute; top:15px; right:15px; display:grid; place-items:center; width:32px; height:32px; border:0; border-radius:50%; background:transparent; color:var(--muted); cursor:pointer; }
+.member-welcome-close:hover { background:var(--paper); color:var(--ink); }
+.member-welcome-status { display:flex; align-items:center; gap:7px; margin-right:20px; color:var(--forest); font-size:10px; font-weight:600; }
+.member-welcome-status svg { flex:none; }
+.member-welcome-panel h2 { font:normal 31px/1.12 Georgia,serif; letter-spacing:-.035em; margin:21px 0 24px; }
+.member-welcome-panel h2 em { color:var(--coral); }
+.member-welcome-panel ol { list-style:none; margin:0; padding:0; border-top:1px solid var(--line); }
+.member-welcome-panel li { border-bottom:1px solid var(--line); }
+.member-welcome-panel li a { display:flex; align-items:start; gap:13px; padding:18px 0; }
+.member-welcome-number { flex:none; padding-top:1px; color:var(--coral); font-size:10px; letter-spacing:.05em; }
+.member-welcome-panel li a>span:nth-child(2) { flex:1; min-width:0; }
+.member-welcome-panel li strong { display:block; color:var(--ink); font-size:12px; font-weight:650; line-height:1.5; }
+.member-welcome-panel li strong+span { display:block; font-size:11px; line-height:1.65; color:var(--muted); margin-top:5px; }
+.member-welcome-panel li a>svg { flex:none; color:var(--muted); margin-top:2px; }
+.member-welcome-panel li a:hover strong { color:var(--coral); }
+.member-welcome-later { display:flex; align-items:center; justify-content:space-between; width:100%; border:0; background:none; padding:20px 0 0; font-size:10px; color:var(--muted); cursor:pointer; }
+.member-collecting-fields { display:grid; gap:18px; }
+.member-collecting-fields textarea { min-width:0; width:100%; resize:vertical; border:1px solid var(--line); border-radius:3px; padding:12px; color:var(--ink); background:var(--white); font:inherit; line-height:1.6; }
+@media(max-width:1023px) { .member-welcome { right:20px; bottom:calc(92px + env(safe-area-inset-bottom)); }.member-welcome-panel { max-height:calc(100dvh - 176px - env(safe-area-inset-bottom)); } }
+@media(max-width:560px) { .member-welcome { right:14px; left:14px; }.member-welcome-trigger { margin-left:auto; }.member-welcome-panel { width:100%; padding:24px; }.member-welcome-panel h2 { font-size:29px; }.member-collecting-fields textarea { font-size:16px; } }

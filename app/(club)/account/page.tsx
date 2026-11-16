@@ -9,5 +9,5 @@ export default async function MemberArea() {
  const member = await requireMember();
  const [membership,user] = await Promise.all([membershipForUser(member.id),(await clerkClient()).users.getUser(member.id).catch(()=>null)]);
  const metrics=memberHomeMetrics(user?.privateMetadata??null);
- return <MemberHome {...metrics} name={member.name} active={membership.state === "active-test"} unavailable={membership.state === "unavailable"}/>;
+ return <MemberHome {...metrics} memberId={member.id} name={member.name} active={membership.state === "active-test"} unavailable={membership.state === "unavailable"}/>;
 }

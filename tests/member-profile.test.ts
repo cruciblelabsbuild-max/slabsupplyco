@@ -19,3 +19,11 @@ test("profile writes reject foreign origins and signed-out requests",async()=>{
  assert.equal((await POST(new Request("https://www.slabsupply.co/api/account/profile",{method:"POST",headers:{origin:"https://www.slabsupply.co"}}))).status,401);
  }finally {if(key!==undefined)process.env.CLERK_SECRET_KEY=key;}
 });
+test("collecting preferences accept desired cards and preserve older profiles",()=>{
+ assert.equal(parseMemberProfile({...emptyProfile,collectingFocus:" Neo-era holos "}).collectingFocus,"Neo-era holos");
+ const {collectingFocus,...olderProfile}=emptyProfile;
+ assert.equal(parseMemberProfile(olderProfile).collectingFocus,"");
+ assert.throws(()=>parseMemberProfile({...emptyProfile,collectingFocus:"x".repeat(161)}));
+ assert.equal(parseMemberProfile({...emptyProfile,collectingFocus:"Gengar\nNeo-era holos"}).collectingFocus,"Gengar\nNeo-era holos");
+ assert.throws(()=>parseMemberProfile({...emptyProfile,collectingFocus:"bad\u0000value"}));
+});
