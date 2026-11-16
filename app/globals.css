@@ -1351,3 +1351,13 @@ body[data-member="true"] .club-footer .footer-top>.brand { display:none; }
 .trade-review>h3 { font-size:25px; margin:0 0 18px; }.trade-review>article { display:flex; justify-content:space-between; gap:18px; padding:18px 0; border-top:1px solid var(--line); }.trade-review article>div { min-width:0; }.trade-review article>div>span { font-size:9px; color:var(--muted); }.trade-review h4 { font-size:20px; margin:9px 0; overflow-wrap:anywhere; }.trade-review p { font-size:11px; line-height:1.8; color:var(--muted); margin:8px 0 0; }.trade-review article>button { flex:none; border:0; background:none; padding:0; font-size:11px; text-decoration:underline; align-self:start; cursor:pointer; }.trade-review summary { font-size:10px; color:var(--muted); cursor:pointer; margin-top:12px; }
 @media(max-width:1023px){.trade-wizard { scroll-margin-top:85px; }}
 @media(max-width:560px){.trade-wizard-actions { gap:12px; }.trade-wizard-actions>.button { font-size:10px; padding-inline:16px; }}
+
+/* Member totals share one quiet summary, without changing the Home panels. */
+.member-home-metrics { margin-bottom:24px; }
+.member-home-metrics dl { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:0; border:1px solid var(--line); background:var(--white); }
+.member-home-metrics dl>div { min-width:0; padding:24px 30px; }
+.member-home-metrics dl>div+div { border-left:1px solid var(--line); }
+.member-home-metrics dt { font-size:12px; font-weight:600; line-height:1.5; }
+.member-home-metrics dd:not(.member-metric-note) { margin:13px 0 10px; font:normal 34px/1.1 Georgia,serif; letter-spacing:-.035em; overflow-wrap:anywhere; }
+.member-home-metrics .member-metric-note { margin:0; color:var(--muted); font-size:11px; line-height:1.6; }
+@media(max-width:600px) { .member-home-metrics dl { grid-template-columns:1fr; }.member-home-metrics dl>div { padding:20px 24px; }.member-home-metrics dl>div+div { border-left:0; border-top:1px solid var(--line); }.member-home-metrics dd:not(.member-metric-note) { font-size:30px; } }

@@ -18,39 +18,44 @@ type SubmitState = "idle" | "submitting" | "success" | "error";
 
 const faqs = [
   {
-    label: "Independent by design",
-    q: "Is Slab Supply Co. affiliated with Pokémon, Nintendo, or The Pokémon Company?",
-    a: "No. Slab Supply Co. is an independent graded-card membership. It is not affiliated with, endorsed by, or sponsored by Nintendo, The Pokémon Company, Game Freak, or Creatures.",
+    label: "Member savings",
+    q: "How much can I actually save?",
+    a: "Savings vary by card. Each listing shows the reference retail value, member price, and dollar savings. Your member Home tracks savings across completed purchases. The annual membership fee is separate.",
   },
   {
-    label: "Member pricing",
-    q: "Does below retail mean every card will always be the cheapest online?",
-    a: "Member prices sit below the fair retail value established when each card is listed. That is different from a lowest-price-anywhere claim: markets move, condition varies, and temporary marketplace listings can be lower.",
+    label: "Market prices",
+    q: "How do you determine market prices?",
+    a: "We start with recent verified sales across reputable marketplaces, then account for grading company, grade, card and slab condition, sales velocity, and outliers. Unsold asking prices do not establish value.",
   },
   {
     label: "Trade-in value",
-    q: "What does up to 100% of fair retail value mean?",
-    a: "Select approved cards receive a store-credit quote worth up to the fair retail value established at review. Every quote reflects demand, liquidity, grade, slab condition, and current inventory needs.",
+    q: "Which cards qualify for 100% trade credit?",
+    a: "Select approved slabs qualify for up to 100% of the fair retail value established at review. Eligibility depends on demand, liquidity, grade, slab condition, and inventory needs. We review PSA, CGC, BGS, and select recognized services; raw cards and altered or damaged slabs are not eligible.",
   },
   {
-    label: "Fair retail value",
-    q: "How will fair retail value be determined?",
-    a: "Fair retail value starts with recent verified sales across reputable marketplaces. We account for grading company, grade, card and slab condition, sales velocity, and outliers. Unsold asking prices do not establish value.",
+    label: "Trade-in inspection",
+    q: "What happens if a trade-in quote changes after inspection?",
+    a: "If inspection finds a difference from the submitted details, we explain it and provide a revised quote for your approval. Credit or payment is confirmed after inspection; a revised offer requires your agreement.",
   },
   {
-    label: "Eligible cards",
-    q: "Which cards and grading companies will be eligible?",
-    a: "We review authenticated trading cards graded by PSA, CGC, BGS, and select recognized services. Raw cards, altered cards, counterfeit items, and damaged or tampered slabs are not eligible.",
+    label: "New arrivals",
+    q: "How often are new cards and doorbusters available?",
+    a: "Grail drops run monthly. New cards and limited-quantity doorbusters are announced with their release dates and quantities. Check Member deals and Grail drops for current availability.",
   },
   {
-    label: "Founding access",
-    q: "What happens after I become a member?",
-    a: "Annual membership costs $99 and includes member pricing, eligible trade-in benefits, and member drops. Card purchases are separate.",
+    label: "Membership & cancellation",
+    q: "What does membership cost, and how do cancellations work?",
+    a: "Membership is $99 USD per year and renews annually until canceled. Manage your subscription and cancel renewal from Membership in your Profile. Your cancellation confirmation shows the date your subscription ends. Card purchases are separate.",
   },
   {
-    label: "Trade-in process",
-    q: "What happens after I submit a trade request?",
-    a: "Your submission goes to the trade-in desk for review. When a card fits our buying needs, you receive a quote to approve before shipping.",
+    label: "Card availability",
+    q: "What happens if a card I want sells out?",
+    a: "Sold-out cards are no longer available to purchase. Check Member deals and Grail drops for the next listings and releases. Membership does not reserve a specific card or guarantee an allocation.",
+  },
+  {
+    label: "Independent by design",
+    q: "Is Slab Supply affiliated with Pokémon or a grading company?",
+    a: "No. Slab Supply Co. is independent and is not affiliated with, endorsed by, or sponsored by Pokémon, Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company.",
   },
 ];
 
