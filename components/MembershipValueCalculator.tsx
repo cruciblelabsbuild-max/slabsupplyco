@@ -21,14 +21,14 @@ export default function MembershipValueCalculator() {
         </div>
         <div className="calculator-results" aria-live="polite" aria-atomic="true">
           <div className="calculator-comparison">
-            <div className="calculator-retail"><h3>Traditional retail</h3><p>Annual purchases<strong>{money(value.retailPurchases)}</strong></p><div className="comparison-bar" aria-hidden="true"><i /></div><p>Trade-in credit · 90%<strong>{money(value.traditionalCredit)}</strong></p></div>
+            <div className="calculator-retail"><h3>Traditional retail</h3><p>Annual purchases<strong>{money(value.retailPurchases)}</strong></p><div className="comparison-bar" aria-hidden="true"><i /></div><span className="calculator-savings-tag" aria-hidden="true">&nbsp;</span><p>Trade-in credit · 90%<strong>{money(value.traditionalCredit)}</strong></p></div>
             <div className="calculator-member"><span className="calculator-member-mark" aria-hidden="true"><Gem size={17} strokeWidth={1.3} /></span><h3>Slab Supply Co. Members</h3><p>Annual purchases<strong>{money(value.memberPurchases)}</strong></p><div className="comparison-bar" aria-hidden="true"><i style={{width:"90%"}} /></div><span className="calculator-savings-tag">{money(value.purchaseSavings)} in purchase savings</span><p>Trade-in credit · up to 100%<strong>{money(value.memberCredit)}</strong></p></div>
           </div>
-          <dl className="calculator-breakdown"><div><dt>Estimated annual purchase savings</dt><dd>{money(value.purchaseSavings)}</dd></div><div><dt>Additional potential trade-in credit</dt><dd>{money(value.additionalCredit)}</dd></div><div className="calculator-subtotal"><dt>Total illustrative annual benefit</dt><dd>{money(value.totalBenefit)}</dd></div><div><dt>Annual membership</dt><dd>{money(value.membershipFee)}</dd></div></dl>
-          <div className="calculator-net"><span>Illustrative net benefit<br />after membership</span><strong>{money(value.netBenefit)}</strong></div>
+          <dl className="calculator-breakdown"><div><dt>Estimated annual purchase savings</dt><dd>{money(value.purchaseSavings)}</dd></div><div><dt>Additional potential trade-in credit</dt><dd>{money(value.additionalCredit)}</dd></div><div className="calculator-subtotal"><dt>Estimated annual benefit</dt><dd>{money(value.totalBenefit)}</dd></div><div><dt>Annual membership</dt><dd>{money(value.membershipFee)}</dd></div></dl>
+          <div className="calculator-net"><span>Estimated net benefit<br />after membership</span><strong>{money(value.netBenefit)}</strong></div>
         </div>
       </div>
-      <p className="calculator-disclosure">An illustration of membership value, not guaranteed cash savings. Actual savings vary by card and availability. Assumes a 10% purchase discount and traditional trade credit at 90% of market value for illustration, not a guaranteed discount or standard retailer offer; full-market trade credit applies only to selected eligible cards. Store credit is not cash. Comparisons assume equivalent card valuations and comparable credit terms. Traditional retailer offers vary.</p>
+      <p className="calculator-disclosure">Estimates use a 10% purchase discount and 90% traditional trade credit. Actual savings and offers vary by card and availability; up to 100% credit applies only to selected, approved cards. Store credit is not cash. Comparisons assume equivalent valuations and credit terms.</p>
     </div>
   </section>;
 }
