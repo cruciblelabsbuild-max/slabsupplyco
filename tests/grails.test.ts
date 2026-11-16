@@ -25,3 +25,16 @@ test('suggestions require an identifiable card, set and preferred grade',()=>{
  assert.deepEqual(suggestionDetails({name:'  Lugia   #9 ',set:'Neo Genesis',grade:'PSA 8'}),{name:'Lugia #9',set:'Neo Genesis',grade:'PSA 8'});
  for(const value of [null,{}, {name:'Lugia',set:'',grade:'PSA 8'},{name:'Lugia',set:'Neo Genesis',grade:'x'.repeat(41)}])assert.throws(()=>suggestionDetails(value));
 });
+import {defaultGrailCandidates,grailTiers,grailFeatures} from '../lib/grail-selection';
+import {bagCards} from '../lib/bag';
+test('each budget band has three distinct sourcing options without unconfirmed card prices',()=>{
+ assert.equal(new Set(defaultGrailCandidates.map(c=>c.id)).size,9);
+ for(const tier of grailTiers)assert.equal(defaultGrailCandidates.filter(c=>c.tier===tier.id).length,3);
+ assert.ok(defaultGrailCandidates.every(c=>!('member' in c)&&!('retail' in c)));
+});
+test('November editorial picks remain separate from actual purchasable inventory and roll off by month',()=>{
+ const cards=grailFeatures('2026-11');assert.deepEqual(cards.map(c=>c.name),['Neo Genesis Lugia #9','Jungle Snorlax #11','Evolutions Charizard #11']);
+ assert.ok(cards.every(c=>c.stock==='preview'&&!bagCards.some(b=>String(b.slug)===String(c.slug))));
+ assert.ok(cards[0].member>=1000);assert.ok(cards[1].member>=350&&cards[1].member<=650);assert.ok(cards[2].member<=200);
+ assert.equal(grailFeatures('2026-12').length,0);
+});
