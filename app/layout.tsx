@@ -1,4 +1,3 @@
-import PageMotion from "../components/club/PageMotion";
 import { getMember } from "../lib/member-session";
 import IdentityProvider from "../components/club/IdentityProvider";
 import { authConfigured } from "../lib/auth-config";
@@ -19,5 +18,5 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const member = await getMember();
-  return <html lang="en" data-scroll-behavior="smooth"><head><link rel="preload" href="/fonts/manrope-400.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/manrope-700.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/fraunces-600.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/></head><body data-member={member ? "true" : undefined}><IdentityProvider enabled={authConfigured()} initialName={member?.name ?? null}><PageMotion/>{children}</IdentityProvider></body></html>;
+  return <html lang="en" data-scroll-behavior="smooth"><head><link rel="preload" href="/fonts/manrope-400.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/manrope-700.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/fraunces-600.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/></head><body data-member={member ? "true" : undefined}><IdentityProvider enabled={authConfigured()} initialName={member?.name ?? null}>{children}</IdentityProvider></body></html>;
 }

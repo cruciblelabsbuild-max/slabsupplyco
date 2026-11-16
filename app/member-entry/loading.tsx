@@ -1,2 +1,1 @@
-import MemberLoading from "../../components/club/MemberLoading";
-export default function Loading(){return <MemberLoading fullScreen/>;}
+export default function Loading(){return <div className="member-loading member-loading-full" role="status"><span className="sr-only">Opening your membership.</span></div>;}

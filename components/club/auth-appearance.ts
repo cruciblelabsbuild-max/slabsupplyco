@@ -6,6 +6,7 @@ export const authAppearance = {
   theme: "simple",
   options: {
     elevation: "flush",
+    animations: false,
     socialButtonsPlacement: "bottom",
     socialButtonsVariant: "blockButton",
   },
