@@ -1,10 +1,15 @@
 "use client";
 
-import {useRef,useState} from "react";
+import {useRef,useState,type KeyboardEvent} from "react";
 import {membershipValue,membershipValueDefaults} from "../lib/membership-value";
 import styles from "./membership-value.module.css";
 
 const money=(cents:number)=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:cents%100?2:0}).format(cents/100);
+
+function adjustRange(event:KeyboardEvent<HTMLInputElement>,value:number,onChange:(value:number)=>void){
+ const direction=event.key==="ArrowRight" || event.key==="ArrowUp" ? 1 : event.key==="ArrowLeft" || event.key==="ArrowDown" ? -1 : 0;
+ if(direction){event.preventDefault();onChange(Math.min(20000,Math.max(0,Math.round((value+direction*50)*100)/100)));}
+}
 
 function DollarAmount({label,value,onChange}:{label:string;value:number;onChange:(value:number)=>void}){
  const [editing,setEditing]=useState(false);
@@ -35,11 +40,11 @@ export default function MembershipValueCalculator(){
     <div className={styles.inputs}>
      <div className={styles.range}>
       <div className={styles.rangeHeading}><label htmlFor="annual-spend">Annual card spending</label><DollarAmount label="Annual card spending amount" value={annualSpend} onChange={setAnnualSpend}/></div>
-      <input id="annual-spend" type="range" min="0" max="20000" step="50" value={annualSpend} aria-valuetext={money(annualSpend*100)} onChange={event=>setAnnualSpend(Number(event.target.value))}/>
+      <input id="annual-spend" type="range" min="0" max="20000" step="0.01" value={annualSpend} onKeyDown={event=>adjustRange(event,annualSpend,setAnnualSpend)} aria-valuetext={money(annualSpend*100)} onChange={event=>setAnnualSpend(Math.round(Number(event.target.value)/50)*50)}/>
      </div>
      <div className={styles.range}>
       <div className={styles.rangeHeading}><label htmlFor="annual-trades">Annual trade-in value</label><DollarAmount label="Annual trade-in amount" value={annualTrades} onChange={setAnnualTrades}/></div>
-      <input id="annual-trades" type="range" min="0" max="20000" step="50" value={annualTrades} aria-valuetext={money(annualTrades*100)} onChange={event=>setAnnualTrades(Number(event.target.value))}/>
+      <input id="annual-trades" type="range" min="0" max="20000" step="0.01" value={annualTrades} onKeyDown={event=>adjustRange(event,annualTrades,setAnnualTrades)} aria-valuetext={money(annualTrades*100)} onChange={event=>setAnnualTrades(Math.round(Number(event.target.value)/50)*50)}/>
      </div>
     </div>
     <div className={styles.result} aria-live="polite" aria-atomic="true">
