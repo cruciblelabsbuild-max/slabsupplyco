@@ -1,10 +1,27 @@
 "use client";
 
-import {useState} from "react";
+import {useRef,useState} from "react";
 import {membershipValue,membershipValueDefaults} from "../lib/membership-value";
 import styles from "./membership-value.module.css";
 
 const money=(cents:number)=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:cents%100?2:0}).format(cents/100);
+
+function DollarAmount({label,value,onChange}:{label:string;value:number;onChange:(value:number)=>void}){
+ const [editing,setEditing]=useState(false);
+ const [draft,setDraft]=useState("");
+ const startingValue=useRef(value);
+ const returnFocus=useRef(false);
+ return editing ? <input className={styles.amountEntry} type="text" inputMode="decimal" aria-label={label} value={draft} maxLength={12} autoFocus
+  onChange={event=>{
+   const next=event.target.value;
+   setDraft(next);
+   const normalized=next.replace(/[$,\s]/g,"");
+   if(normalized && /^\d*(\.\d{0,2})?$/.test(normalized) && Number.isFinite(Number(normalized))) onChange(Math.min(20000,Number(normalized)));
+  }}
+  onBlur={()=>setEditing(false)}
+  onKeyDown={event=>{if(event.key==="Enter" || event.key==="Escape"){event.preventDefault();if(event.key==="Escape") onChange(startingValue.current);returnFocus.current=true;setEditing(false);}}}/>
+  : <button ref={node=>{if(node && returnFocus.current){node.focus();returnFocus.current=false;}}} className={styles.amount} type="button" aria-label={`Edit ${label.toLowerCase()}: ${money(value*100)}`} title="Enter an exact amount" onClick={()=>{startingValue.current=value;setDraft(String(value));setEditing(true);}}>{money(value*100)}</button>;
+}
 
 export default function MembershipValueCalculator(){
  const [annualSpend,setAnnualSpend]=useState(membershipValueDefaults.annualSpend);
@@ -17,11 +34,11 @@ export default function MembershipValueCalculator(){
    <div className={styles.calculator}>
     <div className={styles.inputs}>
      <div className={styles.range}>
-      <div className={styles.rangeHeading}><label htmlFor="annual-spend">Annual card spending</label><output htmlFor="annual-spend">{money(annualSpend*100)}</output></div>
+      <div className={styles.rangeHeading}><label htmlFor="annual-spend">Annual card spending</label><DollarAmount label="Annual card spending amount" value={annualSpend} onChange={setAnnualSpend}/></div>
       <input id="annual-spend" type="range" min="0" max="20000" step="50" value={annualSpend} aria-valuetext={money(annualSpend*100)} onChange={event=>setAnnualSpend(Number(event.target.value))}/>
      </div>
      <div className={styles.range}>
-      <div className={styles.rangeHeading}><label htmlFor="annual-trades">Annual trade-in value</label><output htmlFor="annual-trades">{money(annualTrades*100)}</output></div>
+      <div className={styles.rangeHeading}><label htmlFor="annual-trades">Annual trade-in value</label><DollarAmount label="Annual trade-in amount" value={annualTrades} onChange={setAnnualTrades}/></div>
       <input id="annual-trades" type="range" min="0" max="20000" step="50" value={annualTrades} aria-valuetext={money(annualTrades*100)} onChange={event=>setAnnualTrades(Number(event.target.value))}/>
      </div>
     </div>
