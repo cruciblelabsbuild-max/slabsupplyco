@@ -1578,5 +1578,5 @@ body[data-member="true"] .section-shell.profile-page{max-width:960px;margin-left
 @media(max-width:820px){body[data-member="true"] .section-shell.profile-page{margin-inline:auto}}
 
 /* Shared outlined wordmark: inherits each existing logo's scale and inverse color. */
-.brand-wordmark-art { display:block; width:10.2em; max-width:none; height:auto; flex:none; }
+.brand-wordmark-art { display:block; width:9.7em; max-width:none; height:auto; flex:none; }
 .brand-wordmark-rules { fill:var(--coral); }
