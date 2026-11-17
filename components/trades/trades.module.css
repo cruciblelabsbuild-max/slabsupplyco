@@ -16,3 +16,15 @@
 .detail>header:has(+.currentAction:empty){border-radius:8px}
 :global(body[data-member="true"]):has(.adminShell){padding:0}
 .intro[data-detail=true]{margin-bottom:16px}.intro[data-detail=true]>.eyebrow,.intro[data-detail=true]>p{display:none}.intro[data-detail=true] h1{font-size:30px;margin:0 0 12px}
+
+/* The only new motion: a server-confirmed trade request being packed and sent. */
+.sentTransition{max-width:800px;min-height:390px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--white);border:1px solid var(--line);border-radius:8px;padding:24px}
+.sentTransition h2{font:600 clamp(25px,3vw,34px)/1.2 Fraunces,serif;letter-spacing:-.035em;margin:0 0 12px}.sentTransition p{font:400 12px/1.7 Manrope,sans-serif;color:var(--muted);margin:0}.packingArt{width:min(320px,100%);height:220px;overflow:visible;margin-bottom:16px}.packingShadow{fill:#191a3410}.packingSlab{animation:pack-slab 950ms cubic-bezier(.4,0,.2,1) both}.parcelLid{animation:close-parcel 450ms 1050ms cubic-bezier(.4,0,.2,1) both;transform-origin:200px 132px}.parcelSeal{animation:seal-parcel 250ms 1400ms ease both}.packingParcel{animation:send-parcel 500ms 1650ms cubic-bezier(.4,0,.2,1) both}
+@keyframes pack-slab{0%,10%{transform:translateY(-12px);opacity:0}25%{opacity:1}75%{opacity:1}100%{transform:translateY(116px);opacity:0}}
+@keyframes close-parcel{from{transform:translateY(-16px) scaleY(.3);opacity:0}to{transform:translateY(0) scaleY(1);opacity:1}}
+@keyframes seal-parcel{from{opacity:0}to{opacity:1}}
+@keyframes send-parcel{to{transform:translate(14px,-5px);opacity:.85}}
+@media(prefers-reduced-motion:reduce){.packingSlab{animation:none;opacity:0}.parcelLid,.parcelSeal,.packingParcel{animation:none}.packingParcel{transform:none}}
+@media(max-width:600px){.sentTransition{min-height:345px;padding:22px 18px}.packingArt{height:195px}}
+.submission .description textarea,.currentAction textarea{font:400 14px/1.6 Manrope,sans-serif;border-radius:4px;padding:12px}
+@media(max-width:600px){.submission .description textarea,.currentAction textarea{font-size:16px}}

@@ -12,6 +12,7 @@ test('grail interests support multiple candidates per range, explicit price upda
   await saveGrailInterest(user,{month,candidateId:sameRange[1].id,active:true,maxPrice:''});
   assert.equal((await grailInterests(user,month)).filter(i=>i.active).length,2);assert.equal(first.max_cents,125050);
   const updated=await saveGrailInterest(user,{month,candidateId:sameRange[0].id,active:true,maxPrice:'1300'});assert.equal(updated.key,first.key);assert.equal(updated.max_cents,130000);assert.equal((await grailInterests(user,month)).length,2);
+  const unchanged=await saveGrailInterest(user,{month,candidateId:sameRange[0].id,active:true});assert.equal(unchanged.max_cents,130000);assert.equal((await grailInterests(user,month)).find(i=>i.key===first.key)?.max_cents,130000);
   await saveGrailInterest(user,{month,candidateId:sameRange[0].id,active:false});assert.equal((await grailInterests(user,month)).find(i=>i.key===first.key)?.active,false);
   const details={name:'QA card',set:'QA set',grade:'PSA 9'},suggestion=await saveGrailInterest(user,{month,details,active:true,maxPrice:'150'});assert.equal(suggestion.max_cents,15000);
   await saveGrailInterest(user,{month,details,active:true,maxPrice:'175'});assert.equal((await grailInterests(user,month)).filter(i=>i.details).length,1);

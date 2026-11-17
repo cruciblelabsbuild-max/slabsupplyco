@@ -47,7 +47,7 @@ function Navigation({ name, onSignOut }: { name: string | null; onSignOut?: () =
   </>;
 }
 export function ClubFooter() {
-  return <footer className="club-footer"><div className="section-shell footer-top"><Logo /><p>Independent. Built for graded-card collectors.</p><nav className="footer-links" aria-label="Footer"><Link href="/promise">Our promise</Link><Link href="/help">Help</Link><Link href="/account">My account</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></nav></div><div className="section-shell footer-bottom"><p>© 2026 Slab Supply Co. All rights reserved.</p><p>Independent. Not affiliated with Pokémon, Nintendo, or any grading company.</p></div></footer>;
+  return <footer className="club-footer"><div className="section-shell footer-top"><Logo /><p>The membership for graded Pokémon collectors.</p><nav className="footer-links" aria-label="Footer"><Link href="/promise">Our promise</Link><Link href="/help">Help</Link><Link href="/account">My account</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></nav></div><div className="section-shell footer-bottom"><p>© 2026 Slab Supply Co. All rights reserved.</p><p>Independent. Not affiliated with Pokémon, Nintendo, or any grading company.</p></div></footer>;
 }
 
 export function MobileAccountBar() {

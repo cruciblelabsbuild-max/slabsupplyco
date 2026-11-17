@@ -415,7 +415,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <div className="section-shell footer-top"><Logo /><p>Independent. Built for graded-card collectors.</p><div className="footer-links"><a href="/membership">Membership</a><a href="/help">Help</a><a href="/account">My account</a><a href="/promise">Our promise</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
+        <div className="section-shell footer-top"><Logo /><p>The membership for graded Pokémon collectors.</p><div className="footer-links"><a href="/membership">Membership</a><a href="/help">Help</a><a href="/account">My account</a><a href="/promise">Our promise</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
         <div className="section-shell footer-bottom"><p>© 2026 Slab Supply Co. All rights reserved.</p><p>Not affiliated with or endorsed by Nintendo, The Pokémon Company, Game Freak, Creatures, or any grading company. All trademarks belong to their respective owners.</p></div>
       </footer>
 

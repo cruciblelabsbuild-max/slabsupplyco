@@ -52,16 +52,17 @@ export async function saveGrailInterest(userId:string,body:Record<string,unknown
   if(!(await grailCandidates(month)).some(c=>c.id===body.candidateId))throw Error("This candidate has changed. Refresh this page to continue.");
   candidateId=body.candidateId;key="candidate:"+candidateId;
  }else{details=suggestionDetails(body.details);key="suggestion:"+createHash("sha256").update(JSON.stringify(Object.values(details).map(v=>v.normalize("NFKC").toLowerCase()))).digest("hex");}
- const max=maxInterestPrice(body.maxPrice);
+ const max=maxInterestPrice(body.maxPrice);const hasPrice=Object.hasOwn(body,"maxPrice");let savedMax=max;
  if(!body.active){await db`UPDATE ssc_grail_interests SET active=false,updated_at=now() WHERE user_id=${userId} AND target_month=${month} AND key=${key}`;}
  else{
   // Serialize per-member saves so the suggestion limit cannot be raced.
   await db.transaction([
    db`SELECT pg_advisory_xact_lock(hashtextextended(${"grail:"+userId},0))`,
-   db`INSERT INTO ssc_grail_interests(user_id,target_month,key,candidate_id,details,max_cents) SELECT ${userId},${month},${key},${candidateId},${details?JSON.stringify(details):null}::jsonb,${max} WHERE ${candidateId!==null} OR EXISTS(SELECT 1 FROM ssc_grail_interests WHERE user_id=${userId} AND target_month=${month} AND key=${key}) OR (SELECT count(*) FROM ssc_grail_interests WHERE user_id=${userId} AND target_month=${month} AND candidate_id IS NULL)<30 ON CONFLICT(user_id,target_month,key) DO UPDATE SET active=true,max_cents=excluded.max_cents,updated_at=now()`,
+   db`INSERT INTO ssc_grail_interests(user_id,target_month,key,candidate_id,details,max_cents) SELECT ${userId},${month},${key},${candidateId},${details?JSON.stringify(details):null}::jsonb,${max} WHERE ${candidateId!==null} OR EXISTS(SELECT 1 FROM ssc_grail_interests WHERE user_id=${userId} AND target_month=${month} AND key=${key}) OR (SELECT count(*) FROM ssc_grail_interests WHERE user_id=${userId} AND target_month=${month} AND candidate_id IS NULL)<30 ON CONFLICT(user_id,target_month,key) DO UPDATE SET active=true,max_cents=CASE WHEN ${hasPrice} THEN excluded.max_cents ELSE ssc_grail_interests.max_cents END,updated_at=now()`,
   ]);
-  const saved=await db`SELECT key FROM ssc_grail_interests WHERE user_id=${userId} AND target_month=${month} AND key=${key} AND active`;
+  const saved=await db`SELECT key,max_cents FROM ssc_grail_interests WHERE user_id=${userId} AND target_month=${month} AND key=${key} AND active`;
   if(!saved.length)throw Error("You’ve reached 30 suggestions for this month. Update an existing suggestion instead.");
+  savedMax=saved[0].max_cents;
  }
- return {key,candidate_id:candidateId,details,max_cents:max,active:body.active} satisfies GrailInterest;
+ return {key,candidate_id:candidateId,details,max_cents:savedMax,active:body.active} satisfies GrailInterest;
 }

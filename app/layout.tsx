@@ -4,6 +4,7 @@ import IdentityProvider from "../components/club/IdentityProvider";
 import { authConfigured } from "../lib/auth-config";
 import type { Metadata } from "next";
 import "./globals.css";
+import "./member-refinements.css";
 
 export const metadata: Metadata = {
   title: "Slab Supply Co. — Graded cards, better economics",
