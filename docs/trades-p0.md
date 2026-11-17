@@ -2,7 +2,9 @@
 
 The trade desk lives at `/trade-admin`. It uses the existing Clerk sign-in. Only a server-owned `privateMetadata.tradeAdmin === true` grants access; membership, profile fields, email naming and browser state never grant permissions. The dedicated admin account has no paid membership requirement. Its credentials are delivered outside this repository.
 
-## Review workflow
+> The current simplified interface and automated shipping preparation supersede the original manual-label presentation below. See `ups-shipping-integration.md` for the current workflow, safety gates and outstanding real UPS testing.
+
+## Original P0 review workflow
 
 1. Select a submission. Review its descriptions, private photos and collection lists. Request missing information before quoting.
 2. Issue an aggregate preliminary offer identifying the included cards/lots and count. Record the valuation basis, net credit, any shipping deduction already reflected, shipping responsibility/costs, inspection conditions, return costs and verified coverage arrangements. An optional expiry applies to acceptance. Revisions create new versions and require a reason.

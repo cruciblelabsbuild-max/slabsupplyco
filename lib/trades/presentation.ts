@@ -1,0 +1,4 @@
+import {terminalStates,type Trade} from "./model";
+export function collectionTitle(trade:Trade){const names=trade.submission.cards?.map(c=>[c.description,[c.grader,c.grade].filter(Boolean).join(" ")].filter(Boolean).join(" · ")).filter(Boolean)||[];const value=(trade.submission.mode==="quick"&&names.length?names.join(", "):trade.submission.description)||names.join(", ")||(trade.submission.cardCount?`${trade.submission.cardCount} graded Pokémon cards`:"Graded Pokémon cards");return value.length>100?value.slice(0,97)+"…":value;}
+export const tradeDate=(value:string)=>new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"America/New_York"}).format(new Date(value));
+export function queueGroup(t:Trade){if(terminalStates.has(t.state))return "completed";if(["offer_ready","revised_offer","more_info"].includes(t.state))return "member";if(["submitted","reviewing","legacy_quoted"].includes(t.state))return "review";return "shipping";}

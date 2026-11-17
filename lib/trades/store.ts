@@ -1,3 +1,5 @@
+import {defaultOfferInput,carrierTrackingUrl} from "./policies";
+import {shippingView} from "../shipping/service";
 import {randomUUID} from "node:crypto";
 import {inventoryDb} from "../inventory-db";
 import {tradeSchema} from "../../db/trades/schema";
@@ -5,7 +7,7 @@ import {memberTrades} from "../member-trades";
 import {maxSubmissionFiles,validateTradeFile,safeTrackingUrl} from "./files";
 import {TradeError,validId,text,cents,parseOffer,parseSubmission,pendingCredit,terminalStates,type Trade,type TradeFile,type Label,type Offer,type Submission} from "./model";
 let initialized:Promise<void>|undefined;
-export function ensureTrades(){return initialized ||= (async()=>{const db=inventoryDb();await db.transaction(tradeSchema.split("-- statement").map(sql=>db.query(sql)));})().catch(error=>{initialized=undefined;throw error;});}
+export function ensureTrades(){return initialized ||= (async()=>{const db=inventoryDb();await db.transaction([db`SELECT pg_advisory_xact_lock(hashtextextended('ssc-trades-schema',0))`,...tradeSchema.split("-- statement").map(sql=>db.query(sql))]);})().catch(error=>{initialized=undefined;throw error;});}
 export async function importLegacyTrades(userId:string,metadata:Record<string,unknown>){
  await ensureTrades();const db=inventoryDb();const legacy=memberTrades(metadata.tradeRequests);if(!legacy.length)return;
  await db.transaction(legacy.map(trade=>{
@@ -23,14 +25,16 @@ export async function listTrades(userId?:string,tradeId?:string):Promise<Trade[]
  await ensureTrades();const db=inventoryDb();
  const rows=tradeId?(userId?await db`SELECT * FROM ssc_trades_v3 WHERE id=${tradeId}::uuid AND user_id=${userId}`:await db`SELECT * FROM ssc_trades_v3 WHERE id=${tradeId}::uuid`):userId?await db`SELECT * FROM ssc_trades_v3 WHERE user_id=${userId} ORDER BY created_at DESC`:await db`SELECT * FROM ssc_trades_v3 ORDER BY updated_at DESC`;
  if(!rows.length)return [];const ids=rows.map(r=>r.id);
- const [offers,files,labels,events,credits]=await Promise.all([
+ const [offers,files,labels,events,credits,shipping]=await Promise.all([
   db`SELECT trade_id,data FROM ssc_trade_offers WHERE trade_id=ANY(${ids}::uuid[]) ORDER BY version`,
   db`SELECT id,trade_id,name,mime,size,kind,card_key FROM ssc_trade_files WHERE trade_id=ANY(${ids}::uuid[]) ORDER BY created_at`,
   db`SELECT trade_id,data FROM ssc_trade_labels WHERE trade_id=ANY(${ids}::uuid[]) ORDER BY (data->>'createdAt')`,
   db`SELECT id,trade_id,actor,action,created_at,data->>'note' AS note FROM ssc_trade_events WHERE trade_id=ANY(${ids}::uuid[]) ORDER BY id`,
   db`SELECT id,trade_id FROM ssc_trade_credit WHERE trade_id=ANY(${ids}::uuid[])`,
+  db`SELECT id,trade_id,offer_id,direction,approved_at,status,reason_code,reason,card_count,address FROM ssc_trade_shipping WHERE trade_id=ANY(${ids}::uuid[]) ORDER BY updated_at DESC`,
  ]);
- return rows.map(row=>({id:row.id,userId:row.user_id,reference:`TRADE-${String(row.id).slice(-8).toUpperCase()}`,state:row.state,revision:row.revision,createdAt:new Date(row.created_at).toISOString(),updatedAt:new Date(row.updated_at).toISOString(),submission:row.submission,currentOfferId:row.current_offer_id,acceptedOfferId:row.accepted_offer_id,offers:offers.filter(o=>o.trade_id===row.id).map(o=>o.data) as Offer[],files:files.filter(f=>f.trade_id===row.id).map(f=>({id:f.id,name:f.name,mime:f.mime,size:f.size,kind:f.kind,cardKey:f.card_key})) as TradeFile[],labels:labels.filter(l=>l.trade_id===row.id).map(l=>l.data) as Label[],events:events.filter(e=>e.trade_id===row.id).map(e=>({id:Number(e.id),action:e.action,actor:e.actor,at:new Date(e.created_at).toISOString(),note:e.note||""})),creditTransactionId:credits.find(c=>c.trade_id===row.id)?.id??null})) as Trade[];
+ const trades=rows.map(row=>({id:row.id,userId:row.user_id,reference:`TRADE-${String(row.id).slice(-8).toUpperCase()}`,state:row.state,revision:row.revision,createdAt:new Date(row.created_at).toISOString(),updatedAt:new Date(row.updated_at).toISOString(),submission:row.submission,currentOfferId:row.current_offer_id,acceptedOfferId:row.accepted_offer_id,offers:offers.filter(o=>o.trade_id===row.id).map(o=>o.data) as Offer[],files:files.filter(f=>f.trade_id===row.id).map(f=>({id:f.id,name:f.name,mime:f.mime,size:f.size,kind:f.kind,cardKey:f.card_key})) as TradeFile[],labels:labels.filter(l=>l.trade_id===row.id).map(l=>l.data) as Label[],events:events.filter(e=>e.trade_id===row.id).map(e=>({id:Number(e.id),action:e.action,actor:e.actor,at:new Date(e.created_at).toISOString(),note:e.note||""})),creditTransactionId:credits.find(c=>c.trade_id===row.id)?.id??null})) as Trade[];
+ return trades.map(trade=>({...trade,shipping:shippingView(trade,shipping.find(job=>job.trade_id===trade.id&&job.offer_id===trade.currentOfferId&&job.direction===(trade.state.startsWith("return")?"return":"inbound")),!userId)}));
 }
 export async function getTrade(id:string,userId?:string){if(!validId(id))throw new TradeError("Trade not found.");const trade=(await listTrades(userId,id)).find(t=>t.id===id);if(!trade)throw new TradeError("Trade not found.");return trade;}
 export async function tradeCreditBalance(userId:string){await ensureTrades();const rows=await inventoryDb()`SELECT coalesce(sum(amount_cents),0)::text AS balance FROM ssc_trade_credit WHERE user_id=${userId} AND status='posted' AND currency='usd'`;const value=Number(rows[0].balance);if(!Number.isSafeInteger(value)||value<0)throw Error("Credit ledger unavailable.");return value;}
@@ -45,9 +49,9 @@ export async function submitTrade(userId:string,body:Record<string,unknown>){
  if(!validId(body.requestId))throw new TradeError("Start a new trade submission.");await ensureDraft(body.requestId,userId);const trade=await getTrade(body.requestId,userId);
  if(trade.state!=="draft")return trade;
  const submission=parseSubmission(body),inputFiles=trade.files.filter(f=>!["label","return_label"].includes(f.kind));
- if(!submission.description&&!submission.cards.some(c=>c.description)&&!inputFiles.length)throw new TradeError("Add a card description, slab photo, or collection list.");
- if(submission.cards.some(c=>!c.description&&!inputFiles.some(f=>f.cardKey===c.id&&f.kind==="front")))throw new TradeError("Add a description or front photo for each card.");
- if(inputFiles.some(f=>f.cardKey&&!submission.cards.some(c=>c.id===f.cardKey)))throw new TradeError("A photo belongs to a removed card. Remove it before submitting.");
+ if(!inputFiles.length&&!submission.cards.some(c=>c.description)&&submission.description.trim().length<15)throw new TradeError("Add a card description, slab photo, or collection list.");
+ if(submission.mode==="quick"&&submission.cards.some(c=>!c.description&&!inputFiles.some(f=>f.cardKey===c.id&&f.kind==="front")))throw new TradeError("Add a description or front photo for each card.");
+ if(submission.mode==="quick"&&inputFiles.some(f=>f.cardKey&&!submission.cards.some(c=>c.id===f.cardKey)))throw new TradeError("A photo belongs to a removed card. Remove it before submitting.");
  return applyTradeCommand(trade,userId,userId,"submit",{submission},body.requestId);
 }
 export async function uploadTradeFile(trade:Trade,file:{name:string;bytes:Uint8Array},kind:TradeFile["kind"],cardKey:string|null,admin=false){
@@ -77,14 +81,18 @@ export async function operatorAction(trade:Trade,actor:string,body:Record<string
   const kind=body.kind==="inspection"?"inspection":"preliminary";
   const prior=trade.offers.find(o=>o.id===trade.currentOfferId);
   if(trade.state==="revised_offer"&&prior?.kind==="inspection"&&kind!=="inspection")throw new TradeError("Keep the revised inspection offer in the inspection stage.");
-  const offer=parseOffer(body,randomUUID(),version,kind);
-  if(trade.submission.cardCount&&offer.includedCount&&offer.includedCount>trade.submission.cardCount)throw new TradeError("The offer includes more cards than the submission.");data={...offer,note:offer.reason||"Preliminary offer issued."};
+  const offer=parseOffer(body.useStandardTerms===true?{...defaultOfferInput(trade),...body}:body,randomUUID(),version,kind);
+  if(trade.submission.cardCount&&offer.includedCount&&offer.includedCount>trade.submission.cardCount)throw new TradeError("The offer includes more cards than the submission.");data={...offer,shippingApproved:body.shippingApproved===true,note:offer.reason||"Preliminary offer issued."};
+ }else if(action==="approve_shipping"){
+  if(body.termsVerified!==true)throw new TradeError("Verify the shipping and return terms before approval.");data={direction:body.direction==="return"?"return":"inbound",termsVerified:true,approvedValueCents:trade.offers.find(o=>o.id===(body.direction==="return"?trade.acceptedOfferId:trade.currentOfferId))?.creditCents,note:"Administrator approved shipping under the recorded terms."};
  }else if(action==="label"||action==="return_label"){
   if(!validId(body.fileId)||!trade.files.some(f=>f.id===body.fileId&&f.kind===(action==="label"?"label":"return_label")))throw new TradeError("Upload the correct shipping-label PDF first.");
-  data={id:randomUUID(),fileId:body.fileId,direction:action==="label"?"inbound":"return",offerId:trade.acceptedOfferId,carrier:text(body.carrier,80,true),tracking:text(body.tracking,120,true),trackingUrl:safeTrackingUrl(body.trackingUrl),service:text(body.service,120,true),sender:text(body.sender,800,true),recipient:text(body.recipient,800,true),package:text(body.package,500,true),approvedValueCents:cents(body.approvedValueCents,true),coverage:text(body.coverage,2000,true),instructions:text(body.instructions,2000,true),createdAt:new Date().toISOString(),note:action==="label"?"Shipping label attached.":"Return label attached."};
+  const accepted=trade.offers.find(o=>o.id===trade.acceptedOfferId);
+  const normalized=body.useSavedShipping===true?{service:"Service on verified provider label",sender:"Sender address on verified provider label",recipient:"Receiving address on verified provider label",package:"Package dimensions and weight on verified provider label",approvedValueCents:accepted?.creditCents,coverage:accepted?.coverage,instructions:"Pack approved slabs securely in a sturdy box. Follow the attached label’s service and signature instructions.",...body,trackingUrl:body.trackingUrl||carrierTrackingUrl(text(body.carrier,80,true),text(body.tracking,120,true))}:body;
+  data={id:randomUUID(),fileId:body.fileId,direction:action==="label"?"inbound":"return",offerId:trade.acceptedOfferId,carrier:text(normalized.carrier,80,true),tracking:text(normalized.tracking,120,true),trackingUrl:safeTrackingUrl(normalized.trackingUrl),service:text(normalized.service,120,true),sender:text(normalized.sender,800,true),recipient:text(normalized.recipient,800,true),package:text(normalized.package,500,true),approvedValueCents:cents(normalized.approvedValueCents,true),coverage:text(normalized.coverage,2000,true),instructions:text(normalized.instructions,2000,true),createdAt:new Date().toISOString(),note:action==="label"?"Shipping label attached.":"Return label attached."};
   if(body.coverageVerified!==true||body.termsMatchAccepted!==true)throw new TradeError("Verify coverage and confirm the label matches the accepted shipping and return terms.");
  }else if(["request_info","stage","inspect_confirm","issue_credit","decline","inspection_decline"].includes(action)){
-  data={note:text(body.note,2000,true),...(action==="stage"?{state:text(body.state,50,true)}:{})};
+  data={note:text(body.note,2000,true),...(action==="inspection_decline"?{shippingApproved:body.shippingApproved===true}:{}),...(action==="stage"?{state:text(body.state,50,true)}:{})};
  }else throw new TradeError("Choose a valid trade-desk action.");
  return applyTradeCommand(trade,actor,null,action,data,commandId);
 }

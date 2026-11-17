@@ -1,3 +1,4 @@
+import type {ShippingView} from "../shipping/types";
 export const tradeStates={draft:"Draft",submitted:"Submitted",reviewing:"Under review",more_info:"More information needed",offer_ready:"Offer ready",revised_offer:"Revised offer",awaiting_label:"Offer accepted",awaiting_shipment:"Awaiting shipment",in_transit:"In transit",delivered:"Delivered",received:"Received",inspecting:"Under inspection",ready_credit:"Inspection approved",credit_issued:"Credit issued",declined:"Declined",return_requested:"Return requested",return_label:"Return label ready",return_shipped:"Return in transit",returned:"Returned",legacy_quoted:"Offer details pending",legacy_completed:"Completed"} as const;
 export type TradeState=keyof typeof tradeStates;
 export type CardInput={id:string;description:string;grader:string;grade:string;notes:string};
@@ -6,18 +7,18 @@ export type Offer={id:string;version:number;kind:"preliminary"|"inspection";cred
 export type Label={id:string;direction:"inbound"|"return";fileId:string;carrier:string;tracking:string;trackingUrl:string;service:string;sender:string;recipient:string;package:string;approvedValueCents:number;coverage:string;instructions:string;createdAt:string};
 export type TradeFile={id:string;name:string;mime:string;size:number;kind:"front"|"back"|"collection"|"label"|"return_label";cardKey:string|null};
 export type TradeEvent={id:number;action:string;actor:string;at:string;note:string};
-export type Trade={id:string;userId:string;reference:string;state:TradeState;revision:number;createdAt:string;updatedAt:string;submission:Submission;offers:Offer[];currentOfferId:string|null;acceptedOfferId:string|null;files:TradeFile[];labels:Label[];events:TradeEvent[];creditTransactionId:string|null};
+export type Trade={shipping?:ShippingView;id:string;userId:string;reference:string;state:TradeState;revision:number;createdAt:string;updatedAt:string;submission:Submission;offers:Offer[];currentOfferId:string|null;acceptedOfferId:string|null;files:TradeFile[];labels:Label[];events:TradeEvent[];creditTransactionId:string|null};
 export const terminalStates=new Set<TradeState>(["credit_issued","declined","returned","legacy_completed"]);
 export const pendingStates=new Set<TradeState>(["awaiting_label","awaiting_shipment","in_transit","delivered","received","inspecting","revised_offer","ready_credit"]);
 export function pendingCredit(trade:Pick<Trade,"state"|"acceptedOfferId"|"offers">){return pendingStates.has(trade.state)?trade.offers.find(o=>o.id===trade.acceptedOfferId)?.creditCents??0:0;}
 export function actionRequired(trade:Pick<Trade,"state"|"offers"|"currentOfferId">,now=Date.now()){
- if(["more_info","awaiting_shipment","return_label"].includes(trade.state))return true;
+ if(["more_info","awaiting_shipment"].includes(trade.state))return true;
  return ["offer_ready","revised_offer"].includes(trade.state)&&!offerExpired(trade.offers.find(o=>o.id===trade.currentOfferId),now);
 }
 export const offerExpired=(offer:Offer|undefined,now=Date.now())=>!offer||!!offer.expiresAt&&Date.parse(offer.expiresAt)<=now;
 export function nextTradeAction(trade:Pick<Trade,"state"|"offers"|"currentOfferId">){
  if(["offer_ready","revised_offer"].includes(trade.state)&&offerExpired(trade.offers.find(o=>o.id===trade.currentOfferId)))return "Offer expired";
- return ({more_info:"Provide details",offer_ready:"Review offer",revised_offer:"Review revised offer",awaiting_label:"View accepted offer",awaiting_shipment:"Download shipping label",in_transit:"Track package",delivered:"View delivery",received:"View progress",inspecting:"View inspection",ready_credit:"View approved offer",credit_issued:"View credit transaction",return_requested:"View return request",return_label:"Download return label",return_shipped:"Track return",returned:"View return tracking"} as Partial<Record<TradeState,string>>)[trade.state]||"View submission";
+ return ({more_info:"Provide details",offer_ready:"Review offer",revised_offer:"Review revised offer",awaiting_label:"View accepted offer",awaiting_shipment:"Download shipping label",in_transit:"Track package",delivered:"View delivery",received:"View progress",inspecting:"View inspection",ready_credit:"View approved offer",credit_issued:"View credit transaction",return_requested:"View return request",return_label:"Track return",return_shipped:"Track return",returned:"View return tracking"} as Partial<Record<TradeState,string>>)[trade.state]||"View submission";
 }
 export const tradeMoney=(cents:number|null)=>cents===null?"Unavailable":new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:cents%100?2:0}).format(cents/100);
 export class TradeError extends Error{}
