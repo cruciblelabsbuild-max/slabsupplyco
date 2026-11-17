@@ -15,14 +15,14 @@ export default function ArrivalHandoff({children}:{children:ReactNode}){
  },[pathname]);
  useEffect(()=>{
   if(!handoff)return;
-  const timer=window.setTimeout(()=>startTransition(()=>router.replace(handoff.destination)),handoff.reduced?0:650);
+  const timer=window.setTimeout(()=>startTransition(()=>router.replace(handoff.destination)),handoff.reduced?0:280);
   const fallback=window.setTimeout(()=>setHandoff(null),15000);
   return()=>{window.clearTimeout(timer);window.clearTimeout(fallback);};
  },[handoff,router]);
  useEffect(()=>{
   if(!handoff||pending||pathname===handoff.from)return;
   const frame=window.requestAnimationFrame(()=>setRevealing(true));
-  const timer=window.setTimeout(()=>setHandoff(null),handoff.reduced?0:750);
+  const timer=window.setTimeout(()=>setHandoff(null),handoff.reduced?0:400);
   return()=>{window.cancelAnimationFrame(frame);window.clearTimeout(timer);};
  },[handoff,pending,pathname]);
  return <HandoffContext.Provider value={navigate}>{children}{handoff&&<div className={`arrival-handoff${revealing?" is-revealing":""}`} aria-hidden="true"/>}</HandoffContext.Provider>;
