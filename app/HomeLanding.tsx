@@ -290,7 +290,7 @@ export default function Home() {
             <span>The model</span>
             <blockquote>Your membership helps us sell cards differently.</blockquote>
             <p>Instead of maximizing the margin on every slab, membership lets us operate on leaner card margins and return more value through member pricing and fair trade offers.</p>
-            <a className="text-button promise-link" href="/promise">Read our promise <ArrowRight size={15} /></a>
+            <a className="text-button promise-link" href="/promise">Our promise <ArrowRight size={15} /></a>
           </div>
         </div>
       </section>

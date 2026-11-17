@@ -1,0 +1,30 @@
+.calculator{display:grid;grid-template-columns:1.05fr 1fr;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--white)}
+.inputs,.result{min-width:0;padding:30px 32px}
+.inputs{display:flex;flex-direction:column;justify-content:center;gap:26px}
+.calculator h3{margin:0;font:600 12px/1.5 Manrope,sans-serif;font-family:Manrope,sans-serif!important;letter-spacing:0}
+.range{min-width:0}
+.rangeHeading{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px;margin-bottom:10px}
+.range label{max-width:270px;font:500 12px/1.65 Manrope,sans-serif;color:var(--ink)}
+.range output{font:400 31px/1.1 Georgia,serif;letter-spacing:-.035em;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--forest-deep)}
+.range input{display:block;appearance:none;-webkit-appearance:none;width:100%;height:30px;min-height:30px;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent;cursor:pointer;touch-action:pan-y;accent-color:var(--forest)}
+.range input::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:#d5d4df}
+.range input::-moz-range-track{height:4px;border-radius:4px;background:#d5d4df}
+.range input::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:17px;height:17px;margin-top:-6.5px;border:2px solid var(--white);border-radius:50%;background:var(--forest);box-shadow:0 0 0 1px var(--forest)}
+.range input::-moz-range-thumb{width:13px;height:13px;border:2px solid var(--white);border-radius:50%;background:var(--forest);box-shadow:0 0 0 1px var(--forest)}
+.range input:focus-visible{outline:2px solid var(--coral);outline-offset:4px;border-radius:3px}
+.endpoints{display:flex;justify-content:space-between;font:400 9px/1.5 Manrope,sans-serif;color:var(--muted)}
+.result{background:var(--forest);color:var(--white)}
+.result h3{color:var(--white);margin-bottom:20px}
+.resultLabel{font:400 12px/1.6 Manrope,sans-serif;margin:0 0 9px;color:#eeeaf2}
+.benefit{display:block;font:600 clamp(48px,5vw,64px)/1.08 Fraunces,Georgia,serif;letter-spacing:-.04em;color:var(--coral);white-space:nowrap;font-variant-numeric:tabular-nums}
+.afterFee{font:400 10px/1.6 Manrope,sans-serif;color:#e1ddea;margin:10px 0 22px}
+.breakdown{display:grid;gap:12px;margin:0;padding-top:18px;border-top:1px solid #ffffff29}
+.breakdown>div{display:flex;align-items:baseline;justify-content:space-between;gap:18px}
+.breakdown dt{font:400 11px/1.6 Manrope,sans-serif;color:#eeeaf2}
+.breakdown dd{margin:0;font:600 13px/1.5 Manrope,sans-serif;white-space:nowrap;font-variant-numeric:tabular-nums}
+.disclosure{max-width:980px;margin:14px 0 0;font:400 10px/1.75 Manrope,sans-serif;color:var(--muted)}
+@media(max-width:900px){.inputs,.result{padding:26px}.rangeHeading{gap:14px}.range output{font-size:28px}.range label{font-size:11px}.breakdown dt{font-size:10px}.breakdown>div{gap:12px}}
+@media(max-width:700px){.calculator{grid-template-columns:1fr}.inputs,.result{padding:24px}.inputs{gap:23px}.rangeHeading{gap:18px;margin-bottom:6px}.range label{font-size:12px;max-width:250px}.range output{font-size:29px}.result h3{margin-bottom:16px}.benefit{font-size:54px}.afterFee{margin-bottom:18px}.breakdown{gap:10px;padding-top:16px}.breakdown dt{font-size:11px}}
+@media(max-width:380px){.inputs,.result{padding:22px 18px}.rangeHeading{gap:12px}.range label{font-size:11px}.range output{font-size:27px}.benefit{font-size:48px}.breakdown dt{font-size:10px}.breakdown dd{font-size:12px}}
+
+.range input:focus{box-shadow:none}
