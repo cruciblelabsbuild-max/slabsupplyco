@@ -1576,3 +1576,7 @@ body:has(.shopping-bag-dialog[open]) { overflow: hidden; }
 @media(max-width:760px){.member-home-metrics dl{grid-template-columns:1fr 1fr}.member-home-metrics dl>.trade-credit-summary{grid-column:1/-1;grid-row:2}.member-home-metrics .credit-pair strong{font-size:32px}.profile-sheet :is(.profile-membership,.member-profile-section,.member-payment-section){grid-template-columns:1fr;gap:18px}.settings-save{grid-column:1}.profile-page-heading h1{font-size:32px}.profile-sheet{padding-inline:22px}.profile-section-nav{gap:22px}.member-home-metrics .credit-pair{margin-top:15px}.profile-page{padding-block:24px 40px}}
 body[data-member="true"] .section-shell.profile-page{max-width:960px;margin-left:32px;margin-right:auto}.profile-sheet h2{font-family:Manrope,sans-serif!important}.member-home-metrics dl{border:0;background:none}.member-home-metrics dd.credit-context:not(.member-metric-note){font:400 10px/1.7 Manrope,sans-serif;letter-spacing:0;margin:18px 0 0}.member-home-metrics dd.credit-pair:not(.member-metric-note){margin:18px 0 0}.member-home-metrics .credit-pair strong{font-family:Georgia,serif}
 @media(max-width:820px){body[data-member="true"] .section-shell.profile-page{margin-inline:auto}}
+
+/* Shared outlined wordmark: inherits each existing logo's scale and inverse color. */
+.brand-wordmark-art { display:block; width:10.2em; max-width:none; height:auto; flex:none; }
+.brand-wordmark-rules { fill:var(--coral); }
