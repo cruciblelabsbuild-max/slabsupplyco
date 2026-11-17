@@ -38,3 +38,28 @@ test('November editorial picks remain separate from actual purchasable inventory
  assert.ok(cards[0].member>=1000);assert.ok(cards[1].member>=350&&cards[1].member<=650);assert.ok(cards[2].member<=200);
  assert.equal(grailFeatures('2026-12').length,0);
 });
+
+import {grailDropSummary,grailCardState} from '../lib/grail-presentation';
+import type {GrailDrop} from '../lib/grail-data';
+const release:GrailDrop={month:'2026-11',starts_at:'2026-11-20T17:00:00Z',ends_at:'2026-11-21T17:00:00Z',cards:[{slug:'grail',name:'Grail',set:'Set',grade:'PSA 9',image:'/card.webp',retail:100,member:85,stock:'available'}]};
+test('home and drops status never announce preview inventory as purchasable or invent a release date',()=>{
+ const preview={...release,preview_only:true,starts_at:null,ends_at:null};
+ assert.equal(grailDropSummary(preview,new Date('2026-11-20T18:00:00Z')).status,'Preview');
+ assert.equal(grailCardState(preview,preview.cards[0],new Date()),'upcoming');
+ assert.match(grailDropSummary(null,new Date()).message,/No grail drop is scheduled/);
+ assert.match(grailDropSummary(null,new Date(),true).message,/couldn’t load/);
+ assert.equal(grailDropSummary({...release,cards:[]},new Date()).status,'No scheduled drop');
+});
+test('shared release presentation respects time, sold stock, reservations, and live inventory updates',()=>{
+ assert.match(grailDropSummary(release,new Date('2026-11-20T16:59:59Z')).status,/Opens November 20 at 12:00 PM EST/);
+ assert.equal(grailDropSummary(release,new Date(release.starts_at!)).status,'Available now');
+ assert.equal(grailDropSummary(release,new Date(release.ends_at!)).status,'Complete');
+ const now=new Date('2026-11-20T18:00:00Z');
+ assert.equal(grailDropSummary(release,now,false,[{slug:'grail',status:'sold'}]).status,'Complete');
+ assert.equal(grailDropSummary(release,now,false,[{slug:'grail',status:'reserved'}]).status,'In checkout');
+ assert.equal(grailDropSummary(release,now,false,[{slug:'grail',status:'unknown'}]).status,'Unavailable');
+});
+test('seeded future candidates do not recycle the current monthly features',()=>{
+ const current=new Set(grailFeatures('2026-11').map(c=>c.name+'|'+c.grade));
+ assert.ok(defaultGrailCandidates.every(c=>!current.has(c.name+'|'+c.grade)));
+});

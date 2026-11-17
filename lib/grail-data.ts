@@ -6,7 +6,7 @@ import {inventorySnapshot} from "./inventory";
 import {grailCycle,maxInterestPrice,suggestionDetails} from "./grail-cycle";
 export type GrailCandidate={id:string;name:string;set:string;grade:string;image:string;tier:GrailTier};
 export type GrailInterest={key:string;candidate_id:string|null;details:{name:string;set:string;grade:string}|null;max_cents:number|null;active:boolean};
-export type ConfirmedGrail={slug:string;name:string;set:string;grade:string;image:string;retail:number;member:number;stock:string};
+export type ConfirmedGrail={year?:string;slug:string;name:string;set:string;grade:string;image:string;retail:number;member:number;stock:string};
 export type GrailDrop={month:string;starts_at:string|null;ends_at:string|null;cards:ConfirmedGrail[];preview_only?:boolean};
 let initialized:Promise<void>|undefined;
 export function ensureGrails(){return initialized ||= (async()=>{
