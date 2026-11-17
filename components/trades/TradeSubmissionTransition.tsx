@@ -3,7 +3,7 @@ import {useEffect,useRef} from "react";
 import styles from "./trades.module.css";
 export default function TradeSubmissionTransition({onFinished}:{onFinished:()=>void}){
  const finish=useRef(onFinished);
- useEffect(()=>{const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;const timer=window.setTimeout(()=>finish.current(),reduced?650:2250);return()=>window.clearTimeout(timer);},[]);
+ useEffect(()=>{const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;const timer=window.setTimeout(()=>finish.current(),reduced?650:2700);return()=>window.clearTimeout(timer);},[]);
  return <section className={styles.sentTransition} role="status" aria-live="polite">
   <svg className={styles.packingArt} viewBox="0 0 400 260" aria-hidden="true">
    <ellipse className={styles.packingShadow} cx="202" cy="227" rx="91" ry="10"/>
@@ -13,9 +13,9 @@ export default function TradeSubmissionTransition({onFinished}:{onFinished:()=>v
     <path d="m115 131 88 35v67l-88-35Z" fill="var(--paper)" stroke="var(--forest)" strokeWidth="1.5"/>
     <path d="m203 166 84-35v67l-84 35Z" fill="var(--cream)" stroke="var(--forest)" strokeWidth="1.5"/>
     <path className={styles.parcelLid} d="m115 131 83-33 89 33-84 35Z" fill="var(--paper)" stroke="var(--forest)" strokeWidth="1.5"/>
-    <path className={styles.parcelSeal} d="m188 105 14-6 16 6-15 6v119l-15-6Z" fill="var(--coral)"/>
-    <text x="128" y="174" transform="rotate(21 128 174)" fill="var(--forest)" fontFamily="Manrope, sans-serif" fontSize="6" fontWeight="700" letterSpacing=".3">SLAB SUPPLY CO.</text>
-    <path d="m131 188 8 3v12l-8-3Zm12 5 20 8m-20-3 14 6" stroke="var(--forest)" fill="none" strokeWidth="1.5"/>
+    <path className={styles.parcelSeal} d="m236 112 13 5-84 35-13-5Z M152 147l13 5v66l-13-5Z" fill="var(--coral)"/>
+    <text x="220" y="185" transform="rotate(-23 220 185)" fill="var(--forest)" fontFamily="Manrope, sans-serif" fontSize="6" fontWeight="700" letterSpacing=".3">SLAB SUPPLY CO.</text>
+    <path d="m126 187 7 3v11l-7-3Zm10 5 10 4m-10 1 7 3" stroke="var(--forest)" fill="none" strokeWidth="1.5"/>
    </g>
   </svg>
   <h2>Your trade is on its way.</h2><p>We’ll let you know when your offer is ready.</p>
