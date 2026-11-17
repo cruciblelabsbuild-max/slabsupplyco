@@ -33,7 +33,7 @@ export default function BagProvider({children}:{children:React.ReactNode}){
  return <BagContext.Provider value={{slugs,add,remove,removePurchased:values=>write(read().filter(slug=>!values.includes(slug))),open:()=>setOpened(true),close:()=>setOpened(false),stock,stockReady,refresh}}>{children}<BagDrawer opened={opened} onClose={()=>setOpened(false)} message={message}/></BagContext.Provider>;
 }
 export function BagTrigger({compact=false}:{compact?:boolean}){
- const bag=useBag();return <button className={`bag-trigger${compact?" bag-trigger-compact":""}`} type="button" onClick={bag.open} aria-label={`Shopping bag, ${bag.slugs.length} ${bag.slugs.length===1?"card":"cards"}`}><ShoppingBag size={19} strokeWidth={1.5}/><span className="bag-trigger-label">Bag</span>{bag.slugs.length>0&&<b>{bag.slugs.length}</b>}</button>;
+ const bag=useBag();return <button className={`bag-trigger${compact?" bag-trigger-compact":""}`} type="button" title={compact?"Shopping bag":undefined} onClick={bag.open} aria-label={`Shopping bag, ${bag.slugs.length} ${bag.slugs.length===1?"card":"cards"}`}><ShoppingBag size={19} strokeWidth={1.5}/><span className="bag-trigger-label">Bag</span>{bag.slugs.length>0&&<b>{bag.slugs.length}</b>}</button>;
 }
 export function CardBagBadge({slug}:{slug:string}){
  const bag=useBag(),stock=bag.stock.find(item=>item.slug===slug);

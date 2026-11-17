@@ -15,5 +15,5 @@ export default async function MemberArea() {
  try{if(!user)throw Error("Member unavailable");await importLegacyTrades(member.id,user.privateMetadata);const [trades,issued]=await Promise.all([listTrades(member.id),tradeCreditBalance(member.id)]);const summary=tradeSummary(trades);pendingCents=summary.pendingCents;metrics.activeTrades=summary.active.length;if(metrics.creditCents!==null)metrics.creditCents+=issued;}catch{metrics.creditCents=null;metrics.activeTrades=null;}
  const savings=orderSavings(orders);
  metrics.savingsCents=metrics.savingsCents===null||savings===null?null:metrics.savingsCents+savings;
- return <MemberHome pendingCents={pendingCents} {...metrics} memberId={member.id} name={member.name} active={membership.state === "active-test"} unavailable={membership.state === "unavailable"}/>;
+ return <MemberHome renewsAt={membership.renewsAt} activeUntil={membership.activeUntil} pendingCents={pendingCents} {...metrics} memberId={member.id} name={member.name} active={membership.state === "active-test"} unavailable={membership.state === "unavailable"}/>;
 }
