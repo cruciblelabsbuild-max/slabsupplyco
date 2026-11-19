@@ -1,5 +1,5 @@
 import {after} from "next/server";
-import {completeAddress} from "../../../../../lib/shipping/config";
+import {memberShippingAddress} from "../../../../../lib/shipping/member-details";
 import {reconcileShipping} from "../../../../../lib/shipping/service";
 import {tradeActor} from "../../../../../lib/trades/access";
 import {getTrade,applyTradeCommand} from "../../../../../lib/trades/store";
@@ -12,8 +12,7 @@ export async function POST(request:Request,{params}:{params:Promise<{id:string}>
   else if(action==="shipping_details"){
    const count=Number(body.cardCount);if(!Number.isSafeInteger(count)||count<1||count>100000)throw new TradeError("Confirm the number of cards.");
    const included=trade.offers.find(o=>o.id===trade.acceptedOfferId)?.includedCount;if(included&&count!==included)throw new TradeError("The card count must match the accepted offer.");
-   if(!completeAddress(body.address))throw new TradeError("Confirm a complete shipping address.");
-   const a=body.address;data={cardCount:count,address:{name:text(a.name,100,true),line1:text(a.line1,160,true),line2:text(a.line2,160),city:text(a.city,100,true),region:text(a.region,100,true),postalCode:text(a.postalCode,24,true),country:text(a.country,2,true)},note:"Member confirmed the shipping address and card count."};
+   data={cardCount:count,address:memberShippingAddress(body.address),note:"Member confirmed the shipping address and card count."};
   }
   else if(action==="info")data={note:text(body.note,6000,true)};else throw new TradeError("Choose a valid trade action.");
   const updated=await applyTradeCommand(trade,actor.member.id,actor.member.id,action,data,body.requestId);after(async()=>{try{await reconcileShipping(id);}catch{/* The durable shipping record is retried by the worker. */}});return Response.json({trade:updated},{headers:{"Cache-Control":"no-store"}});

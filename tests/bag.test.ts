@@ -13,7 +13,7 @@ test('bag deduplicates locally, rejects checkout tampering and caps at twenty un
 });
 test('one checkout contains every selected card once and exactly one annual fee for new members',()=>{
  for(const membership of [true,false]){
- const p=bagCheckoutParams({...input,membership});assert.equal(p.mode,membership?'subscription':'payment');assert.equal(p.line_items?.length,membership?3:2);
+ const p=bagCheckoutParams({...input,membership});assert.deepEqual(p.shipping_address_collection?.allowed_countries,['US']);assert.equal(p.mode,membership?'subscription':'payment');assert.equal(p.line_items?.length,membership?3:2);
  assert.equal(p.metadata?.membership_cents,membership?'14900':'0');assert.equal(p.metadata?.card_cents,String(bagTotals(slugs).memberCents));assert.equal(p.expires_at,input.expiresAt);
  const cards=p.line_items!.filter(c=>c.price_data);assert.ok(cards.every(c=>c.quantity===1&&!c.price_data?.recurring));
  assert.deepEqual(cards.map(c=>c.price_data?.product_data?.metadata?.card_slug),slugs);

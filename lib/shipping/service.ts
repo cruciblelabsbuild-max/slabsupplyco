@@ -3,7 +3,7 @@ import {testShippingEnabled} from "./mode";
 import {randomUUID,createHash} from "node:crypto";
 import {inventoryDb} from "../inventory-db";
 import {getTrade} from "../trades/store";
-import {shippingConfig,packingPlan,completeAddress,profileAddress} from "./config";
+import {shippingConfig,packingPlan,completeAddress,profileAddressDetails} from "./config";
 import {shippingProvider,providerForRecord} from "./provider";
 import {carrierTrackingUrl} from "../trades/policies";
 import {ShippingBlocked,type ShippingProvider,type ShipmentPlan,type ShippingAddress,type ShippingView,type CreatedShipment} from "./types";
@@ -13,7 +13,7 @@ export function shippingView(trade:Trade,job:Record<string,any>|undefined,admin=
  const returning=trade.state.startsWith("return"),direction=returning?"return":"inbound",hasLabel=trade.labels.some(l=>l.direction===direction),reason=String(job?.reason_code||"");
  const memberReady=direction==="return"?trade.state.startsWith("return"):trade.acceptedOfferId===trade.currentOfferId;
  const adminStatus=hasLabel?trade.state==="in_transit"||trade.state==="return_shipped"?"In transit":trade.state==="delivered"||trade.state==="returned"?"Delivered":"Label created":!job?.approved_at||!memberReady?"Awaiting approval":reason?reason==="card_count"||reason==="address"?"Label pending":"Shipping error":"Label pending";
- return {status:hasLabel?"label_created":"pending",adminStatus,reason:admin?String(job?.reason||""):"",needsCount:["card_count","details"].includes(reason)&&!job?.card_count,needsAddress:["address","details"].includes(reason),approved:!!job?.approved_at,direction,cardCount:job?.card_count??null,address:completeAddress(job?.address)?job!.address:null};
+ return {status:hasLabel?"label_created":"pending",adminStatus,reason:admin?String(job?.reason||""):"",needsCount:["card_count","details"].includes(reason)&&!job?.card_count,needsAddress:["address","details"].includes(reason),approved:!!job?.approved_at,direction,cardCount:job?.card_count??null,address:job?.address&&typeof job.address==="object"?job.address:null};
 }
 const auditId=(value:string)=>{const h=createHash("sha256").update(value).digest("hex");return `${h.slice(0,8)}-${h.slice(8,12)}-4${h.slice(13,16)}-a${h.slice(17,20)}-${h.slice(20,32)}`;};
 export async function reconcileShipping(id:string,options:{provider?:ShippingProvider;config?:ReturnType<typeof shippingConfig>;address?:ShippingAddress;process?:boolean}={}){
@@ -34,8 +34,8 @@ export async function reconcileShipping(id:string,options:{provider?:ShippingPro
   const accepted=trade.offers.find(o=>o.id===trade.acceptedOfferId)!;
   const count=accepted.includedCount||trade.submission.cards?.length||job.card_count||trade.submission.cardCount;
   let address=options.address||job.address;
-  if(!completeAddress(address)){const user=await(await clerkClient()).users.getUser(trade.userId);address=profileAddress(user.privateMetadata.memberProfile);}
-  await db`UPDATE ssc_trade_shipping SET card_count=${count||null},address=${JSON.stringify(completeAddress(address)?address:null)}::jsonb WHERE id=${job.id}::uuid AND status='preparing'`;
+  if(!completeAddress(address)){const user=await(await clerkClient()).users.getUser(trade.userId);address=profileAddressDetails(user.privateMetadata.memberProfile)||address;}
+  await db`UPDATE ssc_trade_shipping SET card_count=${count||null},address=${JSON.stringify(address||null)}::jsonb WHERE id=${job.id}::uuid AND status='preparing'`;
   if(!count||!completeAddress(address))throw new ShippingBlocked(!count&&!completeAddress(address)?"details":!count?"card_count":"address","The member needs to confirm the shipping address and/or card count.");
   if(returning&&job.approval_details?.termsVerified!==true&&job.approval_details?.source!=="offer")throw new ShippingBlocked("return_terms","Verify return shipping follows the member’s accepted terms.");
   const approvedValue=Math.max(accepted.creditCents,Number(job.approval_details?.approvedValueCents)||0);

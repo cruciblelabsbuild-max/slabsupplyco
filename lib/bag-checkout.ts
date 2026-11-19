@@ -16,7 +16,7 @@ export function bagCheckoutParams(input:BagCheckoutInput):Stripe.Checkout.Sessio
   success_url:slugs.length?`${input.origin}/account/orders?session_id={CHECKOUT_SESSION_ID}`:`${input.origin}/membership/welcome?session_id={CHECKOUT_SESSION_ID}`,
   cancel_url:`${input.origin}/checkout?canceled=${input.reservationId}`,
   allowed_payment_method_types:["card","link"],billing_address_collection:"required",
-  ...(slugs.length?{shipping_address_collection:{allowed_countries:["US","CA","GB","AU"] as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry[]}}:{}),
+  ...(slugs.length?{shipping_address_collection:{allowed_countries:["US"] as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry[]}}:{}),
   customer_update:{address:"auto",name:"auto",...(slugs.length?{shipping:"auto" as const}:{})},
   saved_payment_method_options:{payment_method_save:"enabled"},
   custom_text:{submit:{message:`Test checkout. No real payment or shipment.${input.membership?` Membership renews at ${annualMembership.display} USD/year until canceled. Cards are one-time purchases.`:""}`}},

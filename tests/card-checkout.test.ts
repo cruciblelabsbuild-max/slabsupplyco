@@ -22,7 +22,7 @@ test("members buy a card once; new members pay card plus annual fee in a single 
   assert.equal(card.price_data!.recurring,undefined);
   assert.equal(params!.metadata!.membership_cents,membership?"14900":"0");
   assert.equal(params!.metadata!.clerk_user_id,input.userId);
-  assert.ok(params!.shipping_address_collection);
+  assert.deepEqual(params!.shipping_address_collection?.allowed_countries,["US"]);
   assert.ok(params!.success_url!.includes("/account/orders?session_id="));
   assert.equal(key,membership?"founding-user_example-first":`card-user_example-${slug}-first`);
   if(membership){assert.equal(params!.line_items![0].price,"price_annual");assert.equal(params!.subscription_data!.metadata!.clerk_user_id,input.userId);}

@@ -26,7 +26,7 @@ export async function createCardCheckout(stripe: Stripe, input: { slug: string; 
     cancel_url: `${input.origin}/shop/${card.slug}?canceled=1`,
     allowed_payment_method_types: ["card", "link"],
     billing_address_collection: "required",
-    shipping_address_collection: { allowed_countries: ["US", "CA", "GB", "AU"] },
+    shipping_address_collection: { allowed_countries: ["US"] },
     customer_update: { address: "auto", name: "auto", shipping: "auto" },
     saved_payment_method_options: { payment_method_save: "enabled" },
     custom_text: { submit: { message: `Test purchase. No real payment or card shipment.${input.membership ? ` Membership renews at ${annualMembership.display} USD/year until canceled. The card is a one-time purchase.` : ""}` } },

@@ -1,7 +1,9 @@
+import {usShippingCountry} from "../us-shipping";
 import {shippoShippingConfig} from "./shippo-config";
 import {ShippingBlocked,type ShippingAddress,type ShippingConfig,type PackingProfile,type ShipmentPlan} from "./types";
 export function completeAddress(value:unknown):value is ShippingAddress{if(!value||typeof value!=="object")return false;const a=value as ShippingAddress;return [a.name,a.line1,a.city,a.region,a.postalCode,a.country].every(v=>typeof v==="string"&&v.trim().length>0&&v.length<160)&&/^[A-Z]{2}$/.test(a.country);}
-export function profileAddress(value:unknown):ShippingAddress|null{if(!value||typeof value!=="object")return null;const s=(value as {shipping?:Record<string,unknown>}).shipping;if(!s)return null;const a={name:s.recipient,line1:s.line1,line2:s.line2,city:s.city,region:s.region,postalCode:s.postalCode,country:s.country} as ShippingAddress;return completeAddress(a)?a:null;}
+export function profileAddressDetails(value:unknown):ShippingAddress|null{if(!value||typeof value!=="object")return null;const s=(value as {shipping?:Record<string,unknown>}).shipping;if(!s)return null;const country=usShippingCountry(s.country);if(!country)return null;const str=(v:unknown)=>typeof v==='string'?v.trim():'';return {name:str(s.recipient),line1:str(s.line1),line2:str(s.line2),city:str(s.city),region:str(s.region),postalCode:str(s.postalCode),country};}
+export function profileAddress(value:unknown):ShippingAddress|null{const address=profileAddressDetails(value);return completeAddress(address)?address:null;}
 export function shippingConfig(env:Record<string,string|undefined>=process.env):ShippingConfig{
  if(env.SHIPPING_PROVIDER==="shippo"||env.SHIPPO_MODE)return shippoShippingConfig(env);
  let c:ShippingConfig;try{c=JSON.parse(env.TRADE_SHIPPING_CONFIG||"null");}catch{throw new ShippingBlocked("configuration","Shipping configuration is unavailable.");}

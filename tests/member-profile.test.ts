@@ -4,7 +4,7 @@ import { emptyProfile, parseMemberProfile } from "../lib/member-profile";
 test("profile accepts collecting preferences without an address and strips unknown fields",()=>{
  assert.deepEqual(parseMemberProfile({...emptyProfile,favoritePokemon:" Gengar ",userId:"someone-else",isMember:true}),{...emptyProfile,favoritePokemon:"Gengar"});
 });
-test("shipping requires a usable recipient, street, city, and country; optional fields stay optional",()=>{
+test("shipping requires a usable name, street and city with a US country default; optional fields stay optional",()=>{
  const shipping={...emptyProfile.shipping,recipient:"Avery",line1:"123 Example St",city:"New York",country:"United States"};
  assert.equal(parseMemberProfile({...emptyProfile,shipping}).shipping.recipient,"Avery");
  assert.throws(()=>parseMemberProfile({...emptyProfile,shipping:{...shipping,recipient:""}}));

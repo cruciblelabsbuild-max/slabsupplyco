@@ -1,3 +1,4 @@
+import {memberShippingAddress} from "../lib/shipping/member-details";
 import {shippingOperation} from "../lib/shipping/operations";
 import {test} from "node:test";
 import assert from "node:assert/strict";
@@ -19,6 +20,7 @@ test('Shippo durable jobs serialize concurrent purchases, resume pending transac
   trade=await operatorAction(trade,'fixture-operator',{action:'offer',requestId:randomUUID(),useStandardTerms:true,creditCents:8500,shippingApproved:true});
   await reconcileShipping(tradeId,{provider,config:qaShippingConfig,address:qaAddress});assert.equal(creates,0);
   trade=await applyTradeCommand(trade,owner,owner,'accept',{offerId:trade.currentOfferId,consent:true},randomUUID());
+  trade=await applyTradeCommand(trade,owner,owner,'shipping_details',{cardCount:1,address:memberShippingAddress({...qaAddress,country:undefined})},randomUUID());assert.equal((await db`SELECT address->>'country' AS country FROM ssc_trade_shipping WHERE trade_id=${tradeId}::uuid`)[0].country,'US');
   await Promise.all([1,2,3].map(()=>reconcileShipping(tradeId,{provider,config:qaShippingConfig,address:qaAddress})));
   assert.equal(creates,1);let row=(await db`SELECT * FROM ssc_trade_shipping WHERE trade_id=${tradeId}::uuid`)[0];assert.equal(row.status,'provider_created');assert.equal((await getTrade(tradeId)).labels.length,0);
   pending=false;await reconcileShipping(tradeId,{provider,config:qaShippingConfig,address:qaAddress});assert.equal(creates,1);trade=await getTrade(tradeId);assert.equal(trade.labels.length,1);process.env.SHIPPO_MODE='live';assert.equal((await getTrade(tradeId)).labels.length,0);process.env.SHIPPO_MODE='test';
