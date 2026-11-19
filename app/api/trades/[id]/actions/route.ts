@@ -1,3 +1,4 @@
+import {dispatchEmails} from "../../../../../lib/email/dispatch";
 import {prepareAcceptedTrade} from "../../../../../lib/shipping/acceptance";
 import {withProfileReturnAddress} from "../../../../../lib/shipping/profile-address";
 import {after} from "next/server";
@@ -17,6 +18,6 @@ export async function POST(request:Request,{params}:{params:Promise<{id:string}>
    data={cardCount:count,address:memberShippingAddress(body.address),note:"Member confirmed the shipping address and card count."};
   }
   else if(action==="info")data={note:text(body.note,6000,true)};else throw new TradeError("Choose a valid trade action.");
-  let updated=await applyTradeCommand(trade,actor.member.id,actor.member.id,action,data,body.requestId);if(action==="accept"||action==="decline_offer")updated=await prepareAcceptedTrade(updated);after(async()=>{try{await reconcileShipping(id);}catch{/* The durable shipping record is retried by the worker. */}});return Response.json({trade:withProfileReturnAddress(updated,actor.user.privateMetadata.memberProfile)},{headers:{"Cache-Control":"no-store"}});
+  let updated=await applyTradeCommand(trade,actor.member.id,actor.member.id,action,data,body.requestId);if(action==="accept"||action==="decline_offer")updated=await prepareAcceptedTrade(updated);after(async()=>{try{await reconcileShipping(id);}catch{/* The durable shipping record is retried by the worker. */}await dispatchEmails();});return Response.json({trade:withProfileReturnAddress(updated,actor.user.privateMetadata.memberProfile)},{headers:{"Cache-Control":"no-store"}});
  }catch(error){return Response.json({message:error instanceof TradeError?error.message:"The trade could not be updated. Please try again."},{status:error instanceof TradeError?409:503});}
 }

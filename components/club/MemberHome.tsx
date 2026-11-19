@@ -1,3 +1,4 @@
+import SupportLink from "./SupportLink";
 import {annualMembership} from "../../lib/membership-plan";
 import HomeGrailStatus from "../grails/HomeGrailStatus";
 import type {GrailDrop} from "../../lib/grail-data";
@@ -20,5 +21,5 @@ export default function MemberHome({name,memberId,active,unavailable=false,credi
  </dl></section>
  <section className="section-shell member-wide-deals"><div className="dashboard-availability"><div><p className="eyebrow">Member deals</p><h2>Your next find belongs here.</h2><Link className="button" href="/shop">View member deals<ArrowRight size={16}/></Link></div><img src={catalog[0].image} alt="Graded Snorlax card"/></div></section>
  <section className="section-shell dashboard-services member-original-services"><article className="dashboard-trade"><p className="eyebrow">Trade in</p><Repeat2 size={30} strokeWidth={1}/><h2>Make your collection<br/><em>go further.</em></h2><p>Put the cards you’re ready to move toward the ones you can’t stop thinking about.</p><Link className="button" href="/trade-ins#start-trade">Start a trade<ArrowRight size={16}/></Link></article><article className="dashboard-release"><div><p className="eyebrow">Grail drops</p><h2>A little rarer.<br/><em>A lot to love.</em></h2><HomeGrailStatus drop={grailDrop} unavailable={grailUnavailable||unavailable} now={new Date().toISOString()}/><Link className="button button-light" href="/drops">View grail drops<ArrowRight size={16}/></Link></div><img src={catalog[5].image} alt="Pikachu with Grey Felt Hat"/></article></section>
- {active&&memberId&&<MemberWelcome memberId={memberId}/>}</div>;
+ <section className="section-shell"><SupportLink/></section>{active&&memberId&&<MemberWelcome memberId={memberId}/>}</div>;
 }

@@ -1,3 +1,6 @@
+import {dispatchEmails} from "../../../../lib/email/dispatch";
+import {after} from "next/server";
+import {captureStripeEmail} from "../../../../lib/email/events";
 import {NextResponse} from "next/server";
 import {getStripe} from "../../../../lib/stripe";
 import {queueOrderShipping} from "../../../../lib/shipping/orders";
@@ -16,6 +19,7 @@ export async function POST(request:Request){
    await reconcileCheckout(verified);
    if(process.env.SHIPPO_AUTOMATION_ENABLED==="true"){try{await queueOrderShipping(verified);}catch{/* Shipping cannot roll back a verified payment or inventory update; the shipping worker retries. */}}
   }
+  after(async()=>{try{await captureStripeEmail(event);}catch{/* The durable Stripe event scanner retries independently. */}await dispatchEmails();});
   return NextResponse.json({received:true});
  }catch(error){console.error("Inventory webhook reconciliation failed",error instanceof Error?error.message:"Unknown error");return NextResponse.json({message:"Retry inventory update."},{status:500});}
 }

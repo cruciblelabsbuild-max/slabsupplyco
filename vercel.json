@@ -3,6 +3,10 @@
     {
       "path": "/api/internal/shipping",
       "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/internal/email",
+      "schedule": "*/5 * * * *"
     }
   ]
 }

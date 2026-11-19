@@ -1,3 +1,4 @@
+import SupportLink from "../../../../components/club/SupportLink";
 import {getTrade} from "../../../../lib/trades/store";
 import {validId} from "../../../../lib/trades/model";
 import ProfileMembership from "../../../../components/club/ProfileMembership";
@@ -25,5 +26,5 @@ export default async function ProfilePage({searchParams}:{searchParams:Promise<{
   let cards: SavedPaymentCard[] = [];
   let paymentUnavailable = false;
   if (typeof user.privateMetadata.stripeTestCustomerId === "string") { try { cards = await savedPaymentCards(getStripe(),user.privateMetadata.stripeTestCustomerId,member.id); } catch { paymentUnavailable = true; } }
-  return <section className="section-shell profile-page"><header className="profile-page-heading"><h1>Account settings</h1><div className="profile-identity-summary"><strong>{[user.firstName,user.lastName].filter(Boolean).join(" ")||member.name}</strong><span>{member.email}</span></div></header><AccountSettings profile={profile} returnTradeId={returnTradeId} membership={<ProfileMembership renewsAt={membership.renewsAt} activeUntil={membership.activeUntil} state={membership.state} portalUrl={portalUrl} hasBilling={typeof user.privateMetadata.stripeTestCustomerId === "string"}/>} payment={<PaymentCard cards={cards} unavailable={paymentUnavailable}/>}/><ProfileSignOut/></section>;
+  return <section className="section-shell profile-page"><header className="profile-page-heading"><h1>Account settings</h1><div className="profile-identity-summary"><strong>{[user.firstName,user.lastName].filter(Boolean).join(" ")||member.name}</strong><span>{member.email}</span></div></header><AccountSettings profile={profile} returnTradeId={returnTradeId} membership={<ProfileMembership renewsAt={membership.renewsAt} activeUntil={membership.activeUntil} state={membership.state} portalUrl={portalUrl} hasBilling={typeof user.privateMetadata.stripeTestCustomerId === "string"}/>} payment={<PaymentCard cards={cards} unavailable={paymentUnavailable}/>}/><SupportLink category="members"/><ProfileSignOut/></section>;
 }
