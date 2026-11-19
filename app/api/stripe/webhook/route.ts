@@ -6,6 +6,7 @@ import {getStripe} from "../../../../lib/stripe";
 import {queueOrderShipping} from "../../../../lib/shipping/orders";
 import {reconcileCheckout} from "../../../../lib/inventory";
 export const runtime="nodejs";
+export const maxDuration=300;
 export async function POST(request:Request){
  const secret=process.env.STRIPE_WEBHOOK_SECRET,signature=request.headers.get("stripe-signature");
  if(!secret||!signature)return NextResponse.json({message:"Webhook not configured."},{status:400});

@@ -4,6 +4,7 @@ import {tradeActor} from "../../../lib/trades/access";
 import {submitTrade} from "../../../lib/trades/store";
 import {TradeError} from "../../../lib/trades/model";
 export const runtime="nodejs";
+export const maxDuration=300;
 export async function POST(request:Request){
  if(request.headers.get("origin")!==new URL(request.url).origin)return Response.json({message:"Invalid request origin."},{status:403});
  const actor=await tradeActor();if(!actor)return Response.json({message:"Sign in to submit your trade."},{status:401});if(!actor.member.email)return Response.json({message:"Verify your email before submitting."},{status:403});
