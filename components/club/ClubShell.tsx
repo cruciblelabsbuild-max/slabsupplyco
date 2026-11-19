@@ -22,9 +22,9 @@ function SessionHeader() {
   const { signOut } = useClerk();
   const initialName = useInitialIdentity();
   const activeMembership=useActiveMembership();
-  return <Navigation name={activeMembership ? (isLoaded ? (user ? identityFirstName(user) || initialName || "Member" : null) : initialName) : null} onSignOut={() => signOut({ redirectUrl: "/" })} />;
+  return <Navigation authenticated={isLoaded?Boolean(user):Boolean(initialName)} name={activeMembership ? (isLoaded ? (user ? identityFirstName(user) || initialName || "Member" : null) : initialName) : null} onSignOut={() => signOut({ redirectUrl: "/" })} />;
 }
-function Navigation({ name, onSignOut }: { name: string | null; onSignOut?: () => Promise<unknown> }) {
+function Navigation({ name, onSignOut, authenticated=false }: { name: string | null; onSignOut?: () => Promise<unknown>;authenticated?:boolean }) {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [leaving, setLeaving] = useState(false);
@@ -38,11 +38,11 @@ function Navigation({ name, onSignOut }: { name: string | null; onSignOut?: () =
     <header className="site-header club-header">
       <Logo href="/" />
       <nav id="club-navigation" className={open ? "nav-links open" : "nav-links"} aria-label="Primary navigation">
-        <div className="mobile-session"><span className="session-avatar"><UserRound size={18} /></span><div><strong>Welcome aboard.</strong><p>You’re browsing as a guest</p></div></div>
+        <div className="mobile-session"><span className="session-avatar"><UserRound size={18} /></span><div><strong>Welcome aboard.</strong><p>{authenticated?"Complete your membership to get started.":"You’re browsing as a guest"}</p></div></div>
         {guestLinks.map(([href,label])=><Link key={href} href={href} aria-current={path.startsWith(href)?"page":undefined} onClick={()=>setOpen(false)}>{label}</Link>)}
-        <div className="mobile-account-actions"><Link className="button" href="/sign-in" onClick={()=>setOpen(false)}>Sign in<ArrowRight size={15}/></Link><Link href="/join" onClick={()=>setOpen(false)}>Become a member</Link></div>
+        <div className="mobile-account-actions">{authenticated?<button className="button" type="button" onClick={logout} disabled={leaving}>Sign out<LogOut size={15}/></button>:<Link className="button" href="/sign-in" onClick={()=>setOpen(false)}>Sign in<ArrowRight size={15}/></Link>}<Link href="/join" onClick={()=>setOpen(false)}>Become a member</Link></div>
       </nav>
-      <div className="club-header-actions"><BagTrigger/><Link className="session-sign-in" href="/sign-in"><UserRound size={15}/><span>Sign in</span></Link><Link className="button button-small" href="/join">Become a member<ArrowRight size={14}/></Link></div>
+      <div className="club-header-actions"><BagTrigger/>{authenticated?<button type="button" className="session-sign-in" style={{border:0,background:"none"}} onClick={logout} disabled={leaving}><LogOut size={15}/><span>Sign out</span></button>:<Link className="session-sign-in" href="/sign-in"><UserRound size={15}/><span>Sign in</span></Link>}<Link className="button button-small" href="/join">Become a member<ArrowRight size={14}/></Link></div>
       <div className="public-mobile-bag"><BagTrigger/></div><button className="menu-button" type="button" aria-label={open?"Close navigation":"Open navigation"} aria-expanded={open} aria-controls="club-navigation" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button>
     </header>
   </>;
