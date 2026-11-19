@@ -1,3 +1,4 @@
+import {orderFulfillment} from "./shipping/order-view";
 import { cache } from "react";
 import { clerkClient } from "@clerk/nextjs/server";
 import type Stripe from "stripe";
@@ -5,6 +6,7 @@ import {reconcileCheckout} from "./inventory";
 import { getStripe } from "./stripe";
 export type OrderCard={slug:string;name:string;grade:string;image:string;cardCents:number;retailCents:number};
 export type CardOrder = {
+  fulfillment?:Awaited<ReturnType<typeof orderFulfillment>>;
   items:OrderCard[];
   id:string; created:number; name:string; grade:string; slug:string; image:string;
   cardCents:number; retailCents:number; membershipCents:number; totalCents:number;
@@ -18,7 +20,7 @@ export function cardOrderFromSession(session:Stripe.Checkout.Session,userId:stri
   if(![cardCents,retailCents,membershipCents].every(n=>Number.isSafeInteger(n)&&n>=0) || !cardCents || session.amount_subtotal!==cardCents+membershipCents || !data.card_name || !/^selection-[a-z0-9-]+$/.test(data.card_slug) || !/^\/cards\/selection\/[a-zA-Z0-9-]+\.webp$/.test(data.card_image))return null;
   return {items:[{slug:data.card_slug,name:data.card_name,grade:data.card_grade,image:data.card_image,cardCents,retailCents}],id:session.id,created:session.created,name:data.card_name,grade:data.card_grade,slug:data.card_slug,image:data.card_image,cardCents,retailCents,membershipCents,totalCents:session.amount_total??cardCents+membershipCents,status:"paid",shipping:session.collected_information?.shipping_details??null};
 }
-async function orderCharge(stripe:Stripe,session:Stripe.Checkout.Session) {
+export async function orderCharge(stripe:Stripe,session:Stripe.Checkout.Session) {
   let intent=session.payment_intent;
   if(!intent && session.invoice) {
     const payments=await stripe.invoicePayments.list({invoice:typeof session.invoice==="string"?session.invoice:session.invoice.id,status:"paid",limit:10});
@@ -48,6 +50,7 @@ export const ordersForUser=cache(async(userId:string):Promise<CardOrder[]|null>=
       const charge=await orderCharge(stripe,session);
       if(charge?.refunded)order.status="refunded";
       else if(charge?.amount_refunded)order.status="partially-refunded";
+      try{order.fulfillment=await orderFulfillment(session.id,userId);}catch{/* Shipping never hides a paid purchase. */}
       orders.push(order);
     }
     return orders;

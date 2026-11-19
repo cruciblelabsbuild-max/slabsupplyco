@@ -1,0 +1,4 @@
+import type {ShippingConfig} from "../../lib/shipping/types";
+// Explicitly synthetic fixtures; never used as production packing specifications.
+export const qaAddress={name:"QA Only",line1:"123 Fixture Street",city:"Fixture City",region:"NY",postalCode:"10001",country:"US"};
+export const qaShippingConfig:ShippingConfig={company:qaAddress,profiles:[{id:"QA-SYNTHETIC",capacity:3,lengthIn:8,widthIn:6,heightIn:4,emptyWeightLb:.5,slabWeightLb:.2,serviceCode:"03",measurementRecord:"SYNTHETIC TEST FIXTURE — NOT A MEASUREMENT",measuredAt:"2026-11-16T00:00:00Z"}],coverage:{verified:true,reference:"SYNTHETIC TEST COVERAGE — NOT AN INSURANCE POLICY",method:"third_party",perPackageMaxCents:100000,shipmentMaxCents:100000,signatureThresholdCents:50000,approvedServices:["03"]},maxRateCents:5000,maxPackages:12};

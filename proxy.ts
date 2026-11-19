@@ -9,7 +9,7 @@ export default function proxy(request: NextRequest, event: NextFetchEvent) {
   // Never trust a client-supplied hint about whether authentication ran.
   headers.delete(publicGuestHeader);
   // These endpoints authenticate with a Stripe signature, same-origin bag cookie, or worker token.
-  if (["/api/stripe/webhook", "/api/bag", "/api/internal/shipping"].includes(request.nextUrl.pathname)) return NextResponse.next({request:{headers}});
+  if (["/api/stripe/webhook", "/api/shippo/webhook", "/api/bag", "/api/internal/shipping"].includes(request.nextUrl.pathname)) return NextResponse.next({request:{headers}});
   if (isPublicGuestRequest(request)) {
     headers.set(publicGuestHeader, "1");
     return NextResponse.next({request:{headers}});
