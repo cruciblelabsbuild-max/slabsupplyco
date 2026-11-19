@@ -70,7 +70,7 @@ export async function buildEmailContent(type:EmailType,userId:string,source:Reco
   if(subscription.metadata.clerk_user_id!==userId||subscription.metadata.membership!=='founding-annual')skip('Membership ownership mismatch.');
   const period=membershipPeriod(subscription);if(type==='membership_cancelled'&&!subscription.cancel_at&&!subscription.cancel_at_period_end&&subscription.status!=='canceled')skip('Cancellation reversed.');
   const end=type==='membership_cancelled'&&subscription.status==='canceled'?subscription.ended_at:period.activeUntil;if(end&&end*1000>Date.now())data.endDate=date(end);if(type==='membership_confirmed'&&period.activeUntil)data.endDate=date(period.activeUntil);data.ctaUrl=origin+'/account/profile#membership';
-  if(type==='membership_confirmed')data.ctaUrl=origin+'/account';
+  if(type==='membership_confirmed')data.ctaUrl=origin+'/shop';
  }
  return {to:email!,data};
 }

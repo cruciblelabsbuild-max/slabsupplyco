@@ -1,3 +1,5 @@
+import {dispatchEmails} from "../../../../lib/email/dispatch";
+import {validId} from "../../../../lib/trades/model";
 import {memberShippingAddress} from "../../../../lib/shipping/member-details";
 import {after} from "next/server";
 import {profileAddressDetails} from "../../../../lib/shipping/config";
@@ -12,8 +14,8 @@ export async function POST(request: Request) {
   const member = await getMember();
   if (!member) return Response.json({ error: "Sign in required" }, { status: 401 });
   if (Number(request.headers.get("content-length") || 0) > 5000) return Response.json({ error: "Profile details are too large." }, { status: 413 });
-  let profile;let savingAddress=false;
-  try { const body=await request.json();profile = parseMemberProfile(body);savingAddress=!!body&&typeof body==="object"&&"section" in body&&body.section==="shipping";if(savingAddress&&profile.shipping.line1)memberShippingAddress(profileAddressDetails(profile)); }
+  let profile;let savingAddress=false;let returnTradeId:string|undefined;
+  try { const body=await request.json() as Record<string,unknown>;profile = parseMemberProfile(body);returnTradeId=validId(body.returnTradeId)?body.returnTradeId:undefined;savingAddress=!!body&&typeof body==="object"&&"section" in body&&body.section==="shipping";if(savingAddress&&profile.shipping.line1)memberShippingAddress(profileAddressDetails(profile)); }
   catch (error) { return Response.json({ error: error instanceof Error ? error.message : "Check your details." }, { status: 400 }); }
   try {
     const client = await clerkClient();
@@ -21,7 +23,9 @@ export async function POST(request: Request) {
     const changed=JSON.stringify(profileAddressDetails(previous.privateMetadata.memberProfile))!==JSON.stringify(profileAddressDetails(profile));
     await client.users.updateUserMetadata(member.id, { privateMetadata: { memberProfile: profile } });
     const trades=changed||savingAddress?await refreshMemberTradeAddresses(member.id,profileAddressDetails(profile)):[];
-    after(async()=>{for(const id of trades){try{await reconcileShipping(id);}catch{/* The durable queue retries shipping. */}}});
+    // Reconcile the selected owned trade before returning when possible; charge protection stays in the existing service.
+    if(savingAddress&&returnTradeId&&trades.includes(returnTradeId)){try{await reconcileShipping(returnTradeId);}catch{/* A saved address remains saved even if Shippo is delayed. */}}
+    after(async()=>{for(const id of trades){try{await reconcileShipping(id);}catch{/* The durable queue retries shipping. */}}await dispatchEmails();});
     return Response.json({ saved: true }, { headers: { "Cache-Control": "no-store" } });
   } catch { return Response.json({ error: "Your changes could not be saved. Please try again." }, { status: 503 }); }
 }

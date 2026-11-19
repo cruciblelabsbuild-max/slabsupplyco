@@ -6,8 +6,9 @@ import type {Trade} from '../trades/model';
 import type {ShippingAddress} from './types';
 /** Fill the trade summary from the profile before a shipping job has captured its address. */
 export function withProfileReturnAddress(trade:Trade,profile:unknown):Trade{
- if(!trade.shipping||trade.shipping.address||trade.labels.length)return trade;
- return {...trade,shipping:{...trade.shipping,address:profileAddressDetails(profile)}};
+ if(!trade.shipping||trade.labels.some(l=>l.direction===(trade.state.startsWith("return")?"return":"inbound")))return trade;
+ const saved=profileAddressDetails(profile);const address=completeAddress(trade.shipping.address)?trade.shipping.address:saved||trade.shipping.address;
+ return {...trade,shipping:{...trade.shipping,address,needsAddress:completeAddress(trade.shipping.address)?trade.shipping.needsAddress:!completeAddress(address)}};
 }
 /** Purchased labels keep their original address. Old in-flight preparations lose their claim. */
 export async function refreshMemberTradeAddresses(userId:string,address:ShippingAddress|null){

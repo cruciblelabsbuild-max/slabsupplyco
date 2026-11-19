@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { ClubHeader } from "../../components/club/ClubShell";
+import { ArrowRight } from "lucide-react";
+import { ClubHeader,ClubFooter } from "../../components/club/ClubShell";
 
 export const metadata: Metadata = {
   title: "The Slab Supply Co. Promise",
@@ -31,8 +31,7 @@ const principles = [
 ];
 
 export default function PromisePage() {
-  return <main className="promise-page">
-    <ClubHeader />
+  return <><ClubHeader/><main className="promise-page" id="club-main">
 
     <section className="promise-page-hero">
       <div className="section-shell promise-page-hero-inner">
@@ -86,5 +85,5 @@ export default function PromisePage() {
         <a className="button button-light" href="/join">Become a member <ArrowRight size={16} /></a>
       </div>
     </section>
-  </main>;
+  </main><ClubFooter/></>;
 }

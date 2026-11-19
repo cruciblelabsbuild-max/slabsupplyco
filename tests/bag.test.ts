@@ -18,7 +18,7 @@ test('one checkout contains every selected card once and exactly one annual fee 
  const cards=p.line_items!.filter(c=>c.price_data);assert.ok(cards.every(c=>c.quantity===1&&!c.price_data?.recurring));
  assert.deepEqual(cards.map(c=>c.price_data?.product_data?.metadata?.card_slug),slugs);
  assert.equal(p.line_items!.filter(c=>c.price==='price_annual').length,membership?1:0);
- assert.ok(p.cancel_url?.includes(input.reservationId));assert.ok(p.success_url?.includes('/account/orders'));
+ assert.ok(p.cancel_url?.includes(input.reservationId));assert.ok(p.success_url?.includes(membership?'/membership/welcome':'/account/orders'));
  }
  const max=bagCheckoutParams({...input,slugs:bagCards.slice(0,20).map(c=>c.slug),membership:true});assert.equal(max.line_items?.length,21);assert.ok(Object.values(max.metadata!).every(v=>String(v).length<=500));
  assert.throws(()=>bagCheckoutParams({...input,slugs:[]}));assert.equal(bagCheckoutParams({...input,slugs:[],membership:true}).line_items?.length,1);

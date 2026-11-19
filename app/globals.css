@@ -1587,3 +1587,14 @@ body[data-member="true"] .section-shell.profile-page{max-width:960px;margin-left
 @keyframes arrival-cover { from { opacity:0; } to { opacity:1; } }
 @keyframes arrival-uncover { from { opacity:1; } to { opacity:0; } }
 @media(prefers-reduced-motion:reduce) { .arrival-handoff,.arrival-handoff.is-revealing { animation:none; } }
+
+/* Shared member page hierarchy; public/editorial pages retain their original width. */
+:root{--member-hero-size:clamp(48px,5.5vw,76px)}
+@media(max-width:600px){:root{--member-hero-size:45px}}
+body[data-member="true"] .promise-page .section-shell{width:min(1180px,calc(100% - 64px));max-width:1180px}
+@media(max-width:820px){body[data-member="true"] .promise-page .section-shell{width:min(1180px,calc(100% - 40px))}}
+.membership-cancel-dialog{max-width:560px;width:calc(100% - 40px);margin:auto;border:1px solid var(--line);border-radius:8px;padding:32px;background:var(--paper);color:var(--ink)}
+.membership-cancel-dialog::backdrop{background:rgba(25,26,52,.5)}
+.membership-cancel-dialog h2{font-size:32px;margin:0 0 20px}.membership-cancel-dialog p{font-size:14px;line-height:1.8;margin:12px 0}.membership-cancel-dialog .club-result-actions{gap:12px;flex-wrap:wrap}
+
+body[data-member="true"]:has(.membership-activation){padding:0}body[data-member="true"] .membership-activation{width:min(900px,calc(100% - 40px));max-width:900px}

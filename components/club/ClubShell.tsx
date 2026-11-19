@@ -33,6 +33,7 @@ function Navigation({ name, onSignOut, authenticated=false }: { name: string | n
     setLeaving(true); setError("");
     try { await onSignOut?.(); } catch { setLeaving(false); setError("Sign-out failed. Please try again."); }
   }
+  if(path==="/membership/welcome")return <header className="site-header club-header"><Logo href="/account"/></header>;
   if (name) return <MemberNavigation onSignOut={logout} leaving={leaving} error={error}/>;
   return <><div className="announcement"><span>Founding memberships now open · {annualMembership.display}/year</span></div>
     <header className="site-header club-header">

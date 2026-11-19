@@ -13,7 +13,7 @@ export function bagCheckoutParams(input:BagCheckoutInput):Stripe.Checkout.Sessio
   line_items:[...(input.membership?[{price:input.priceId,quantity:1}]:[]),...totals.cards.map(card=>({price_data:{currency:"usd",unit_amount:Math.round(card.member*100),product_data:{name:`${card.name} · ${card.grade}`,images:[`${input.origin}${card.image}`],metadata:{card_slug:card.slug,card_grade:card.grade,card_image:card.image,retail_cents:String(Math.round(card.retail*100))}}},quantity:1}))],
   ...(input.membership?{subscription_data:{metadata:{membership:"founding-annual",phase:"test",clerk_user_id:input.userId}}}:{payment_intent_data:{setup_future_usage:"off_session",metadata}}),
   metadata,
-  success_url:slugs.length?`${input.origin}/account/orders?session_id={CHECKOUT_SESSION_ID}`:`${input.origin}/membership/welcome?session_id={CHECKOUT_SESSION_ID}`,
+  success_url:!input.membership&&slugs.length?`${input.origin}/account/orders?session_id={CHECKOUT_SESSION_ID}`:`${input.origin}/membership/welcome?session_id={CHECKOUT_SESSION_ID}`,
   cancel_url:`${input.origin}/checkout?canceled=${input.reservationId}`,
   allowed_payment_method_types:["card","link"],billing_address_collection:"required",
   ...(slugs.length?{shipping_address_collection:{allowed_countries:["US"] as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry[]}}:{}),

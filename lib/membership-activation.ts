@@ -1,0 +1,16 @@
+import type Stripe from 'stripe';
+import {inventoryDb} from './inventory-db';
+import {getStripe} from './stripe';
+import {checkoutStatus} from './checkout-status';
+let ready:Promise<void>|undefined;
+export function ensureActivation(){return ready||=(async()=>{const db=inventoryDb();await db.transaction([db`SELECT pg_advisory_xact_lock(hashtextextended('ssc-activation-schema',0))`,db`CREATE TABLE IF NOT EXISTS ssc_membership_activation_config(id boolean PRIMARY KEY DEFAULT true,started_at timestamptz NOT NULL DEFAULT now())`,db`INSERT INTO ssc_membership_activation_config(id) VALUES(true) ON CONFLICT DO NOTHING`,db`CREATE TABLE IF NOT EXISTS ssc_membership_activation(subscription_id text PRIMARY KEY,user_id text NOT NULL,session_id text NOT NULL UNIQUE,confirmed_at timestamptz NOT NULL DEFAULT now(),entered_at timestamptz)`,db`CREATE TABLE IF NOT EXISTS ssc_member_onboarding(user_id text PRIMARY KEY,dismissed_at timestamptz NOT NULL DEFAULT now())`]);})().catch(e=>{ready=undefined;throw e;});}
+export function verifiedActivation(session:Stripe.Checkout.Session,userId:string){const sub=session.subscription;return session.client_reference_id===userId&&session.metadata?.clerk_user_id===userId&&!!sub&&typeof sub==='object'&&sub.metadata.clerk_user_id===userId&&sub.metadata.membership==='founding-annual'&&checkoutStatus(session).paid;}
+export async function registerActivation(session:Stripe.Checkout.Session,userId:string){if(!verifiedActivation(session,userId))return null;await ensureActivation();const sub=session.subscription as Stripe.Subscription,db=inventoryDb();await db`INSERT INTO ssc_membership_activation(subscription_id,user_id,session_id) SELECT ${sub.id},${userId},${session.id} WHERE to_timestamp(${session.created})>=(SELECT started_at FROM ssc_membership_activation_config WHERE id) ON CONFLICT DO NOTHING`;return (await db`SELECT session_id,entered_at FROM ssc_membership_activation WHERE subscription_id=${sub.id} AND user_id=${userId}`)[0]||null;}
+export async function pendingActivation(userId:string){await ensureActivation();const row=(await inventoryDb()`SELECT session_id FROM ssc_membership_activation WHERE user_id=${userId} AND entered_at IS NULL ORDER BY confirmed_at DESC LIMIT 1`)[0];return row?`/membership/welcome?session_id=${encodeURIComponent(row.session_id)}`:null;}
+export async function activationStatus(userId:string,sessionId:string){
+ if(!/^cs_test_[A-Za-z0-9_]{10,240}$/.test(sessionId))return {state:'invalid' as const};
+ const session=await getStripe().checkout.sessions.retrieve(sessionId,{expand:['subscription']});if(session.metadata?.clerk_user_id!==userId||session.client_reference_id!==userId)return {state:'invalid' as const};
+ if(!verifiedActivation(session,userId))return {state:session.status==='expired'?'invalid' as const:'processing' as const};
+ const record=await registerActivation(session,userId);return {state:record?.entered_at||!record?'entered' as const:'confirmed' as const};
+}
+export async function enterMembership(userId:string,sessionId:string){const status=await activationStatus(userId,sessionId);if(!['confirmed','entered'].includes(status.state))throw Error('Payment is not confirmed.');await inventoryDb()`UPDATE ssc_membership_activation SET entered_at=coalesce(entered_at,now()) WHERE user_id=${userId} AND session_id=${sessionId}`;}

@@ -1,23 +1,7 @@
-import MembershipCompletionActions from "../../../../components/club/MembershipCompletionActions";
-import { requireMember } from "../../../../lib/member-session";
-import Link from "next/link";
-import { Check, Clock3 } from "lucide-react";
-import { checkoutStatus } from "../../../../lib/checkout-status";
-import { getStripe } from "../../../../lib/stripe";
-export const dynamic = "force-dynamic";
-export const metadata = { title: "Checkout status · Slab Supply Co.", robots: { index: false, follow: false } };
-export default async function WelcomePage({ searchParams }: { searchParams: Promise<{ session_id?: string }> }) {
-  const member = await requireMember();
-  const { session_id } = await searchParams;
-  let paid = false;
-  let pending = false;
-  if (session_id && /^cs_test_[A-Za-z0-9_]{10,240}$/.test(session_id)) {
-    try {
-      const session = await getStripe().checkout.sessions.retrieve(session_id, { expand: ["subscription"] });
-      const result = session.metadata?.clerk_user_id === member.id ? checkoutStatus(session) : { paid: false, pending: false };
-      paid = result.paid;
-      pending = result.pending;
-    } catch { /* An invalid or unavailable session must never claim payment succeeded. */ }
-  }
-  return <section className="section-shell club-result"><span className="club-result-icon">{paid ? <Check size={35} /> : <Clock3 size={35} />}</span>{!paid && <p className="eyebrow">Checkout status</p>}<h1>{paid ? <>Membership confirmed.<br /><em>Welcome aboard.</em></> : pending ? <>We’re checking<br /><em>your payment.</em></> : <>Let’s make sure<br /><em>you’re all set.</em></>}</h1>{!paid && <p>{pending ? "Your checkout was submitted, but payment or subscription activation is still pending. Check your Stripe confirmation before trying again." : "We couldn’t confirm a completed checkout from this link. No membership status is being assumed. If you completed checkout, check your confirmation or contact us."}</p>}<MembershipCompletionActions paid={paid}/><Link className="club-text-link" href="/help">Questions? We’re here to help.</Link></section>;
-}
+import {redirect} from 'next/navigation';
+import {requireMember} from '../../../../lib/member-session';
+import {activationStatus} from '../../../../lib/membership-activation';
+import MembershipActivation from '../../../../components/club/MembershipActivation';
+export const dynamic='force-dynamic';
+export const metadata={title:'Your membership · Slab Supply Co.',robots:{index:false,follow:false}};
+export default async function WelcomePage({searchParams}:{searchParams:Promise<{session_id?:string}>}){const member=await requireMember(),{session_id=''}=await searchParams;let state:Parameters<typeof MembershipActivation>[0]['initialState']='processing';try{state=(await activationStatus(member.id,session_id)).state;}catch{/* Keep a single stable processing state while Stripe recovers. */}if(state==='entered')redirect('/account');return <MembershipActivation sessionId={session_id} initialState={state}/>;}

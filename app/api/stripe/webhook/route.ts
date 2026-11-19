@@ -1,3 +1,4 @@
+import {registerActivation} from "../../../../lib/membership-activation";
 import {dispatchEmails} from "../../../../lib/email/dispatch";
 import {after} from "next/server";
 import {captureStripeEmail} from "../../../../lib/email/events";
@@ -16,8 +17,9 @@ export async function POST(request:Request){
  try{
   if(["checkout.session.completed","checkout.session.async_payment_succeeded","checkout.session.expired"].includes(event.type)){
    const session=event.data.object as import("stripe").default.Checkout.Session;
-   const verified=await stripe.checkout.sessions.retrieve(session.id);
+   const verified=await stripe.checkout.sessions.retrieve(session.id,{expand:["subscription"]});
    await reconcileCheckout(verified);
+   if(verified.metadata?.clerk_user_id)await registerActivation(verified,verified.metadata.clerk_user_id);
    if(process.env.SHIPPO_AUTOMATION_ENABLED==="true"){try{await queueOrderShipping(verified);}catch{/* Shipping cannot roll back a verified payment or inventory update; the shipping worker retries. */}}
   }
   after(async()=>{try{await captureStripeEmail(event);}catch{/* The durable Stripe event scanner retries independently. */}await dispatchEmails();});

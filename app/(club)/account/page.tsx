@@ -1,3 +1,4 @@
+import {pendingActivation} from "../../../lib/membership-activation";
 import {redirect} from "next/navigation";
 import {confirmedGrailDrop} from "../../../lib/grail-data";
 import {grailCycle} from "../../../lib/grail-cycle";
@@ -15,6 +16,7 @@ export default async function MemberArea() {
  const member = await requireMember();
  const membership=await membershipForUser(member.id);
  if(membership.state!=="active-test")redirect("/join?checkout=continue");
+ const activation=await pendingActivation(member.id);if(activation)redirect(activation);
  const [user,orders,grails] = await Promise.all([(await clerkClient()).users.getUser(member.id).catch(()=>null),ordersForUser(member.id),confirmedGrailDrop(grailCycle().current).then(drop=>({drop,unavailable:false})).catch(()=>({drop:null,unavailable:true}))]);
  const metrics=memberHomeMetrics(user?.privateMetadata??null);
  let pendingCents:number|null=null;let pendingStage="Status unavailable";

@@ -16,8 +16,8 @@ test('trade summary reuses the profile address and keeps an existing shipment ad
  assert.equal(withProfileReturnAddress(t,{shipping:{...profile.shipping,country:'Canada'}}).shipping?.address,null);
 });
 test('only missing return addresses require member action; missing card counts belong to the admin',()=>{
- const t=trade();assert.equal(memberStatus(t).title,'We’re preparing your shipping label.');assert.equal(operatorStatus(t).owner,'You');assert.equal(actionRequired(t),false);
- t.shipping!.needsAddress=true;assert.equal(memberStatus(t).title,'Add your return address.');assert.match(memberStatus(t).copy,/profile/);assert.equal(actionRequired(t),true);assert.equal(nextTradeAction(t),'Add return address');
+ const t=withProfileReturnAddress(trade(),profile);assert.equal(memberStatus(t).title,'Shipping label pending.');assert.equal(operatorStatus(t).owner,'You');assert.equal(actionRequired(t),false);
+ t.shipping!.needsAddress=true;t.shipping!.address=null;assert.equal(memberStatus(t).title,'Add your shipping address.');assert.match(memberStatus(t).copy,/prepaid label/);assert.equal(actionRequired(t),true);assert.equal(nextTradeAction(t),'Add return address');
 });
 test('new offers cannot leave card count for the member to supply later',async()=>{
  const t=trade();t.state='submitted';await assert.rejects(()=>operatorAction(t,'admin',{action:'offer',useStandardTerms:true,creditCents:8500,shippingApproved:true}),/number of cards/);
