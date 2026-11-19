@@ -16,6 +16,8 @@ export async function shippingOperation(kind:"trade"|"order",id:string,action:st
   if(!update.length)throw new ShippingBlocked("concurrency","Shipping changed; refresh before correcting it.");
   await shippingEvent(id,kind,`address:${id}:${randomUUID()}`,{actor,action:"address_corrected"});return;
  }
+ if(action==='reconcile'&&['label_created','sandbox_ready','in_transit','delivered','voided'].includes(job.status))throw new ShippingBlocked('reconciliation','This transaction is already resolved; its original shipment and history are retained.');
+ if(action==='refund'&&['in_transit','delivered'].includes(job.status))throw new ShippingBlocked('refund','A shipped label cannot be treated as unused.');
  if(!['retry','reconcile','refund'].includes(action))throw new ShippingBlocked("action","Unsupported shipping operation.");
  const claimed=kind==='trade'?await db`UPDATE ssc_trade_shipping SET reason_code='admin_operation',updated_at=now() WHERE id=${id}::uuid AND status=${job.status} AND coalesce(reason_code,'')<>'admin_operation' RETURNING id`:await db`UPDATE ssc_order_shipping SET reason_code='admin_operation',updated_at=now() WHERE id=${id}::uuid AND status=${job.status} AND coalesce(reason_code,'')<>'admin_operation' RETURNING id`;
  if(!claimed.length)throw new ShippingBlocked("concurrency","Another operation is reviewing this shipment.");

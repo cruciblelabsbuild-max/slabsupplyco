@@ -29,8 +29,8 @@ export async function processShippoWebhooks(){
      if(kind==='trade')await db`UPDATE ssc_trade_shipping SET status='provider_created',provider_result=${JSON.stringify(result)}::jsonb WHERE id=${job.id}::uuid AND status IN ('creating','unknown')`;else await db`UPDATE ssc_order_shipping SET status='provider_created',provider_result=${JSON.stringify(result)}::jsonb WHERE id=${job.id}::uuid AND status IN ('creating','unknown')`;
      job={...job,status:'provider_created',provider_result:result};
     }
-    if(kind==='trade'){if(job.status==='provider_created')await reconcileShipping(job.trade_id);if(['label_created','in_transit','sandbox_ready'].includes(job.status))await syncShipmentTracking(job);}
-    else{if(job.status==='provider_created')await reconcileOrderShipping(job);if(['label_created','in_transit','sandbox_ready'].includes(job.status))await syncOrderTracking(job);}
+    if(kind==='trade'){if(job.status==='provider_created')await reconcileShipping(job.trade_id);if(event.event==='track_updated'&&['label_created','in_transit','sandbox_ready'].includes(job.status))await syncShipmentTracking(job);}
+    else{if(job.status==='provider_created')await reconcileOrderShipping(job);if(event.event==='track_updated'&&['label_created','in_transit','sandbox_ready'].includes(job.status))await syncOrderTracking(job);}
    }
   }
   await db`UPDATE ssc_shipping_webhooks SET processed_at=now() WHERE event_key=${event.event_key}`;
