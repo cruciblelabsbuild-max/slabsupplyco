@@ -30,3 +30,5 @@
 @media(max-width:600px){.submission .description textarea,.currentAction textarea{font-size:16px}}
 
 .returnAddress{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding-top:20px;margin-top:24px;font-size:12px}.returnAddress strong{font-size:12px;font-weight:550}.returnAddress p{font-size:12px;line-height:1.8;color:var(--muted);margin:7px 0 0}.returnAddress a{flex-shrink:0;font-size:11px}.returnAddress :global(.button){margin-top:0}@media(max-width:600px){.returnAddress{flex-wrap:wrap}}
+
+.detailValue{display:flex;flex-direction:column;gap:7px;margin:20px 0 7px}.detailValue>span{display:block;margin:0;color:var(--ink);font:550 12px/1.5 Manrope,sans-serif;letter-spacing:0}.detailValue>strong{display:block;font:inherit;font-weight:400;line-height:1.15;font-variant-numeric:tabular-nums}

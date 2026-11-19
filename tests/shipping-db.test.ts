@@ -1,3 +1,4 @@
+import {prepareAcceptedTrade} from "../lib/shipping/acceptance";
 import {test} from "node:test";
 import assert from "node:assert/strict";
 import {randomUUID} from "node:crypto";
@@ -16,11 +17,11 @@ test("automatic shipping requires both approvals, handles either order, isolates
  const run=(id:string,environment:"sandbox"|"production"="production")=>reconcileShipping(id,{provider:{...provider,environment},config,address});
  try{
   // Approval first; acceptance later. Unaccepted offers cannot create labels.
-  let t=await newOffer(true,7);await run(t.id);assert.equal(creates,0);t=await accept(t);await Promise.all([run(t.id),run(t.id),run(t.id)]);t=await getTrade(t.id);assert.equal(creates,1);assert.equal(t.labels.length,3);assert.equal(t.state,"awaiting_shipment");assert.equal(pendingCredit(t),8500);assert.equal(await tradeCreditBalance(owner),0);await run(t.id);assert.equal(creates,1);
+  let t=await newOffer(true,7);await run(t.id);assert.equal(creates,0);t=await accept(t);t=await prepareAcceptedTrade(t,{provider,config,address});assert.equal(t.state,"awaiting_shipment");assert.equal(t.labels.length,3);await Promise.all([run(t.id),run(t.id),run(t.id)]);t=await getTrade(t.id);assert.equal(creates,1);assert.equal(t.labels.length,3);assert.equal(t.state,"awaiting_shipment");assert.equal(pendingCredit(t),8500);assert.equal(await tradeCreditBalance(owner),0);await run(t.id);assert.equal(creates,1);
   // Member accepts first, then administrator approves.
   let reverse=await accept(await newOffer(false));await run(reverse.id);assert.equal(creates,1);reverse=await op(await getTrade(reverse.id),"approve_shipping",{termsVerified:true});await run(reverse.id);assert.equal(creates,2);assert.equal((await getTrade(reverse.id)).labels.length,1);
   // No configured UPS credentials: no fabricated label or tracking.
-  let unavailable=await accept(await newOffer(true));const token=process.env.SHIPPO_TEST_TOKEN;delete process.env.SHIPPO_TEST_TOKEN;try{await reconcileShipping(unavailable.id);}finally{if(token)process.env.SHIPPO_TEST_TOKEN=token;}unavailable=await getTrade(unavailable.id);assert.equal(unavailable.labels.length,0);assert.equal(unavailable.state,"awaiting_label");assert.match(unavailable.shipping!.reason,/unavailable/);assert.equal(creates,2);
+  let unavailable=await accept(await newOffer(true));const token=process.env.SHIPPO_TEST_TOKEN;delete process.env.SHIPPO_TEST_TOKEN;try{unavailable=await prepareAcceptedTrade(unavailable);}finally{if(token)process.env.SHIPPO_TEST_TOKEN=token;}unavailable=await getTrade(unavailable.id);assert.equal(unavailable.labels.length,0);assert.equal(unavailable.state,"awaiting_label");assert.match(unavailable.shipping!.reason,/unavailable/);assert.equal(creates,2);
   // Sandbox documents never enter member-facing production labels.
   let sandbox=await accept(await newOffer(true));await run(sandbox.id,"sandbox");sandbox=await getTrade(sandbox.id);assert.equal(sandbox.labels.length,0);assert.equal(sandbox.state,"awaiting_label");assert.equal((await db`SELECT status FROM ssc_trade_shipping WHERE trade_id=${sandbox.id}::uuid`)[0].status,"sandbox_ready");
   // A timeout after creation starts is not blindly retried, even by concurrent workers.
