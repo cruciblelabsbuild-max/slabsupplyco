@@ -11,12 +11,14 @@ export type Trade={shipping?:ShippingView;id:string;userId:string;reference:stri
 export const terminalStates=new Set<TradeState>(["credit_issued","declined","returned","legacy_completed"]);
 export const pendingStates=new Set<TradeState>(["awaiting_label","awaiting_shipment","in_transit","delivered","received","inspecting","revised_offer","ready_credit"]);
 export function pendingCredit(trade:Pick<Trade,"state"|"acceptedOfferId"|"offers">){return pendingStates.has(trade.state)?trade.offers.find(o=>o.id===trade.acceptedOfferId)?.creditCents??0:0;}
-export function actionRequired(trade:Pick<Trade,"state"|"offers"|"currentOfferId">,now=Date.now()){
+export function actionRequired(trade:Pick<Trade,"state"|"offers"|"currentOfferId"|"shipping">,now=Date.now()){
+ if(trade.shipping?.needsAddress&&["awaiting_label","return_requested"].includes(trade.state))return true;
  if(["more_info","awaiting_shipment"].includes(trade.state))return true;
  return ["offer_ready","revised_offer"].includes(trade.state)&&!offerExpired(trade.offers.find(o=>o.id===trade.currentOfferId),now);
 }
 export const offerExpired=(offer:Offer|undefined,now=Date.now())=>!offer||!!offer.expiresAt&&Date.parse(offer.expiresAt)<=now;
-export function nextTradeAction(trade:Pick<Trade,"state"|"offers"|"currentOfferId">){
+export function nextTradeAction(trade:Pick<Trade,"state"|"offers"|"currentOfferId"|"shipping">){
+ if(trade.shipping?.needsAddress&&["awaiting_label","return_requested"].includes(trade.state))return trade.shipping.address?.line1?"Review return address":"Add return address";
  if(["offer_ready","revised_offer"].includes(trade.state)&&offerExpired(trade.offers.find(o=>o.id===trade.currentOfferId)))return "Offer expired";
  return ({more_info:"Provide details",offer_ready:"Review offer",revised_offer:"Review revised offer",awaiting_label:"View accepted offer",awaiting_shipment:"Download shipping label",in_transit:"Track package",delivered:"View delivery",received:"View progress",inspecting:"View inspection",ready_credit:"View approved offer",credit_issued:"View credit transaction",return_requested:"View return request",return_label:"Track return",return_shipped:"Track return",returned:"View return tracking"} as Partial<Record<TradeState,string>>)[trade.state]||"View submission";
 }

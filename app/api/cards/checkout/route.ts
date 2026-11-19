@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const includeMembership = membership.state !== "active-test";
     if (includeMembership && body?.acceptRenewal !== true) return NextResponse.json({ message: "Confirm the annual membership renewal terms." }, { status: 400 });
     const stripe = getStripe();
-    const customerId = await billingCustomer(stripe, { id: member.id, email: member.email });
+    const customerId = await billingCustomer(stripe, { id: member.id, email: member.email },{useProfileAddress:true});
     const url=await managedCheckout({slugs,membership:includeMembership,priceId:config.priceId,origin,userId:member.id,customerId});
     return NextResponse.json({ url }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {

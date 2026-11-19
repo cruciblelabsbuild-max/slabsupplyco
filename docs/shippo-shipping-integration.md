@@ -43,3 +43,9 @@ Delivery scans update shipment receipt tracking only. Inspection and separate cr
 Keep live credentials and activation disabled until separately approved. Confirm real origin/receiving address, billing and eligible carrier accounts; physically measure loaded parcels; verify graded-card eligibility, exclusions and packaging for third-party collectible coverage; configure coverage reference/limits and signatures; verify branded notifications and callback delivery; then supervise a real end-to-end shipment. Declared value is not insurance. Test insurance responses do not establish live collectible coverage.
 
 Official references: [API](https://docs.goshippo.com/api-reference/overview), [testing](https://docs.goshippo.com/guides/testing/), [webhooks](https://docs.goshippo.com/tracking/webhooks/), [insurance](https://docs.goshippo.com/shipments/shipping-insurance/).
+
+## Shared profile address and card counts
+
+The saved account profile is the member's address editor. Trades show a return-address summary and link to the profile with an owned trade ID. Saving returns the member to that trade and resumes approved label processing. Address edits update only unpurchased current-offer jobs. The creation compare-and-set also checks the prepared address and card count, preventing a stale worker from purchasing against an address edited during rating. Purchased labels retain their original addresses. Card checkout prefills the same complete US profile address on the verified Stripe test customer; historical paid order shipping remains unchanged.
+
+New offers require an admin-confirmed card count outside Advanced terms. Legacy accepted offers missing a count can be confirmed through the existing shipping-approval action without rewriting the immutable accepted offer. Members no longer enter card counts or a separate trade address form. Missing profile addresses remain the member's only shipping information action.

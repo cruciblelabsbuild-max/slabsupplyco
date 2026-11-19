@@ -1,3 +1,4 @@
+import {withProfileReturnAddress} from "../../../lib/shipping/profile-address";
 import { clerkClient } from "@clerk/nextjs/server";
 import TradeJourney from "../../../components/TradeJourney";
 import Link from "next/link";
@@ -12,7 +13,7 @@ export default async function TradeInsPage({searchParams}:{searchParams:Promise<
   if(member){
     const query=await searchParams;
     let records;
-    try{const user=await(await clerkClient()).users.getUser(member.id);await importLegacyTrades(member.id,user.privateMetadata);records=await listTrades(member.id);}catch{records=null;}
+    try{const user=await(await clerkClient()).users.getUser(member.id);await importLegacyTrades(member.id,user.privateMetadata);records=(await listTrades(member.id)).map(trade=>withProfileReturnAddress(trade,user.privateMetadata.memberProfile));}catch{records=null;}
     if(!records)return <section className="section-shell club-section-bottom"><h1>Trades are unavailable.</h1><p>Your records could not be loaded. Please refresh to try again.</p></section>;
     return <TradesExperience initialTrades={records} initialView={query.view} initialId={query.trade}/>;
   }

@@ -1,15 +1,18 @@
+import {profileCheckoutShipping,matchesProfileShipping} from "./profile-checkout-shipping";
 import { clerkClient } from "@clerk/nextjs/server";
 import type Stripe from "stripe";
-export async function billingCustomer(stripe: Stripe, member: { id: string; email: string }) {
+export async function billingCustomer(stripe: Stripe, member: { id: string; email: string },options:{useProfileAddress?:boolean}={}) {
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(member.id);
+  const shipping=options.useProfileAddress?profileCheckoutShipping(user.privateMetadata.memberProfile):null;
   const existing = user.privateMetadata.stripeTestCustomerId;
   if (typeof existing === "string") {
     const customer = await stripe.customers.retrieve(existing);
     if (customer.deleted || customer.livemode || customer.metadata.clerk_user_id !== member.id) throw new Error("Billing identity could not be verified.");
+    if(shipping&&!matchesProfileShipping(customer.shipping,shipping))await stripe.customers.update(customer.id,{shipping});
     return customer.id;
   }
-  const customer = await stripe.customers.create({ email: member.email, metadata: { clerk_user_id: member.id } }, { idempotencyKey: `ssc-test-customer-${member.id}` });
+  const customer = await stripe.customers.create({ email: member.email,...(shipping?{shipping}:{}), metadata: { clerk_user_id: member.id } }, { idempotencyKey: `ssc-test-customer-${member.id}` });
   if (customer.livemode) throw new Error("Only test billing is supported.");
   await clerk.users.updateUserMetadata(member.id, { privateMetadata: { stripeTestCustomerId: customer.id } });
   return customer.id;

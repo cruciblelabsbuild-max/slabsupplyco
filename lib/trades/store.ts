@@ -83,9 +83,12 @@ export async function operatorAction(trade:Trade,actor:string,body:Record<string
   const prior=trade.offers.find(o=>o.id===trade.currentOfferId);
   if(trade.state==="revised_offer"&&prior?.kind==="inspection"&&kind!=="inspection")throw new TradeError("Keep the revised inspection offer in the inspection stage.");
   const offer=parseOffer(body.useStandardTerms===true?{...defaultOfferInput(trade),...body}:body,randomUUID(),version,kind);
+  if(!offer.includedCount)throw new TradeError("Confirm the number of cards included in the offer.");
   if(trade.submission.cardCount&&offer.includedCount&&offer.includedCount>trade.submission.cardCount)throw new TradeError("The offer includes more cards than the submission.");data={...offer,shippingApproved:body.shippingApproved===true,note:offer.reason||"Preliminary offer issued."};
  }else if(action==="approve_shipping"){
-  if(body.termsVerified!==true)throw new TradeError("Verify the shipping and return terms before approval.");data={direction:body.direction==="return"?"return":"inbound",termsVerified:true,approvedValueCents:trade.offers.find(o=>o.id===(body.direction==="return"?trade.acceptedOfferId:trade.currentOfferId))?.creditCents,note:"Administrator approved shipping under the recorded terms."};
+  if(body.termsVerified!==true)throw new TradeError("Verify the shipping and return terms before approval.");const count=trade.offers.find(o=>o.id===trade.acceptedOfferId)?.includedCount||trade.offers.find(o=>o.id===trade.currentOfferId)?.includedCount||Number(body.cardCount)||trade.shipping?.cardCount||trade.submission.cards?.length||trade.submission.cardCount;
+  if(!Number.isSafeInteger(count)||!count||count<1||count>100000)throw new TradeError("Confirm the number of cards before approving shipping.");
+  data={cardCount:count,direction:body.direction==="return"?"return":"inbound",termsVerified:true,approvedValueCents:trade.offers.find(o=>o.id===(body.direction==="return"?trade.acceptedOfferId:trade.currentOfferId))?.creditCents,note:"Administrator approved shipping under the recorded terms."};
  }else if(action==="label"||action==="return_label"){
   if(!validId(body.fileId)||!trade.files.some(f=>f.id===body.fileId&&f.kind===(action==="label"?"label":"return_label")))throw new TradeError("Upload the correct shipping-label PDF first.");
   const accepted=trade.offers.find(o=>o.id===trade.acceptedOfferId);
