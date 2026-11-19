@@ -10,7 +10,7 @@ import { useClerk, useUser } from "@clerk/nextjs";
 import { ArrowRight, Menu, X, UserRound, LogOut } from "lucide-react";
 import Logo from "../../app/Logo";
 import MemberNavigation from "./MemberNavigation";
-import { useIdentityEnabled, useInitialIdentity } from "./IdentityProvider";
+import { useIdentityEnabled, useInitialIdentity, useActiveMembership } from "./IdentityProvider";
 const guestLinks = [["/shop", "Member deals"], ["/trade-ins", "Trade in"], ["/membership", "Membership"], ["/promise", "Our promise"]];
 
 export function ClubHeader() {
@@ -21,7 +21,8 @@ function SessionHeader() {
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
   const initialName = useInitialIdentity();
-  return <Navigation name={isLoaded ? (user ? identityFirstName(user) || initialName || "Collector" : null) : initialName} onSignOut={() => signOut({ redirectUrl: "/" })} />;
+  const activeMembership=useActiveMembership();
+  return <Navigation name={activeMembership ? (isLoaded ? (user ? identityFirstName(user) || initialName || "Member" : null) : initialName) : null} onSignOut={() => signOut({ redirectUrl: "/" })} />;
 }
 function Navigation({ name, onSignOut }: { name: string | null; onSignOut?: () => Promise<unknown> }) {
   const path = usePathname();
@@ -59,7 +60,8 @@ function GuestMobileBar() {
 function SessionMobileBar() {
   const { user, isLoaded } = useUser();
   const initialName = useInitialIdentity();
-  return (isLoaded ? Boolean(user) : Boolean(initialName)) ? <div className="mobile-bar"><Link className="button" href="/account">Home <ArrowRight size={16} /></Link></div> : <GuestMobileBar />;
+  const activeMembership=useActiveMembership();
+  return (activeMembership && (isLoaded ? Boolean(user) : Boolean(initialName))) ? <div className="mobile-bar"><Link className="button" href="/account">Home <ArrowRight size={16} /></Link></div> : <GuestMobileBar />;
 }
 
 export function ProfileSignOut(){return useIdentityEnabled()?<SessionProfileSignOut/>:null;}

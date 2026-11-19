@@ -1,10 +1,11 @@
+import {cache} from "react";
 import { clerkClient } from "@clerk/nextjs/server";
 import { getStripe } from "./stripe";
 import { membershipPeriod } from "./membership-period";
 export function isOwnedTestMembership(subscription: { livemode: boolean; status: string; metadata: Record<string, string> | null }, userId: string) {
   return !subscription.livemode && subscription.status === "active" && subscription.metadata?.clerk_user_id === userId && subscription.metadata?.membership === "founding-annual";
 }
-export async function membershipForUser(userId: string): Promise<{ state: "active-test" | "none" | "unavailable"; renewsAt?: number | null; activeUntil?: number | null }> {
+export const membershipForUser=cache(async function membershipForUser(userId: string): Promise<{ state: "active-test" | "none" | "unavailable"; renewsAt?: number | null; activeUntil?: number | null }> {
   if (!process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_")) return { state: "none" };
   if (!/^user_[a-zA-Z0-9]+$/.test(userId)) return { state: "unavailable" };
   try {
@@ -20,4 +21,4 @@ export async function membershipForUser(userId: string): Promise<{ state: "activ
     const active = subscriptions.data.find(subscription => isOwnedTestMembership(subscription, userId));
     return active ? { state: "active-test", ...membershipPeriod(active) } : { state: "none" };
   } catch { return { state: "unavailable" }; }
-}
+});

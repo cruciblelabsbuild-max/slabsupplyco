@@ -1,3 +1,5 @@
+import {redirect} from "next/navigation";
+import {membershipForUser} from "../../../lib/member-subscription";
 import {withProfileReturnAddress} from "../../../lib/shipping/profile-address";
 import { clerkClient } from "@clerk/nextjs/server";
 import TradeJourney from "../../../components/TradeJourney";
@@ -11,6 +13,7 @@ export const metadata = { title: "Trades · Slab Supply Co." };
 export default async function TradeInsPage({searchParams}:{searchParams:Promise<{view?:string;trade?:string}>}) {
   const member = await getMember();
   if(member){
+    if((await membershipForUser(member.id)).state!=="active-test")redirect("/join?checkout=continue&next=trades");
     const query=await searchParams;
     let records;
     try{const user=await(await clerkClient()).users.getUser(member.id);await importLegacyTrades(member.id,user.privateMetadata);records=(await listTrades(member.id)).map(trade=>withProfileReturnAddress(trade,user.privateMetadata.memberProfile));}catch{records=null;}

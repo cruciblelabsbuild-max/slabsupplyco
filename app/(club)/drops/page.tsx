@@ -1,3 +1,4 @@
+import {redirect} from "next/navigation";
 import SupportLink from "../../../components/club/SupportLink";
 import { getMember } from "../../../lib/member-session";
 import Link from "next/link";
@@ -11,6 +12,8 @@ export const metadata = { title: "Grail drops · Slab Supply Co." };
 export default async function DropsPage() {
  const member=await getMember();
  if(member){
+  const paidMembership=await membershipForUser(member.id);
+  if(paidMembership.state!=="active-test")redirect("/join?checkout=continue");
   const now=new Date(),cycle=grailCycle(now);
   const [membership,data]=await Promise.all([membershipForUser(member.id),Promise.all([confirmedGrailDrop(cycle.current),grailCandidates(cycle.next),grailInterests(member.id,cycle.next)]).catch(()=>null)]);
   return <><GrailExperience month={cycle.next} monthLabel={cycle.nextLabel} drop={data?.[0]??null} candidates={data?.[1]??[]} interests={data?.[2]??[]} active={membership.state==="active-test"} unavailable={!data||membership.state==="unavailable"} now={now.toISOString()}/><section className="section-shell"><SupportLink category="drops"/></section></>;

@@ -1,3 +1,4 @@
+import {membershipForUser} from "../lib/member-subscription";
 import { getMember } from "../lib/member-session";
 import ArrivalHandoff from "../components/club/ArrivalHandoff";
 import BagProvider from "../components/club/BagProvider";
@@ -21,5 +22,6 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const member = await getMember();
-  return <html lang="en" data-scroll-behavior="smooth"><head><link rel="preload" href="/fonts/manrope-400.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/manrope-700.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/fraunces-600.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/></head><body data-member={member ? "true" : undefined}><IdentityProvider enabled={authConfigured()} initialName={member?.name ?? null}><BagProvider><ArrivalHandoff>{children}</ArrivalHandoff></BagProvider></IdentityProvider></body></html>;
+  const activeMembership=!!member&&(await membershipForUser(member.id)).state==="active-test";
+  return <html lang="en" data-scroll-behavior="smooth"><head><link rel="preload" href="/fonts/manrope-400.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/manrope-700.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/fraunces-600.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/></head><body data-member={activeMembership ? "true" : undefined}><IdentityProvider enabled={authConfigured()} initialName={member?.name ?? null} activeMembership={activeMembership}><BagProvider><ArrivalHandoff>{children}</ArrivalHandoff></BagProvider></IdentityProvider></body></html>;
 }

@@ -18,7 +18,7 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
   const shoppingBag=useBag();
   const [accepted, setAccepted] = useState(false);
   const [pending, setPending] = useState(false);
-  const [details, setDetails] = useState(Boolean(identity));
+  const [details, setDetails] = useState(false);
   const signIn = identity === "sign-in";
   const [initialValues, setInitialValues] = useState<{firstName?:string;emailAddress?:string}>({});
   const [error, setError] = useState("");
@@ -44,9 +44,10 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
       const prefill=JSON.parse(sessionStorage.getItem("ssc_join_details") || "{}");
       setInitialValues({firstName:typeof prefill.firstName==="string" ? prefill.firstName:undefined,emailAddress:typeof prefill.emailAddress==="string" ? prefill.emailAddress:undefined});
       const consent=JSON.parse(sessionStorage.getItem(consentKey)||"null");
+      if(identity&&hasRecentEnrollmentConsent(consent)){setAccepted(true);setDetails(true);}
       if((card!=="bag" || shoppingBag.slugs.length>0) && signedIn && ready && autoContinue && hasRecentEnrollmentConsent(consent) && !started.current){started.current=true;setAccepted(true);void checkout(true);}
     }catch{/* Consent is never assumed from invalid or unavailable storage. */}
-  },[signedIn,ready,autoContinue,card,shoppingBag.slugs.length]);
+  },[signedIn,ready,autoContinue,card,shoppingBag.slugs.length,identity]);
   function proceed(){
     if(!accepted || pending)return;
     if(signedIn){void checkout(true);return;}
@@ -55,5 +56,5 @@ export default function CheckoutButton({ ready, signedIn = false, autoContinue =
   }
   if(!ready)return <div className="checkout-unavailable"><p>Checkout is unavailable. Please try again.</p></div>;
   if(details && !signedIn)return <div className="join-inline-identity"><AuthCompletionBridge destination={returnUrl}/><p className="eyebrow">Your details</p>{signIn ? <SignIn oauthFlow="redirect" appearance={authAppearance} routing="hash" forceRedirectUrl={returnUrl} signUpForceRedirectUrl={returnUrl} signUpUrl={`/join?identity=sign-up${destinationSuffix}`}/>:<><ExistingAccountRedirect next={next} card={card}/><SignUp oauthFlow="redirect" appearance={authAppearance} routing="hash" initialValues={initialValues} forceRedirectUrl={returnUrl} signInForceRedirectUrl={returnUrl} signInUrl={enrollmentSignInUrl(next,card)}/></>}</div>;
-  return <div className="checkout-controls"><label className="club-consent"><input type="checkbox" checked={accepted} onChange={e=>setAccepted(e.target.checked)}/><span>I agree to the <Link href="/membership/terms">membership terms</Link>. Membership renews at {annualMembership.display} USD/year until canceled.</span></label><button className="button club-wide" type="button" onClick={proceed} disabled={!accepted || pending}>{pending ? "Opening secure checkout…" : card?"Continue to checkout":"Become a member"}<ArrowRight size={16}/></button><p className="club-small join-payment-note"><LockKeyhole size={12}/> Secure payment through Stripe.</p>{error && <p className="club-form-error" role="alert">{error}</p>}</div>;
+  return <div className="checkout-controls"><label className="club-consent"><input type="checkbox" checked={accepted} onChange={e=>setAccepted(e.target.checked)}/><span>I agree to the <Link href="/membership/terms">membership terms</Link>. Membership renews at {annualMembership.display} USD/year until canceled.</span></label><button className="button club-wide" type="button" onClick={proceed} disabled={!accepted || pending}>{pending ? "Opening secure checkout…" : signedIn?"Continue to payment":card?"Continue to checkout":"Become a member"}<ArrowRight size={16}/></button><p className="club-small join-payment-note"><LockKeyhole size={12}/> Secure payment through Stripe.</p>{error && <p className="club-form-error" role="alert">{error}</p>}</div>;
 }
