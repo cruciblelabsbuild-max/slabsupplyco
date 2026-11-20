@@ -34,3 +34,5 @@ test('cancellation accurately preserves paid-through access',()=>{assert.match(r
 test('transactional links reject unsafe protocols',()=>{assert.throws(()=>renderEmail('trade_label',{...content,ctaUrl:'javascript:alert(1)'}));});
 
 test('email return links allow only known authenticated destinations',async()=>{const {emailDestination}=await import('../lib/email/links');assert.equal(emailDestination('/account'),'/account');assert.equal(emailDestination('/api/trades/11111111-1111-4111-a111-111111111111/files/22222222-2222-4222-a222-222222222222'),'/api/trades/11111111-1111-4111-a111-111111111111/files/22222222-2222-4222-a222-222222222222');for(const value of ['https://evil.example','//evil.example','/api/admin','/account?redirect=https://evil.example','/account/../api/admin'])assert.equal(emailDestination(value),null);});
+
+test('email bodies, headings and CTAs use lowercase member deals and grail drops',()=>{for(const type of emailTypes){const result=renderEmail(type,content);assert.doesNotMatch(result.html,/Member Deals|Grail Drops?/);assert.doesNotMatch(result.text,/Member Deals|Grail Drops?/);}});

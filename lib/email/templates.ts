@@ -3,16 +3,16 @@ export type EmailType = typeof emailTypes[number];
 export type EmailCard = {name:string;grade:string;image:string;paidCents:number;retailCents?:number};
 export type EmailContent = {name:string;reference?:string;amountCents?:number;balanceCents?:number;endDate?:string;date?:string;carrier?:string;tracking?:string;trackingUrl?:string;shipping?:string;totalCents?:number;creditUsedCents?:number;membershipCents?:number;cards?:EmailCard[];ctaUrl:string};
 export const definitions:Record<EmailType,{subject:string;preview:string;title:string;cta:string;category:'members'|'orders'|'trades'|'drops';graphic:string}> = {
- membership_confirmed:{subject:"Welcome to Slab Supply. You're officially in.",preview:'Your annual membership is active. Your next find starts here.',title:"You’re officially in.",cta:'Explore Member Deals',category:'members',graphic:'membership'},
+ membership_confirmed:{subject:"Welcome to Slab Supply. You're officially in.",preview:'Your annual membership is active. Your next find starts here.',title:"You’re officially in.",cta:'Explore member deals',category:'members',graphic:'membership'},
  membership_cancelled:{subject:'Your Slab Supply membership cancellation is confirmed.',preview:'Your cancellation and membership access details.',title:'Your cancellation is confirmed.',cta:'View membership',category:'members',graphic:'membership-cancelled'},
  order_confirmed:{subject:'Your next addition is confirmed.',preview:'Payment confirmed. Here’s what’s joining your collection.',title:'A good find. Now yours.',cta:'View your order',category:'orders',graphic:'orders'},
  order_shipped:{subject:'Your cards are on their way.',preview:'Your package is with the carrier. Follow its journey.',title:'On the way to you.',cta:'Track shipment',category:'orders',graphic:'orders'},
  trade_submitted:{subject:'We received your trade request.',preview:'Your request is with our team. We’ll review your cards next.',title:'We’ve got your request.',cta:'View your trade',category:'trades',graphic:'trades'},
  trade_offer:{subject:'Your Slab Supply trade offer is ready.',preview:'Your proposed store credit is ready to review.',title:'We have an offer for you.',cta:'Review your offer',category:'trades',graphic:'trades'},
  trade_label:{subject:'Your prepaid trade-in label is ready.',preview:'Download your label and pack your approved cards securely.',title:'Your shipping label is ready.',cta:'Download shipping label',category:'trades',graphic:'trades'},
- trade_credit:{subject:'Your trade credit is ready to use.',preview:'Inspection complete. Your credit has been added to your balance.',title:'Your Store Credit is ready.',cta:'Explore Member Deals',category:'trades',graphic:'trades'},
- grail_upcoming:{subject:'Your next grail drop is coming.',preview:'A closer look at the confirmed cards in your next monthly drop.',title:'Preview your next Grail Drop.',cta:'Preview the Grail Drop',category:'drops',graphic:'grails'},
- grail_live:{subject:'The grail drop is live.',preview:'This month’s confirmed grails are available now.',title:'This month’s Grail Drop is live.',cta:'Shop the Grail Drop',category:'drops',graphic:'grails'},
+ trade_credit:{subject:'Your trade credit is ready to use.',preview:'Inspection complete. Your credit has been added to your balance.',title:'Your Store Credit is ready.',cta:'Explore member deals',category:'trades',graphic:'trades'},
+ grail_upcoming:{subject:'Your next grail drop is coming.',preview:'A closer look at the confirmed cards in your next monthly drop.',title:'Preview your next grail drop.',cta:'Preview the grail drop',category:'drops',graphic:'grails'},
+ grail_live:{subject:'The grail drop is live.',preview:'This month’s confirmed grails are available now.',title:'This month’s grail drop is live.',cta:'Shop the grail drop',category:'drops',graphic:'grails'},
 };
 export const promotional=(type:EmailType)=>type==='grail_upcoming'||type==='grail_live';
 export const money=(cents:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(cents/100);
@@ -22,7 +22,7 @@ function url(value:string){const result=new URL(value,emailOrigin());if(result.p
 export function renderEmail(type:EmailType,data:EmailContent,options:{unsubscribeUrl?:string;mailingAddress?:string}={}){
  const d=definitions[type],e=escapeHtml,rows:Array<[string,string]>=[];let copy='';
  switch(type){
- case 'membership_confirmed':copy=`Welcome to Slab Supply. Your membership is active.\n\nExplore Member Deals, preview upcoming Grail Drops, or trade eligible graded cards for credit toward your next find.\n\nWe’re glad you’re here.`;rows.push(['Membership','$149 USD / year']);if(data.endDate)rows.push(['Current membership period ends',data.endDate]);break;
+ case 'membership_confirmed':copy=`Welcome to Slab Supply. Your membership is active.\n\nExplore member deals, preview upcoming grail drops, or trade eligible graded cards for credit toward your next find.\n\nWe’re glad you’re here.`;rows.push(['Membership','$149 USD / year']);if(data.endDate)rows.push(['Current membership period ends',data.endDate]);break;
  case 'membership_cancelled':copy=data.endDate?`Your membership won’t renew, but you’ll still have access to your Slab Supply benefits through ${data.endDate}.\n\nThanks for being part of Slab Supply.`:'Your membership has ended and won’t renew.\n\nThanks for being part of Slab Supply.';break;
  case 'order_confirmed':copy='Your order is confirmed, and your cards are reserved. We’ll send you tracking information as soon as your package is on its way.';if(data.membershipCents)rows.push(['Annual membership',money(data.membershipCents)]);rows.push(['Store credit used',money(data.creditUsedCents||0)],['Total paid',money(data.totalCents!)]);break;
  case 'order_shipped':copy='Your package has entered the carrier’s shipping network.';break;
@@ -30,8 +30,8 @@ export function renderEmail(type:EmailType,data:EmailContent,options:{unsubscrib
  case 'trade_offer':copy='We’ve put together a proposed Store Credit offer for your cards.\n\nTake a look at the details and let us know if you’d like to move forward. Final credit is confirmed after we receive and inspect your cards.';rows.push(['Proposed credit',money(data.amountCents!)]);break;
  case 'trade_label':copy='Your prepaid shipping label is ready.\n\nPack the cards included in your accepted trade securely in a sturdy box with protective cushioning. Download your label below, and follow your shipment’s progress from your trade details.';break;
  case 'trade_credit':copy='Your cards have been inspected and approved. Your Store Credit is now available for purchases.';rows.push(['Credit added',money(data.amountCents!)],['Available credit',money(data.balanceCents!)]);break;
- case 'grail_upcoming':copy=`Your next monthly Grail Drop opens ${data.date}. Here are the confirmed cards.`;break;
- case 'grail_live':copy='This month’s Grail Drop is live. One grail purchase per member per month. Availability is limited to the cards shown as available in the drop.';break;
+ case 'grail_upcoming':copy=`Your next monthly grail drop opens ${data.date}. Here are the confirmed cards.`;break;
+ case 'grail_live':copy='This month’s grail drop is live. One grail purchase per member per month. Availability is limited to the cards shown as available in the drop.';break;
  }
  if(data.reference)rows.unshift(['Reference',data.reference]);if(data.carrier)rows.push(['Carrier',data.carrier]);if(data.tracking)rows.push(['Tracking',data.tracking]);if(data.shipping)rows.push(['Shipping to',data.shipping]);
  const support=process.env[`EMAIL_${d.category.toUpperCase()}`]||`${d.category}@${process.env.EMAIL_DOMAIN||'slabsupply.co'}`;

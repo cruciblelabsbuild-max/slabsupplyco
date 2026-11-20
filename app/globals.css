@@ -1597,10 +1597,10 @@ body[data-member="true"] .promise-page .section-shell{width:min(1180px,calc(100%
 .membership-cancel-dialog::backdrop{background:rgba(25,26,52,.5)}
 .membership-cancel-dialog h2{font-size:32px;margin:0 0 20px}.membership-cancel-dialog p{font-size:14px;line-height:1.8;margin:12px 0}.membership-cancel-dialog .club-result-actions{gap:12px;flex-wrap:wrap}
 
-body[data-member="true"]:has(.membership-activation){padding:0}body[data-member="true"] .membership-activation{width:min(900px,calc(100% - 40px));max-width:900px}
+body[data-member="true"]:has(.membership-activation),body[data-member="true"]:has(.member-loading-full){padding:0}body[data-member="true"] .membership-activation{width:min(900px,calc(100% - 40px));max-width:900px}
 
-.membership-activation-check{animation:membership-check-settle .55s cubic-bezier(.22,1,.36,1) both}
-.membership-activation-check svg path{stroke-dasharray:32;stroke-dashoffset:32;animation:membership-check-draw .65s cubic-bezier(.22,1,.36,1) .15s forwards}
+.membership-activation-check{opacity:0}.membership-activation-check.is-visible{animation:membership-check-settle .7s cubic-bezier(.22,1,.36,1) both}
+.membership-activation-check svg path{stroke-dasharray:32;stroke-dashoffset:32}.membership-activation-check.is-visible svg path{animation:membership-check-draw 1s cubic-bezier(.22,1,.36,1) .25s forwards}
 @keyframes membership-check-settle{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
 @keyframes membership-check-draw{to{stroke-dashoffset:0}}
-@media(prefers-reduced-motion:reduce){.membership-activation-check,.membership-activation-check svg path{animation:none}.membership-activation-check svg path{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.membership-activation-check,.membership-activation-check.is-visible,.membership-activation-check.is-visible svg path{animation:none;opacity:1}.membership-activation-check svg path{stroke-dashoffset:0}}
