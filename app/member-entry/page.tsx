@@ -1,3 +1,4 @@
+import {emailDestination} from "../../lib/email/links";
 import MemberArrival from "../../components/club/MemberArrival";
 import {redirect} from "next/navigation";
 import {requireMember} from "../../lib/member-session";
@@ -6,12 +7,13 @@ import {memberArrivalDestination} from "../../lib/member-arrival";
 import {pendingActivation} from "../../lib/membership-activation";
 export const dynamic="force-dynamic";
 export const metadata={title:"Welcome back · Slab Supply Co.",robots:{index:false,follow:false}};
-export default async function SignInComplete({searchParams}:{searchParams:Promise<{next?:string;checkout?:string;card?:string;bag?:string}>}){
- const member=await requireMember();const {next,checkout,card,bag}=await searchParams;
+export default async function SignInComplete({searchParams}:{searchParams:Promise<{next?:string;checkout?:string;card?:string;bag?:string;emailTo?:string}>}){
+ const member=await requireMember();const {next,checkout,card,bag,emailTo}=await searchParams;
  const enrollment=checkout==="continue";
  const membership=await membershipForUser(member.id);
  const activeMembership=membership.state==="active-test";
- const destination=memberArrivalDestination({enrollment,activeMembership,next,card:bag==="1"?"bag":card});
+ const defaultDestination=memberArrivalDestination({enrollment,activeMembership,next,card:bag==="1"?"bag":card});
+ const destination=activeMembership?(emailDestination(emailTo)||defaultDestination):defaultDestination;
  if(!activeMembership)redirect(destination);
  const pending=await pendingActivation(member.id);
  if(pending)redirect(pending);
