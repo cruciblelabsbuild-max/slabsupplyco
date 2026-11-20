@@ -1,3 +1,4 @@
+import MemberArrival from "../../components/club/MemberArrival";
 import {redirect} from "next/navigation";
 import {requireMember} from "../../lib/member-session";
 import {membershipForUser} from "../../lib/member-subscription";
@@ -13,5 +14,6 @@ export default async function SignInComplete({searchParams}:{searchParams:Promis
  const destination=memberArrivalDestination({enrollment,activeMembership,next,card:bag==="1"?"bag":card});
  if(!activeMembership)redirect(destination);
  const pending=await pendingActivation(member.id);
- redirect(pending||destination);
+ if(pending)redirect(pending);
+ return <MemberArrival destination={destination} name={member.name} allowStoredTradeIntent={false} freshNavigation/>;
 }
